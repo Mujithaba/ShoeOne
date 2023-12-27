@@ -31,7 +31,7 @@ const verifyLogin = async (req, res) => {
         const password = req.body.password;
         // console.log(email);
         const userData = await User.findOne({ email: email });
-// console.log(userData);
+        // console.log(userData);
         if (userData) {
 
             const passwordMatch = await bcrypt.compare(password, userData.password);
@@ -77,7 +77,7 @@ const loadDashboard = async (req, res) => {
 
 
 // logout
-const logout = async(req,res)=>{
+const logout = async (req, res) => {
     try {
 
         req.session.destroy();
@@ -283,10 +283,10 @@ const categoryUnlist = async (req, res) => {
 const productLoad = async (req, res) => {
 
     try {
-       
+
         const fullProduct = await Product.find().populate('category')
         //   console.log(fullProduct);
- 
+
         res.render('admin/product', { fullProduct })
 
     } catch (error) {
@@ -298,7 +298,7 @@ const productLoad = async (req, res) => {
 // Product Add page 
 const addProductLoad = async (req, res) => {
     try {
-        const fullCategory = await Category.find({is_listed: true})
+        const fullCategory = await Category.find({ is_listed: true })
         res.render('admin/add-product', { fullCategory })
     } catch (error) {
         console.log(error.message);
@@ -343,7 +343,7 @@ const editProduct = async (req, res) => {
 
         const id = req.query.id.trim();
         const productData = await Product.findById({ _id: id })
-        const fullCategory = await Category.find({ is_listed: true})
+        const fullCategory = await Category.find({ is_listed: true })
         if (productData) {
             res.render('admin/edit-product', { product: productData, fullCategory })
         } else {
@@ -364,7 +364,7 @@ const updateProduct = async (req, res) => {
         // console.log(req.body);
         const productID = req.body.productID;
         // console.log(productID);
-        if(uploadedFiles.length !== 0){
+        if (uploadedFiles.length !== 0) {
             const productDataWithImg = await Product.findByIdAndUpdate(
                 { _id: productID },
                 {
@@ -380,12 +380,12 @@ const updateProduct = async (req, res) => {
                     }
                 }
             );
-        }else{
+        } else {
             const productData = await Product.findByIdAndUpdate(
                 { _id: productID },
                 {
                     $set: {
-            
+
                         productName: req.body.productName,
                         Price: req.body.Price,
                         productSize: req.body.productSize,
@@ -397,8 +397,8 @@ const updateProduct = async (req, res) => {
                 }
             );
         }
-        
-       
+
+
 
         res.redirect('/admin/product');
     } catch (error) {
@@ -454,40 +454,63 @@ const productUnlist = async (req, res) => {
 
 
 // user order details
-const loadUserorders =async(req, res)=>{
+const loadUserorders = async (req, res) => {
     try {
 
         const orderData = await Order.find().populate({
             path: 'products.productId',
             select: 'Price image productName quantity'
         })
-      
-        res.render('admin/userOrders',{ orderData })
+
+        res.render('admin/userOrders', { orderData })
 
     } catch (error) {
-        console.log(error.message);    }
+        console.log(error.message);
+    }
 }
 
 
 // order view each ussers
-// const loadinfoOrder = async (req, res) => {
-//     try {
-// console.log("helloooo");
-//         const order_id = req.query.id
-//         console.log(order_id);
-//         const orderData = await Order.findOne({ _id: order_id }).populate({
-//             path: 'products.productId',
-//             select: 'Price image productName'
-//         }).populate({
-//             path:'use'
-//         })
-//         console.log(orderData);
-//         res.render('admin/order-info', { orderData })
+const loadOrders = async (req, res) => {
+    try {
+        console.log("helloooo");
+        const order_id = req.query.id
+        // console.log(order_id);
+        const orderData = await Order.findOne({ _id: order_id }).populate({
+            path: 'products.productId',
+            select: 'Price image productName'
+        })
+        // console.log(orderData);
+        res.render('admin/order-info', { orderData })
 
-//     } catch (error) {
-//         console.log(error.message);
-//     }
-// }
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+
+const changeStatus = async (req, res) => {
+    try {
+        console.log("heloo");
+        const orderId = req.body.orderID
+        const statusPro = req.body.productStatus
+        const productID = req.body.productID
+        console.log(typeof statusPro);
+        console.log(orderId);
+        console.log(productID);
+
+        const statusSet = await Order.findOneAndUpdate({ _id: orderId, 'products.productId': productID },
+            { $set: { 'products.$.ProductOrderStatus': statusPro } },
+            { new: true })
+
+        console.log(statusSet);
+        res.json({ message: 'Product status changed successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Internal server error' });
+
+    }
+
+}
 
 
 module.exports = {
@@ -514,6 +537,7 @@ module.exports = {
 
     // user orders
     loadUserorders,
-    // loadinfoOrder
+    loadOrders,
+    changeStatus
 
 }

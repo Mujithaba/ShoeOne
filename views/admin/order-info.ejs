@@ -54,16 +54,80 @@
             border-color: #ffffff;
         }
 
-        .status-div .btn-dark {
-            color: white;
+        .status-div {
+            background-color: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+            width: 300px;
+            display: inline-block;
         }
 
-        .status-div .btn-dark:hover {
-            color: white;
+        .status-p {
+            margin: 0;
         }
 
-        .border-btm {
-            border-bottom: 2px solid #ddd;
+        strong {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .status-select {
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #bdc3c7;
+            border-radius: 5px;
+            width: 100%;
+            appearance: none;
+            background-color: #fff;
+            color: #333;
+            cursor: pointer;
+            transition: border-color 0.3s, background-color 0.3s;
+        }
+
+        .status-select:hover {
+            border-color: #7f8c8d;
+        }
+
+        .status-select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        /* Optional: Add some spacing between the label and the dropdown */
+        .status-p strong {
+            margin-right: 10px;
+        }
+
+        /* address div style */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .address-box {
+            background-color: #ffffff;
+            border: 1px solid #e1e1e1;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 300px;
+            margin: 20px auto;
+        }
+
+        .address-box h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .address-details p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        strong {
+            font-weight: bold;
+            color: #333;
         }
     </style>
 
@@ -216,14 +280,45 @@
             <!-- //User Details Page -->
             <div class="container-fluid">
 
+                <!-- <%= orderData._id %> -->
+
                 <div class="container">
 
                     <input type="hidden" value="<%= orderData %>" name="orderdata">
 
-                    <!-- order view  is start -->
-
                     <div class="container-bigDiv">
                         <h1 class="mt-5 mb-4 text-center"><b>ORDER DETAILS</b></h1>
+
+                        <!-- address start -->
+                        <div class="address-box">
+                            <h2 class="text-center "><u>Shipping Address :</u></h2><br>
+                            <div class="address-details ">
+                                <p>Name: <strong>
+                                        <%= orderData.shippingAddress.fullname %>
+                                    </strong> </p>
+                                <p>Mobile: <strong>
+                                        <%= orderData.shippingAddress.mobile %>
+                                    </strong> </p>
+                                <p>Address: <strong>
+                                        <%= orderData.shippingAddress.address %>
+                                    </strong> </p>
+                                <p>Pincode: <strong>
+                                        <%= orderData.shippingAddress.pincode %>
+                                    </strong> </p>
+                                <p>City: <strong>
+                                        <%= orderData.shippingAddress.city %>
+                                    </strong> </p>
+                                <p>State: <strong>
+                                        <%= orderData.shippingAddress.state %>
+                                    </strong> </p>
+
+                            </div>
+                        </div>
+                        <!-- address end -->
+
+
+                        <!-- order detail products start -->
+
                         <input type="hidden" name="order" value="<%= orderData %>">
                         <% for (const product of orderData.products) {%>
                             <div class="order-row">
@@ -242,28 +337,24 @@
                                                 <strong>Total Price:</strong>&nbsp; ₹<%= orderData.totalAmount %> /-
                                                     <br>
                                                     <strong>Ordered On:</strong>&nbsp;
-                                                    <%= orderData.orderDate.toLocaleString('en-AU',{year:"numeric",month:"2-digit",day:"2-digit"})%> <br>
-                                                    <strong>Address:</strong>&nbsp; 
+                                                    <%=orderData.orderDate.toLocaleString('en-AU',{year:"numeric",month:"2-digit",day:"2-digit"})%>
+                                                        <br>
+                                                        <strong>Address:</strong>&nbsp;
                                     </p><br>
                                     <!-- </div> -->
                                     <div class="status-div">
-                                        <p class="status-p"><strong class="status-p">Status:</strong>&nbsp;
-                                        <h6 id="orStatus">
-                                            <select name="" id="">
-                                                <option value="pending">pending</option>
-                                                <option value="proccessed">Proccessed</option>
-                                                <option value="Shipping">Shipping</option>
-                                                <option value="delivered">Delivered</option>
-                                            </select>
-                                            <!-- <%= orderData.orderStatus %> -->
-                                        </h6>
+                                        <p class="status-p">
+                                            <strong>Status:</strong>&nbsp;
+                                            <span id="orStatus">
+                                                <select class="status-select statusOption" name="ProductOrderStatus" id="setStatus" data-proId="<%= product.productId._id %>" data-orderId="<%= orderData._id %>">
+                                                    <option value="pending<%= orderData.ProductOrderStatus === 'pending' ? 'selected' : '' %>">Pending</option>
+                                                    <option value="processed<%= orderData.ProductOrderStatus === 'processed' ? 'selected' : '' %>">Processed</option>
+                                                    <option value="shipping<%= orderData.ProductOrderStatus === 'shipping' ? 'selected' : '' %>">Shipping</option>
+                                                    <option value="delivered<%= orderData.ProductOrderStatus === 'delivered' ? 'selected' : '' %>">Delivered</option>
+                                                </select>
+                                                <!-- <%= orderData.orderStatus %> -->
+                                            </span>
                                         </p>
-
-
-
-
-
-
                                     </div>
 
 
@@ -273,7 +364,7 @@
                             <%}%>
                     </div>
 
-                    <!-- order view  is end -->
+                    <!-- order detail products end -->
 
                 </div>
 
@@ -285,10 +376,121 @@
 
 
 
-    <!-- search -->
-    <script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll('.statusOption').forEach((optionSt) => {
+    optionSt.addEventListener('change', statusOp);
+
+    async function statusOp() {
+      let orderStatus = document.getElementById("setStatus");
+      let productStatus = orderStatus.value;
+      let orderID = optionSt.getAttribute('data-orderId');
+      let productID = optionSt.getAttribute('data-proId');
+
+      // Debugging statements
+      console.log('productStatus:', productStatus);
+      console.log('orderID:', orderID);
+      console.log('productID:', productID);
+
+      try {
+        const response = await fetch('/admin/statusChange', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ productID, productStatus, orderID })
+        });
+
+        const data = await response.json();
+
+        if (data.message) {
+          // Handle success
+          console.log("Product added to cart");
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: data.message,
+            showConfirmButton: false,
+            timer: 1500
+          });
+        } else {
+          Swal.fire({
+            position: "center",
+            icon: "info",
+            title: data.msg,
+            showConfirmButton: false,
+            timer: 1500
+          });
+        }
+      } catch (error) {
+        // Handle error
+        console.error(error);
+      }
+    }
+  });
+});
 
 
-    </script>
+</script>
+
+
+    
+    <!-- <script>
+
+document.addEventListener("DOMContentLoaded", function() {
+
+  document.querySelectorAll('.statusOption').forEach((optionSt) => {
+    optionSt.addEventListener('click', statusOp);
+
+            async function statusOp() {
+
+                let orderStatus = document.getElementById("setStatus");
+                let productStatus =  orderStatus.innerText;
+
+                let prodID = optionSt.getAttribute('data-prodId');
+
+                try {
+                    const response = await fetch('/statusChange', {
+                        method: 'PATCH',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ prodID ,productStatus})
+                    });
+
+                    const data = await response.json();
+
+                    if (data.message) {
+                        // Handle success
+                        console.log("Product added to cart");
+                        // alert(data.message)
+                        Swal.fire({
+                            position: "center",
+                            icon: "success",
+                            title: data.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }else{
+                        Swal.fire({
+                            position: "center",
+                            icon: "info",
+                            title: data.msg,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                } catch (error) {
+                    // Handle error
+                    console.error(error);
+                }
+            }
+        });
+});
+
+
+
+
+    </script> -->
 
     <%- include('../layouts/footer.ejs') %>

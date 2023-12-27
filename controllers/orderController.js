@@ -73,7 +73,7 @@ const orderPlace = async (req, res) => {
                     productId: product.productId,
                     quantity: product.quantity,
                     unitPrice: product.productId.Price,
-                    ProductOrderStatus: 'Ordered'
+                    ProductOrderStatus: 'pending'
                 }
             }),
             OrderStatus: 'ordered',

@@ -256,12 +256,10 @@
                                 <p class="p-cancel"><%= product.ProductOrderStatus %></p>
 
                                 <% } else { %>
-                                    <% if(product.ProductOrderStatus=='Ordered' ) {%>
+                                    <% if(product.ProductOrderStatus=='pending' || product.ProductOrderStatus=='processed' || product.ProductOrderStatus=='shipping') {%>
                                         <button class=" cancel-btn" onclick="cancelFunction( '<%= product.productId._id %>' )">Cancel</button>
 
-                                        <% } else if(product.ProductOrderStatus=='delivered' ){ %>
-                                            <p style="color: green;">Delivered</p>
-                                            <% } %>
+                                        <% } %>
                                                 <% } %>
                                             
 
