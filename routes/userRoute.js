@@ -69,6 +69,6 @@ user_route.get('/successOrder',auth.isLogin,orderController.loadSuccessPlace)
 // myorder
 user_route.get('/my-Order',auth.isBlocked,auth.isLogin,orderController.loadMyOrder)
 user_route.get('/views-Order',auth.isLogin,orderController.loadViewOrder)
-user_route.post('/cancel-product',orderController.cancelOrder)
+user_route.post('/cancelOrder',orderController.cancelOrder)
 
 module.exports= user_route ;

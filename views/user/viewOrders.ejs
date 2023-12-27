@@ -65,14 +65,39 @@
         .border-btm {
             border-bottom: 2px solid #ddd;
         }
+
+        .cancel-btn{
+            background-color: #061f39;
+            border-radius: 5px;
+            padding: 10px;
+            color: white;
+            margin-left: 900px;
+        }
+        .cancel-btn:hover{
+            background-color: #494572;
+        }
+
+        .p-cancel{
+            color: rgb(249, 20, 20);
+            font-weight: 600;
+        }
+
+        .ordStatus{
+            color: black;
+        }
+
+        .status-p{
+            color: black;
+        }
+       
     </style>
 
 
 
     <!-- Page Preloder -->
-    <div id="preloder">
+    <!-- <div id="preloder">
         <div class="loader"></div>
-    </div>
+    </div> -->
 
     <!-- Offcanvas Menu Begin -->
     <div class="offcanvas-menu-overlay"></div>
@@ -210,30 +235,35 @@
                             <%= product.productId.productName %>
                         </h5>
                         <p>
-                            <strong>Quantity:</strong>&nbsp; <%= product.quantity %><br>
-
                                 <strong>OrderID:</strong>&nbsp;<%= orderData._id %> <br>
-                                    <strong>Total Price:</strong>&nbsp; ₹<%= orderData.totalAmount %> /- <br>
+                                <strong>Quantity:</strong>&nbsp; <%= product.quantity %><br>
+                                    <strong>Price:</strong>&nbsp; ₹<%= product.productId.Price %> /- <br>
                                         <strong>Ordered On:</strong>&nbsp;
                                         <%=
-                                            orderData.orderDate.toLocaleString('en-AU',{year:"numeric",month:"2-digit",day:"2-digit"})%>
+                                            orderData.orderDate.toLocaleString('en-AU',{year:"numeric",month:"2-digit",day:"2-digit"})%> <br>
+
+                                            <!-- <strong>Total Price:</strong>&nbsp; ₹<%= orderData.totalAmount %> /- <br> -->
                         </p><br>
                         <!-- </div> -->
                         <div class="status-div">
-                            <p class="status-p"><strong class="status-p">Status:</strong> <h6 id="orStatus">
-                                <%= orderData.orderStatus %>
-                            </h6>
-                           
-                            </p>
+                           <strong class="status-p">Status:-</strong>
+                            <h5 class="">
+                                <%= product.ProductOrderStatus %>
+                            </h5>
+                        
 
-                                <a type="button" class="btn btn-dark cancel-btn" data-prodid=" <%= product.productId._id %>"
-                                data-orderid="<%=  orderData._id %>"
-                                data-state="<%= orderData.orderStatus ? 'pending' : 'cancelled' %>"
-                                data-initial-status="<%= orderData.orderStatus ? 'cancel' : 'pending' %>">
-                                <%= orderData.orderStatus ? 'cancel' : 'pending' %>
-                            </a>
+                            <% if(product.ProductOrderStatus=='cancelled' ) {%>
+                                <p class="p-cancel"><%= product.ProductOrderStatus %></p>
 
-                           
+                                <% } else { %>
+                                    <% if(product.ProductOrderStatus=='Ordered' ) {%>
+                                        <button class=" cancel-btn" onclick="cancelFunction( '<%= product.productId._id %>' )">Cancel</button>
+
+                                        <% } else if(product.ProductOrderStatus=='delivered' ){ %>
+                                            <p style="color: green;">Delivered</p>
+                                            <% } %>
+                                                <% } %>
+                                            
 
                         </div>
 
@@ -342,62 +372,46 @@
 
 
     <script>
+        function cancelFunction(productId) {
+            fetch('/cancelOrder', {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ productId })
+            }).then(response => {
+                return response.json();
+            }).then(data => {
+                if (data.message) {
+                    console.log(data.message);
 
-        document.querySelectorAll('.cancel-btn').forEach((button) => {
-            button.addEventListener('click', () => {
-                let prodID = button.getAttribute('data-prodid');
-                let orderID = button.getAttribute('data-orderid')
-                console.log(orderID);
-                console.log(prodID);
-                let ordStatus = document.getElementById('orStatus').innerHTML
-                console.log(ordStatus);
-                let currentState = button.getAttribute('data-state');
-                console.log(currentState);
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: data.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    setTimeout(function () {
+                        location.reload()
+                    }, 1000);
 
-                let url = `/cancel-product`;
-                let status = "cancelled"
 
-                fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ prodID, orderID, status })
-                }).then(response => {
-                    return response.json();
-                }).then(data => {
-                    if (data.message) {
-                let initialStatus = button.getAttribute('data-initial-status');
-                if (currentState === 'pending' || initialStatus === 'cancel') {
-                    button.remove();
-                    ordStatus = document.getElementById('orstatus').innerHTML = "Cancelled";
 
-                    // Store a flag in localStorage
-                    localStorage.setItem('buttonRemoved', 'true');
+                } else {
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: data.error,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
                 }
-
-
-                    }
-                }).catch(error => {
-                    console.log(error);
-                });
+            }).catch(error => {
+                console.log(error);
             });
-        });
 
-
-        // Check localStorage on page load
-        document.addEventListener('DOMContentLoaded', () => {
-    let buttonRemoved = localStorage.getItem('buttonRemoved');
-    console.log('Button Removed:', buttonRemoved);
-
-    if (buttonRemoved === 'true') {
-        // Hide the button or take any other necessary actions
-        document.querySelectorAll('.cancel-btn').forEach((button) => {
-            button.style.display = 'none';
-        });
-    }
-});
-
+        }
 
     </script>
 

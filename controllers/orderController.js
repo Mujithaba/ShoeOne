@@ -36,8 +36,10 @@ const orderPlace = async (req, res) => {
     try {
         const user_id = req.session.user_id
         const addressId = req.body.addressId;
-        // console.log(user_id + "userid");
-        // console.log(addressId + "addresid");
+        const paymentType = req.body.paymentType
+        console.log(user_id + "userid");
+        console.log(addressId + "addresid");
+        console.log("type" + paymentType);
 
         // taking address from databse
         const ShippingAddress = await Address.findOne({ _id: addressId })
@@ -66,12 +68,23 @@ const orderPlace = async (req, res) => {
                 city: ShippingAddress.city,
                 state: ShippingAddress.state
             },
-            products: cartData.products,
+            products: cartData.products.map(product => {
+                return {
+                    productId: product.productId,
+                    quantity: product.quantity,
+                    unitPrice: product.productId.Price,
+                    ProductOrderStatus: 'Ordered'
+                }
+            }),
+            OrderStatus: 'ordered',
+            StatusLevel: 1,
             totalAmount: cartTotal,
+            paymentMethod: paymentType
 
         })
-        const order = await orderDetails.save()
 
+        const order = await orderDetails.save()
+        console.log("orders" + order);
         if (order) {
             const deleteCart = await Cart.findOneAndDelete({ userId: user_id })
             await StockAdjusting(cartData.products)
@@ -142,20 +155,16 @@ const loadViewOrder = async (req, res) => {
 // cancel order status fetch
 const cancelOrder = async (req, res) => {
     try {
-        console.log("vannooooooo");
-        const orderID = req.body.orderID
-        const prodID = req.body.prodID
-        const status = req.body.status
 
-        console.log(status);
-        console.log("order" + orderID);
-        console.log(prodID);
-        
-        const order = await Order.findOne({ _id: orderID })
-        order.orderStatus =status;
-        await order.save()
-        console.log(order);
+        const productID = req.body.productId
+        console.log(productID);
 
+        const orderDetails = await Order.findOneAndUpdate(
+            { 'products.productId': productID },
+            { $set: { 'products.$.ProductOrderStatus': 'Cancelled' } },
+            { new: true } // Return the modified document
+        )
+console.log(orderDetails);
         res.json({ message: 'Product cancelled successfully' });
 
 

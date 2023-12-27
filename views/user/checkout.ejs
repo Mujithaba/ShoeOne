@@ -368,7 +368,7 @@
                                         <div class="checkout__input__checkbox">
                                             <label for="COD">
                                                 Cash on delivery
-                                                <input type="checkbox" id="COD" class="checkingBox">
+                                                <input type="checkbox" id="COD" class="checkingBox" value="COD">
                                                 <span class="checkmark"></span>
                                             </label>
                                         </div>
@@ -383,7 +383,7 @@
                                         <div class="checkout__input__checkbox">
                                             <label for="paypal">
                                                 Paypal
-                                                <input type="checkbox" id="paypal" class="checkingBox">
+                                                <input type="checkbox" id="paypal" class="checkingBox" value="online">
                                                 <span class="checkmark"></span>
                                             </label>
                                         </div>
@@ -650,12 +650,16 @@
             }
             //End of select address
 
+
+            let paymentmethod=null
             // delivery type checking
             let deliveryTypeChecked =false;
             let deliveryType = document.querySelectorAll('.checkingBox')
             deliveryType.forEach((checkInput)=>{
                 if (checkInput.checked) {
                     deliveryTypeChecked = true
+                    paymentmethod=checkInput.value
+                    console.log(paymentmethod);
                     console.log(checkInput.parentNode);
                 }
             })
@@ -673,7 +677,7 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ addressId })
+                    body: JSON.stringify({ addressId ,paymentType: paymentmethod})
                 });
 
                 const data = await response.json();

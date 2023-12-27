@@ -232,10 +232,10 @@ h2 {
                                             <tr>
                                                 <th class="text-white">Sl No</th>
                                                 <th class="text-white">Ordered Date</th>
+                                                <th class="text-white">Order ID</th>
                                                 <th class="text-white">Name</th>
-                                                <th class="text-white">Products</th>
                                                 <th class="text-white">Total Amount</th>
-                                                <th class="text-white">Picture</th>
+                                                <th class="text-white">Product Name</th>
                                                 <th class="text-white">Payment</th>
                                                
                                                 <th class="text-white">Details</th>
@@ -249,23 +249,29 @@ h2 {
                                                     <td><%= slno %></td>
                                                     <td><%= order.orderDate.toLocaleString('en-AU',{year:"numeric",month:"2-digit",day:"2-digit"}) %></td>
                                                     <td>
+                                                        <%= order._id %> <br>
+                                                    </td>
+                                                    <td>
                                                         <%= order.shippingAddress.fullname %> <br>
                                                     </td>
+                                                    
+                                                    
+                                                    <td>₹<%= order.totalAmount %></td>
                                                     <td>
                                                     
                         
                                                         <% for (const product of order.products) { %>
                                                            
-                                                            <%= product.productId.productName %> <br> (Qty: <%= product.quantity %>)<br><br><br>
+                                                           <b>-</b>   <%= product.productId.productName %>  (Qty: <%= product.quantity %>)<br>
                                                            
                                                         <% } %>
                                                     </td>
-                                                    <td>₹<%= order.totalAmount %></td>
-                                                    <td>
+
+                                                    <!-- <td>
                                                         <% for (const product of order.products) { %>
                                                             <img src="/Image/<%= product.productId.image[0] %>" alt="<%= product.productId.productName %>" style="max-width: 50px; border-radius: 5px; margin-bottom: 3px;">&nbsp;&nbsp;
                                                         <% } %>
-                                                    </td>
+                                                    </td> -->
                                                     <td><%= order.paymentMethod %></td>
                                                     <td><a href="/admin/order-info?id=<%=order._id%>" class="btn btn-warning" >Detail </i></a></td>
 
