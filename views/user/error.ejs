@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error Page</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        .error-container {
+            text-align: center;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+
+        .error-code {
+            font-size: 64px;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+
+        .error-message {
+            font-size: 24px;
+            margin-top: 10px;
+            color: #333;
+        }
+
+        .back-home-link {
+            display: block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #2f9612;
+            font-weight: bold;
+        }
+
+        @media (max-width: 768px) {
+            .error-container {
+                width: 80%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+     <!-- display a success or error message -->
+
+     <% if(typeof message !=='undefined' ) { %>
+        <div class="alert alert-warning text-center mb-4">
+            <%= message %>
+        </div>    
+        <% } %>
+
+    <div class="error-container">
+        <div class="error-code">404</div>
+        <div class="error-message">Page Not Found</div>
+        <a href="/" class="back-home-link">Back to Home</a>
+    </div>
+
+    <%- include('../layouts/footer.ejs') %>

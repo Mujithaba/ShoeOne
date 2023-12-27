@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="description" content="Male_Fashion Template">
+	<meta name="keywords" content="Male_Fashion, unica, creative, html">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>ShoeOne</title>
+
+	<!-- Favicon-->
+	<link rel="shortcut icon" href="/img/icon/logo-favicon.png">
+
+	<!-- login styles -->
+
+
+	<!-- <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> -->
+
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900&display=swap" rel="stylesheet">
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	<link rel="stylesheet" href="/css/login-style.css">
+
+</head>
+
+<body>
+
+
+	<section class="ftco-section">
+		<div class="container">
+
+			<div class="row justify-content-center">
+				<div class="col-md-12 col-lg-10">
+					<div class="wrap d-md-flex">
+						<div class="text-wrap p-4 p-lg-5 text-center d-flex align-items-center order-md-last">
+							<div class="text w-100">
+								<h1>Welcome to <br>
+									<h3 class="login-h1">ShoeOne</h3>
+								</h1><br>
+								<p>Don't have an account?</p>
+								<a href="./register" class="btn btn-white btn-outline-white">Sign Up</a>
+							</div>
+						</div>
+
+						<div class="login-wrap p-4 p-lg-5">
+							<!-- display a success or error message -->
+							<% if(typeof message !=='undefined' ) { %>
+								<div class="alert alert-warning text-center mb-4">
+									<%= message %>
+								</div>
+								<% } %>
+
+							<!-- display a verify error message -->
+
+							<% if(typeof verify !=='undefined' ) { %>
+								<div class="alert alert-warning text-center mb-4">
+									<%= verify %>
+									<p ><em><a href="/OTPvarification" style="font-weight: 600;" >Click here for Verification</a></em></p>
+
+								</div>
+								<% } %>
+
+								
+							<div class="d-flex">
+								<div class="w-100">
+									<h3 class="mb-4">Sign In</h3>
+								</div>
+								<div class="w-100">
+									<p class="social-media d-flex justify-content-end">
+										<a href="#"
+											class="social-icon d-flex align-items-center justify-content-center"><span
+												class="fa fa-facebook"></span></a>
+										<a href="#"
+											class="social-icon d-flex align-items-center justify-content-center"><span
+												class="fa fa-twitter"></span></a>
+									</p>
+								</div>
+							</div>
+							<div class="text-center hoi mb-4">
+								<h2><b>Sign In</b></h2>
+							</div>
+							<form action="/login" class="signin-form" method="post">
+								<div class="form-group mb-3">
+									<label class="label" for="email">Email</label>
+									<input type="email" id="email" name="email" class="form-control" placeholder="Email" required>
+								</div>
+								<div class="form-group mb-3">
+									<label class="label" for="password">Password</label>
+									<input type="password" id="password" name="password" class="form-control" placeholder="Password"
+										required>
+								</div><br>
+								<div class="form-group">
+									<button type="submit" class="form-control btn btn-primary submit px-3">Sign
+										In</button>
+								</div>
+								<div class="form-group d-md-flex">
+									<!-- <div class="w-50 text-left">
+										<label class="checkbox-wrap checkbox-primary mb-0">Remember Me
+											<input type="checkbox" checked>
+											<span class="checkmark"></span>
+										</label>
+									</div> -->
+									<div class="w-50 text-md-left">
+										<a href="./forgetStep">Forgot Password...</a>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script src="/js/jquery.min.js"></script>
+	<script src="/js/popper.js"></script>
+	<script src="/js/login-bootstrap.min.js"></script>
+	<script src="/js/login-main.js"></script>
+
+
+	<%- include('../layouts/footer.ejs') %>

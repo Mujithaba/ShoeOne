@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Male_Fashion Template">
+    <meta name="keywords" content="Male_Fashion, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ShoeOne</title>
+
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="/img/icon/logo-favicon.png">
+
+    <!-- login styles -->
+
+
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> -->
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="/css/login-style.css">
+
+    <!-- this style for error message validation -->
+
+    <style>
+        .error-message {
+            color: red;
+        }
+    </style>
+
+</head>
+
+<body>
+
+
+    <section class="ftco-section">
+        <!-- <div class="container">
+            <div class="row justify-content-center">
+            <div class="col-md-6 text-center mb-5">
+                <h2 class="heading-section"><b>Sign Up</b></h2>
+            </div>
+        </div> -->
+        <div class="row justify-content-center">
+            <div class="col-md-12 col-lg-10">
+                <div class="wrap d-md-flex">
+                    <div class="text-wrap p-4 p-lg-5 text-center d-flex align-items-center order-md-last">
+                        <div class="text w-100">
+                            <h1>Welcome to <br>
+                                <h3 class="login-h1">ShoeOne</h3>
+                            </h1><br>
+                            <p>Already Have an account?</p>
+                            <a href="./login" class="btn btn-white btn-outline-white">Sign In</a>
+                        </div>
+                    </div>
+                    <div class="login-wrap p-4 p-lg-5">
+                        <div class="d-flex">
+                            <!-- <div class="w-100">
+                                <h3 class="mb-4">Sign Up</h3>
+                            </div> -->
+                            <div class="w-100">
+                                <p class="social-media d-flex justify-content-end">
+                                    <a href="#"
+                                        class="social-icon d-flex align-items-center justify-content-center"><span
+                                            class="fa fa-facebook"></span></a>
+                                    <a href="#"
+                                        class="social-icon d-flex align-items-center justify-content-center"><span
+                                            class="fa fa-twitter"></span></a>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- display a success or error message -->
+
+                        <% if(typeof message !=='undefined' ) { %>
+                            <div class="alert alert-warning text-center mb-4">
+                                <%= message %>
+                            </div>
+                            <% } %>
+
+                                <div class="text-center hoi mb-4">
+                                    <h2><b>Sign Up</b></h2>
+
+                                </div>
+                                <form onsubmit="return validateForm()" action="/register" class="signin-form" method="post">
+                                    <div class="form-group mb-3">
+                                        <label class="label" for="first-name">First Name</label>
+                                        <input type="text" id="first-name" name="Firstname" class="form-control" placeholder="First Name" >
+                                        <span id="firstnameError" class="error-message"></span>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label class="label" for="second-name">Second Name</label>
+                                        <input type="text" id="second-name" name="Secondname" class="form-control" placeholder="Second Name" >
+                                        <span id="secondnameError" class="error-message"></span>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label class="label" for="Email">Email</label>
+                                        <input type="email" id="Email" name="email" class="form-control" placeholder="Email" >
+                                        <span id="emailError" class="error-message"></span>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label class="label" for="Mobile">Mobile</label>
+                                        <input type="tel" id="Mobile" name="mobile" class="form-control" placeholder="Mobile"  pattern="[0-9]{10}">
+                                        <span id="mobileError" class="error-message"></span>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label class="label" for="Password">Password</label>
+                                        <input type="password" id="Password" name="password" class="form-control" placeholder="Password" >
+                                        <span id="passwordError" class="error-message"></span>
+                                    </div>
+                                    <div class="form-group mb-3">
+                                        <label class="label" for="ConfirmPassword">Confirm Password</label>
+                                        <input type="password" id="ConfirmPassword" name="confirmPassword" class="form-control" placeholder="Confirm Password" >
+                                        <span id="passwordMatchError" class="error-message"></span>
+                                    </div><br>
+                                    <div class="form-group">
+                                        <button type="submit" class="form-control btn btn-primary submit px-3" value="register">Sign Up</button>
+                                    </div>
+                                </form>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/popper.js"></script>
+    <script src="/js/login-bootstrap.min.js"></script>
+    <script src="/js/login-main.js"></script>
+
+    <!-- validation script -->
+    <script>
+       function validateForm() {
+    // Validation for Firstname and secondtname (Allow only letters and spaces)
+    var nameRegex = /^[a-zA-Z]+$/;
+    var firstName = document.getElementById('first-name').value;
+    var secondName = document.getElementById('second-name').value;
+
+    if (!nameRegex.test(firstName)) {
+        document.getElementById('firstnameError').innerHTML = 'Please enter a valid Firstname.';
+        document.getElementById('firstnameError').style.display = 'block';
+        return false;
+    } else {
+        document.getElementById('firstnameError').style.display = 'none';
+    }
+
+    if (!nameRegex.test(secondName)) {
+        document.getElementById('secondnameError').innerHTML = 'Please enter a valid secondname.';
+        document.getElementById('secondnameError').style.display = 'block';
+        
+        return false;
+    } else {
+        document.getElementById('secondnameError').style.display = 'none';
+    }
+
+
+    // Validation for Email
+    var emailRegex = /^\S+@gmail\.com$/;
+    var email = document.getElementById('Email').value;
+
+    if (!emailRegex.test(email)) {
+        document.getElementById('emailError').innerHTML = 'Please enter a valid Email address.';
+        document.getElementById('emailError').style.display = 'block';
+        return false;
+    } else {
+        document.getElementById('emailError').style.display = 'none';
+    }
+
+    // Validation for Mobile number (Allow only digits, and a length of 10)
+    var mobileRegex = /^\d{10}$/;
+    var mobile = document.getElementById('Mobile').value;
+
+    if (!mobileRegex.test(mobile)) {
+        document.getElementById('mobileError').innerHTML = 'Please enter a valid Mobile number.';
+        document.getElementById('mobileError').style.display = 'block';
+        return false;
+    } else {
+        document.getElementById('mobileError').style.display = 'none';
+    }
+
+
+
+    // Validation for Password and Confirm Password
+    var passwordRegex = /^.{8,}$/;
+    var password = document.getElementById('Password').value;
+    if (!passwordRegex.test(password)) {
+        document.getElementById('passwordError').innerHTML = 'Password must contain 8 characters';
+        document.getElementById('passwordError').style.display = 'block';
+        return false;
+    } else {
+        document.getElementById('passwordError').style.display = 'none';
+    }
+
+    var ConfirmPassword = document.getElementById('ConfirmPassword').value;
+
+    if (password !== ConfirmPassword) {
+        document.getElementById('passwordMatchError').style.display = 'block';
+        document.getElementById('passwordMatchError').innerHTML = 'Passwords do not match.';
+        return false;
+    } else {
+        document.getElementById('passwordMatchError').style.display = 'none';
+    }
+
+    return true;
+}
+
+
+        </script>
+
+    <%- include('../layouts/footer.ejs') %>

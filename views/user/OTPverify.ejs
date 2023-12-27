@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="ShoeOne - OTP Verification">
+    <meta name="keywords" content="ShoeOne, OTP, verification, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ShoeOne - OTP Verification</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/img/icon/logo-favicon.png">
+
+    <!-- Styles -->
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/css/otp-style.css"> <!-- Custom OTP styles -->
+
+    <!-- Custom Styles -->
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4eded;
+        }
+
+        .otp-container {
+            background-color: #fff;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .otp-input {
+            width: 43px;
+            height: 43px;
+            font-size: 18px;
+            margin-right: 5px;
+            text-align: center;
+            border: 2px solid rgb(31, 41, 52);
+            border-radius: 10px;
+            outline: none;
+            transition: border-color 0.3s ease-in-out;
+        }
+
+        .otp-input:focus {
+            border-color: hsl(337, 98%, 47%);
+        }
+
+        .verify-btn {
+            background-color: #077829b5;
+            color: #fff;
+            font-size: 18px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+        /* #btn {
+            color: black;
+           background: none;
+           border: 2px solid #ddd;
+           font-weight: 700;
+           cursor: pointer;
+           padding: 4px;
+           text-decoration: none;
+           border-radius: 5px;
+        } */
+        #btn:hover{
+          color: #077829b5;
+          /* border: 1px solid; */
+          /* border-radius: 5px; */
+        }
+
+        .alert{
+            color: rgb(206, 90, 90);
+            border: 2px solid #ddd;
+            padding: 5px;
+        }
+
+        @media only screen and (max-width: 600px) {
+            .otp-input {
+                width: 40px;
+                height: 40px;
+                font-size: 16px;
+            }
+
+            .verify-btn {
+                font-size: 16px;
+                padding: 8px 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="otp-container">
+
+        <!-- resend otp -->
+        <% if(typeof msg !=='undefined' ) { %>
+            <div class="alert alert-warning text-center mb-4">
+                <%= msg %>
+            </div>
+            <% } %>
+<br><br>
+            
+        <% if(typeof message !=='undefined' ) { %>
+            <div class="alert alert-warning text-center mb-4">
+                <%= message %>
+            </div>
+            <% } %>
+
+        <h1>Verify OTP</h1>
+        <p>Enter the OTP sent to your email.</p>
+
+        <form action="/OTPvarification" method="POST">
+            <div>
+                <input type="text" class="otp-input" maxlength="1" name="otp1" id="otp1" oninput="moveToNextInput(this, 'otp2')">
+                <input type="text" class="otp-input" maxlength="1" name="otp2" id="otp2" oninput="moveToNextInput(this, 'otp3')">
+                <input type="text" class="otp-input" maxlength="1" name="otp3" id="otp3" oninput="moveToNextInput(this, 'otp4')">
+                <input type="text" class="otp-input" maxlength="1" name="otp4" id="otp4" oninput="moveToNextInput(this, 'otp5')">
+                <input type="text" class="otp-input" maxlength="1" name="otp5" id="otp5" oninput="moveToNextInput(this, 'otp6')">
+                <input type="text" class="otp-input" maxlength="1" name="otp6" id="otp6">
+            </div>
+            <br>
+
+            <button class="verify-btn" type="submit"><b>Verify OTP</b></button>
+           
+            
+        </form>
+        <br><br>
+
+        <!-- <a href="/resend-otp" id="btn">Resend OTP</a> -->
+
+        <div id="timer-container">
+            <p id="a"><b> Did'nt got the otp? Resend in </b><span id="timer">5</span> <b>seconds</b></p>
+            <a href="/resend-otp" id="btn" style="display:none; margin-left: 10px; margin-bottom: 30px; background-color: transparent; color:green; font-size: 15px;" ><u><b>Resend OTP</b></u></button>
+        </div>
+
+        <!-- display a success or error message -->
+
+
+
+            
+
+
+                    
+    </div>
+    <!-- input field after entering pass to next input field -->
+    <script>
+        function moveToNextInput(currentInput, nextInputId) {
+            if (currentInput.value.length === currentInput.maxLength) {
+                document.getElementById(nextInputId).focus();
+            }
+        }
+    </script>   
+
+
+
+<script>
+    var timer =25; // Initial timer value in seconds
+    var countdown = setInterval(function() {
+        timer--;
+        document.getElementById('timer').textContent = timer;
+        if (timer <= 0) {
+            clearInterval(countdown);
+            document.getElementById('btn').style.display = 'block';
+            document.getElementById('timer').style.display = 'none';
+            document.getElementById('a').style.display = 'none';
+        }
+    }, 1000);
+
+ 
+</script>
+
+
+
+       
+  
+
+    <%- include('../layouts/footer.ejs') %>

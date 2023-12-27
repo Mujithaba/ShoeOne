@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Male_Fashion Template">
+    <meta name="keywords" content="Male_Fashion, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ShoeOne</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&display=swap"
+        rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="/css/magnific-popup.css" type="text/css">
+    <link rel="stylesheet" href="/css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="/img/icon/logo-favicon.png">
+
+
+    <!-- admin head links -->
+
+    <!-- <link rel="shortcut icon" type="image/png" href="../assets/images/logos/favicon.png" /> -->
+    <link rel="stylesheet" href="../assets/css/styles.min.css" />
+
+
+    <!-- font awosome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- profile styles -->
+    <link rel="stylesheet" href="profileStyle.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        .list-group-item.logout {
+            color: #dc3545;
+            background-color: #fff;
+            /* Set background color for the logout link */
+        }
+
+        .list-group-item.logout:hover {
+            color: #fff;
+            background-color: #dc3545;
+        }
+
+        .list-group-item.active {
+            background-color: #ffffff;
+            color: #ad8b8b;
+        }
+
+        .list-group-item.active:hover {
+            background-color: #cadbce;
+            color: #be2f2f;
+        }
+
+
+
+
+        /* Add shadow to the div with class "your-div-class" */
+        .your-div-class {
+            margin-top: 10px;
+            margin-bottom: 70px;
+
+        }
+
+        /* error message color */
+        .error {
+            color: red;
+        }
+
+        .error-message {
+            color: red;
+        }
+
+        .row-bordered {
+            border: none !important;
+        }
+
+        .card {
+            border: none;
+        }
+
+        #readonly-clr {
+            background-color: white;
+        }
+
+        /* address manage portion style */
+        .body-address {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f8f8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .star {
+            color: red;
+        }
+
+        #addressContainer {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 10px;
+            /* background: linear-gradient(135deg, #fdfbfb, #ebedee); */
+            /* box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); */
+        }
+
+        #addressDetails {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .addressItem {
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            position: relative;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .addressItem:nth-child(even) {
+            background-color: #f9f9f9;
+            /* Alternate color for even items */
+        }
+
+        .addressItem:hover {
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .addressItem h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .addressItem p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #555;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .editBtn {
+            background-color: #3498db;
+        }
+
+        .deleteBtn {
+            background-color: #e74c3c;
+        }
+
+        #btnHover {
+            color: white;
+            background-color: black;
+            text-decoration: none;
+        }
+
+        #btnHover:hover {
+            color: rgb(0, 0, 0);
+            background-color: rgb(255, 255, 255);
+        }
+    </style>
+
+</head>
+
+<body>
+
+
+    <!-- Page Preloder -->
+    <!-- <div id="preloder">
+        <div class="loader"></div>
+    </div> -->
+
+    <!-- Offcanvas Menu Begin -->
+    <div class="offcanvas-menu-overlay"></div>
+    <div class="offcanvas-menu-wrapper">
+        <div class="offcanvas__option">
+            <div class="offcanvas__links">
+                <a href="#">Sign in</a>
+
+            </div>
+
+        </div>
+        <div class="offcanvas__nav__option">
+            <a href="#" class="search-switch"><img src="/img/icon/search.png" alt=""></a>
+            <a href="#"><img src="/img/icon/heart.png" alt=""></a>
+
+            <a href="/cart"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="18" viewBox="0 0 576 512">
+                    <path
+                        d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z" />
+                </svg></a>
+
+            <a href="/profile"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512">
+                    <path
+                        d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z" />
+                </svg></a>
+
+        </div>
+        <div id="mobile-menu-wrap"></div>
+        <div class="offcanvas__text">
+            <p>Enjoy your shopping with us...</p>
+        </div>
+    </div>
+    <!-- Offcanvas Menu End -->
+
+    <!-- Header Section Begin -->
+    <header class="header">
+        <div class="header__top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-7">
+                        <div class="header__top__left">
+                            <p>Enjoy your each shopping with us... </p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-5">
+                        <div class="header__top__right">
+                            <div class="header__top__links">
+                                <a href="#">Sign in</a>
+
+                                <!-- <a href="#">FAQs</a> -->
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3">
+                    <div class="header__logo">
+                        <a href="./home">
+                            <h2 class="ShoeOne-head">ShoeOne</h2>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <nav class="header__menu mobile-menu">
+                        <ul>
+                            <li><a href="./home">Home</a></li>
+                            <li><a href="./shop">Shop</a></li>
+                            <li><a href="./about">About Us</a></li>
+
+
+                            <li><a href="./contact">Contacts</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-lg-3 col-md-3">
+                    <div class="header__nav__option">
+                        <a href="#" class="search-switch"><img src="/img/icon/search.png" alt=""></a>
+                        <a href="#"><img src="/img/icon/heart.png" alt=""></a>
+                        <!-- <a href="#"><img src="/img/icon/cart.png" alt=""> </a> -->
+                        <a class="active" href="./cart"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="18"
+                                viewBox="0 0 576 512">
+                                <path
+                                    d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z" />
+                            </svg></a>
+
+                        <a href="/profile"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="14"
+                                viewBox="0 0 448 512">
+                                <path
+                                    d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z" />
+                            </svg></a>
+                    </div>
+                </div>
+            </div>
+            <div class="canvas__open"><i class="fa fa-bars"></i></div>
+        </div>
+    </header>
+    <!-- Header Section End -->
+
+
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__text">
+                        <h4>Your Profile</h4>
+                        <div class="breadcrumb__links">
+                            <a href="./home">Home</a>
+                            <a href="./shop">Shop</a>
+                            <span>Your Profile</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+
+    <!-- User Profile Section Begin -->
+    <div class="container light-style flex-grow-1 container-p-y your-div-class ">
+        <h3 class="font-weight-bold py-3 mb-4 text-center">
+            Account settings
+        </h3>
+
+
+
+        <div class="col-lg-6 col-md-6 col-sm-6c ">
+            <div class="continue__btn ">
+                <a id="btnHover" href="/my-Order"><i class="fas fa-shopping-cart"></i>my orders</a>
+            </div>
+        </div>
+        <br><br><br>
+        <div class="card overflow-hidden">
+            <div class="row no-gutters row-bordered row-border-light">
+                <div class="col-md-3 pt-0 marLeft">
+                    <div class="list-group list-group-flush account-settings-links">
+                        <a class="list-group-item list-group-item-action active" data-toggle="list"
+                            href="#account-general">
+                            <i class="fas fa-user-circle"></i> General
+                        </a>
+                        <a class="list-group-item list-group-item-action" data-toggle="list"
+                            href="#account-change-password">
+                            <i class="fas fa-lock"></i> Change Password
+                        </a>
+                        <a class="list-group-item list-group-item-action" data-toggle="list" href="#add-address">
+                            <i class="fas fa-map-marker-alt"></i> Add Address
+                        </a>
+                        <a class="list-group-item list-group-item-action" data-toggle="list" href="#manage-address">
+                            <i class="fas fa-address-book"></i> Manage Address
+                        </a>
+                        <!-- <a class="list-group-item list-group-item-action" data-toggle="list" href="/my-Order">
+                            <i class="fas fa-shopping-cart"></i> Order
+                        </a> -->
+                        <a class="list-group-item list-group-item-action logout" href="/logout">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-md-9">
+                    <div class="tab-content">
+                        <div class="tab-pane fade active show" id="account-general">
+
+                            <hr class="border-light m-0">
+                            <div class="card-body">
+                                <input type="hidden" name="users" value="<%= userData%>">
+                                <div class="form-group">
+                                    <label class="form-label">First Name</label>
+                                    <input type="text" class="form-control mb-1 " id="readonly-clr" name="fisrtName"
+                                        value="<%= userData.firstName%>" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Second Name</label>
+                                    <input type="text" class="form-control  " id="readonly-clr" name="secondName"
+                                        value="<%= userData.secondName%>" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">E-mail</label>
+                                    <input type="text" class="form-control mb-1 " id="readonly-clr"
+                                        value="<%= userData.email%>" readonly>
+
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Mobile</label>
+                                    <input type="text" class="form-control " id="readonly-clr" name="mobile"
+                                        value="<%= userData.mobile%>" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="account-change-password">
+                            <div class="card-body pb-2">
+                                <div class="form-group">
+                                    <label class="form-label">Current password</label>
+                                    <input type="password" id="CurrentPassword" class="form-control" required>
+                                    <span id="passwordError" class="error-message"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">New password</label>
+                                    <input type="password" id="NewPassword" class="form-control" required>
+                                    <span id="passwordError" class="error-message"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Repeat new password</label>
+                                    <input type="password" id="RepeatPassword" class="form-control" required>
+                                    <span id="passwordMatchError" class="error-message"></span>
+                                </div>
+                                <div class="text-center">
+                                    <button type="button" class="btn btn-success btn-sm mt-3  py-2"
+                                        id="changePassword">Save ChangePassword</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- add address begin -->
+                        <div class="tab-pane fade" id="add-address">
+                            <div class="card-body pb-3">
+                                <form id="addressForm">
+                                    <div class="form-group">
+                                        <label class="form-label">Full Name<span class="star">*</span></label>
+                                        <input type="text" class="form-control" name="fullname" id="fullname"
+                                            placeholder="full name" required>
+                                        <div id="fullnameError" class="error"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Mobile<span class="star">*</span></label>
+                                        <input type="text" class="form-control" name="mobno" id="mobno"
+                                            placeholder=" mobile number" required pattern="[0-9]{10}">
+                                        <div id="mobnoError" class="error"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Address<span class="star">*</span></label>
+                                        <input type="text" class="form-control" name="address" id="address"
+                                            placeholder="address" required>
+                                        <div id="addressError" class="error"></div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label class="form-label">Pincode<span class="star">*</span></label>
+                                            <input type="text" class="form-control" name="pincode" id="pincode"
+                                                placeholder="pincode" required pattern="[0-9]{6}">
+                                            <div id="pincodeError" class="error"></div>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label class="form-label">Town/City<span class="star">*</span></label>
+                                            <input type="text" class="form-control" name="city" id="city"
+                                                placeholder="your city" required>
+                                            <div id="cityError" class="error"></div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group ">
+                                        <label class="form-label">State<span class="star">*</span></label>
+                                        <input type="text" class="form-control" name="state" id="state"
+                                            placeholder="your state" required>
+                                        <div id="stateError" class="error"></div>
+                                    </div>
+                                    <div class="text-center">
+                                        <button type="button" class="btn btn-success btn-sm mt-3 px-5 py-2"
+                                            onclick="validateForm()" id="addAddress">Save Address</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!-- add address end -->
+
+                        <div class="tab-pane fade" id="manage-address">
+                            <div class="card-body pb-2">
+                                <div id="addressContainer" class="body-address">
+                                    <h3 style="text-align: center; color: #333;">Address Details</h3>
+                                    <div id="addressDetails">
+                                        <% addresses.forEach(function(address, index) { %>
+                                            <div class="addressItem">
+                                                <!-- <h5><u>Address <%= index + 1 %></u></h5> -->
+                                                <p>
+                                                    <%= address.fullname %>
+                                                </p>
+                                                <p>
+                                                    <%= address.mobile %>
+                                                </p>
+                                                <p>
+                                                    <%= address.address %>
+                                                </p>
+                                                <p>
+                                                    <%= address.pincode %>
+                                                </p>
+                                                <p>
+                                                    <%= address.city %>
+                                                </p>
+                                                <p>
+                                                    <%= address.state %>
+                                                </p>
+                                                
+                                                <a href="/edit-address" class="btn btn-info edit-addrs" data-toggle="modal"
+                                                    data-target="#orderDetailsModal" data-addrs-id=" <%= address._id %>">Edit</a>
+
+                                                <button type="button" data-address-id="<%= address._id %>"
+                                                    class="delete-button">Delete</button>
+                                            </div>
+                                            <% }); %>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal for Order Details -->
+                        <div class="modal fade" id="orderDetailsModal" tabindex="-1" role="dialog"
+                            aria-labelledby="orderDetailsModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="orderDetailsModalLabel">Edit Address</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <% addresses.forEach(function(address, index) { %>
+                                        <div class="modal-body">
+                                            <!-- <h5><u>Address <%= index + 1 %></u></h5> -->
+                                            <p>
+                                                <%= address.fullname %>
+                                            </p>
+                                            <p>
+                                                <%= address.mobile %>
+                                            </p>
+                                            <p>
+                                                <%= address.address %>
+                                            </p>
+                                            <p>
+                                                <%= address.pincode %>
+                                            </p>
+                                            <p>
+                                                <%= address.city %>
+                                            </p>
+                                            <p>
+                                                <%= address.state %>
+                                            </p>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-dismiss="modal">Save</button>
+                                        </div>
+                                        <% }); %>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- modal end -->
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- User Profile section End -->
+
+
+    <!-- Footer Section Begin -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="footer__about">
+                        <div class="footer__logo">
+                            <a href="#">
+                                <h2 class="ShoeOne-foot">ShoeOne</h2>
+                            </a>
+                        </div>
+                        <p>The customer is at the heart of our unique business model, which includes design.</p>
+                        <a href="#"><img src="/img/payment.png" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
+                    <div class="footer__widget">
+                        <h6>Shopping</h6>
+                        <ul>
+                            <li><a href="#">Clothing Store</a></li>
+                            <li><a href="#">Trending Shoes</a></li>
+                            <li><a href="#">Accessories</a></li>
+                            <li><a href="#">Sale</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-6">
+                    <div class="footer__widget">
+                        <h6>Shopping</h6>
+                        <ul>
+                            <li><a href="#">Contact Us</a></li>
+                            <li><a href="#">Payment Methods</a></li>
+                            <li><a href="#">Delivary</a></li>
+                            <li><a href="#">Return & Exchanges</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 offset-lg-1 col-md-6 col-sm-6">
+                    <div class="footer__widget">
+                        <h6>NewLetter</h6>
+                        <div class="footer__newslatter">
+                            <p>Be the first to know about new arrivals, look books, sales & promos!</p>
+                            <form action="#">
+                                <input type="text" placeholder="Your email">
+                                <button type="submit"><span class="icon_mail_alt"></span></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="footer__copyright__text">
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        <p>Copyright ©
+                            <script>
+                                document.write(new Date().getFullYear());
+                            </script>2020
+                            All rights reserved | This template is made with <i class="fa fa-heart-o"
+                                aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                        </p>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer Section End -->
+
+    <!-- Search Begin -->
+    <div class="search-model">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="search-close-switch">+</div>
+            <form class="search-model-form">
+                <input type="text" id="search-input" placeholder="Search here.....">
+            </form>
+        </div>
+    </div>
+    <!-- Search End -->
+
+
+    <!-- Js Plugins -->
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.nice-select.min.js"></script>
+    <script src="/js/jquery.nicescroll.min.js"></script>
+    <script src="/js/jquery.magnific-popup.min.js"></script>
+    <script src="/js/jquery.countdown.min.js"></script>
+    <script src="/js/jquery.slicknav.js"></script>
+    <script src="/js/mixitup.min.js"></script>
+    <script src="/js/owl.carousel.min.js"></script>
+    <script src="/js/main.js"></script>
+
+    <!-- user profile template plugin -->
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+
+
+    <script>
+
+        // *****************************Add address************************************************
+        document.addEventListener('DOMContentLoaded', () => {
+            const addressBtn = document.getElementById('addAddress');
+            addressBtn.addEventListener('click', addAddress);
+
+            async function addAddress() {
+                const addAddressData = {
+                    fullname: document.getElementById('fullname').value,
+                    mobno: document.getElementById('mobno').value,
+                    address: document.getElementById('address').value,
+                    pincode: document.getElementById('pincode').value,
+                    city: document.getElementById('city').value,
+                    state: document.getElementById('state').value,
+                };
+
+                // Validate form data
+                const isValid = validateForm(addAddressData);
+
+                if (isValid) {
+                    try {
+                        const response = await fetch('/addressAdd', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ addAddress: addAddressData })
+                        });
+
+                        const data = await response.json();
+
+                        if (data.message) {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: data.message,
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                            // Clear form fields after successful submission
+                            clearFormFields();
+                        } else {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'info',
+                                title: data.error,
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+                    } catch (error) {
+                        console.error(error);
+                    }
+                }
+            }
+
+            function validateForm(data) {
+                clearErrors();
+
+                // Validate each field
+                if (!data.fullname || !/^[a-zA-Z]+(?:\s[a-zA-Z]+)*$/.test(data.fullname)) {
+                    showError('fullnameError', 'Please enter your full name with valid format');
+                    return false;
+                }
+
+
+                if (!data.mobno || !/^\d{10}$/.test(data.mobno)) {
+                    showError('mobnoError', 'Please enter a valid 10-digit mobile number');
+                    return false;
+                }
+
+                if (!data.address || !/^[a-zA-Z]+(?: [a-zA-Z]+)*(?: \([^)]+\))?$/.test(data.address)) {
+                    showError('addressError', 'Please enter a valid address');
+                    return false;
+                }
+
+
+                if (!data.pincode || !/^\d{6}$/.test(data.pincode)) {
+                    showError('pincodeError', 'Please enter a valid 6-digit pincode');
+                    return false;
+                }
+
+                if (!data.city || !/^[^\s][a-zA-Z\s&'-]*$/.test(data.city)) {
+                    showError('cityError', 'Please enter a valid address');
+                    return false;
+                }
+
+                if (!data.state || !/^[a-zA-Z]+$/.test(data.state)) {
+                    showError('stateError', 'Please enter your state');
+                    return false;
+                }
+
+                return true;
+            }
+
+            function showError(elementId, message) {
+                const errorElement = document.getElementById(elementId);
+                if (errorElement) {
+                    errorElement.textContent = message;
+                    errorElement.classList.add('error'); // Add the 'error' class
+                }
+            }
+
+            function clearErrors() {
+                const errorElements = document.querySelectorAll('.error');
+                errorElements.forEach((element) => {
+                    element.textContent = '';
+                });
+            }
+
+            function clearFormFields() {
+                // Clear each form field
+                document.getElementById('fullname').value = '';
+                document.getElementById('mobno').value = '';
+                document.getElementById('address').value = '';
+                document.getElementById('pincode').value = '';
+                document.getElementById('city').value = '';
+                document.getElementById('state').value = '';
+
+                // Clear any existing error messages
+                clearErrors();
+            }
+        });
+
+
+        // *******************delete address from address manager***********************************
+
+        document.querySelectorAll('.delete-button').forEach((button) => {
+            button.addEventListener('click', () => {
+                let addressId = button.getAttribute('data-address-id');
+                console.log(addressId);
+                // let url ='/deleteAddress'
+                fetch('/deleteAddress/', {
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ addressId })
+                }).then(response => {
+                    return response.json();
+                }).then(data => {
+                    if (data.message) {
+                        console.log(data.message);
+
+                        Swal.fire({
+                            position: "center",
+                            icon: "success",
+                            title: data.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        button.parentNode.remove()
+                        // location.reload()
+
+                    } else {
+                        Swal.fire({
+                            position: "center",
+                            icon: "error",
+                            title: data.error,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                }).catch(error => {
+                    console.log(error);
+                });
+            });
+        });
+
+
+
+
+        // **************************change password script**********************************************************
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const changePasswordBtn = document.getElementById('changePassword');
+            changePasswordBtn.addEventListener('click', validateAndChangePassword);
+
+            async function validateAndChangePassword() {
+                const currentPassword = document.getElementById('CurrentPassword').value;
+                const newPassword = document.getElementById('NewPassword').value;
+                const repeatPassword = document.getElementById('RepeatPassword').value;
+
+
+
+                // Validate new password
+                if (currentPassword.length < 8) {
+                    displayError('passwordError', ' must be enter current password');
+                    document.getElementById('CurrentPassword').value = '';
+                    return;
+                } else {
+                    hideError('passwordError');
+                }
+
+
+
+                if (newPassword.length < 8) {
+                    displayError('passwordError', 'Password must be at least 8 characters long');
+                    document.getElementById('NewPassword').value = '';
+                    return;
+                } else {
+                    hideError('passwordError');
+                }
+
+                // Validate password match
+                if (newPassword !== repeatPassword) {
+                    displayError('passwordMatchError', 'Passwords do not match');
+                    document.getElementById('RepeatPassword').value = '';
+                    return;
+                } else {
+                    hideError('passwordMatchError');
+                }
+
+                // If validation passes, proceed with the password change
+                try {
+                    const response = await fetch('/passwordChange', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ currentPassword, newPassword, repeatPassword })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.message) {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: data.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        // Clear input fields after success
+                        document.getElementById('CurrentPassword').value = '';
+                        document.getElementById('NewPassword').value = '';
+                        document.getElementById('RepeatPassword').value = '';
+                    } else {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'info',
+                            title: data.msg,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        document.getElementById('CurrentPassword').value = '';
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
+            }
+
+            function displayError(elementId, message) {
+                const errorElement = document.getElementById(elementId);
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+            }
+
+            function hideError(elementId) {
+                const errorElement = document.getElementById(elementId);
+                errorElement.textContent = '';
+                errorElement.style.display = 'none';
+            }
+        });
+
+
+
+        // *********************************Edit product******************************************
+        document.querySelectorAll('.edit-addrs').forEach((btn) => {
+            btn.addEventListener('click', addressEdit);
+
+            async function  addressEdit() {
+                let addresss_id = btn.getAttribute('data-addrs-id').trim() ;
+
+                try {
+                    const response = await fetch('/edit-address', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ addresss_id })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        // Handle success
+                        console.log("Product added to cart");
+                        alert(data.success)
+                        // Swal.fire({
+                        //     position: "center",
+                        //     icon: "success",
+                        //     title: data.message,
+                        //     showConfirmButton: false,
+                        //     timer: 1500
+                        // });
+                    }else{
+                        Swal.fire({
+                            position: "center",
+                            icon: "info",
+                            title: data.msg,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                } catch (error) {
+                    // Handle error
+                    console.error(error);
+                }
+            }
+        });
+
+
+
+    </script>
+</body>
+
+</html>

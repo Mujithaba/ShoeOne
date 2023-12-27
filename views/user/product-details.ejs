@@ -1,0 +1,485 @@
+<%- include('../layouts/header.ejs') %>
+
+<style>
+       .image-div{
+    width: 360px;
+    height: 400px;
+    border: 2px solid rgb(255, 255, 255);
+    position: relative;
+}
+.image-div >img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.lens{
+    top: 0;;
+    left: 0;
+    width: 100px;
+    height: 100px;
+    border: 2px solid rgb(209, 158, 17);
+    position: absolute;
+    background-color: rgba(209, 158, 17,0.4);
+    opacity: 0;
+}
+.active{
+    opacity: 1;
+}
+.zoom{
+    position: absolute;
+    left: calc(100% + 50px);
+    top: 0;
+    width: 400px;
+    height: 400px;
+    background-size: cover;
+    border: 2px solid rgba(255, 255, 255, 0.644);
+    display: none;
+}
+.zoom-active{
+    display: block;
+}
+
+
+#btnHr {
+    color: bisque;
+}
+
+#btnHr:hover {
+    color: aliceblue;
+}
+    </style>
+
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Offcanvas Menu Begin -->
+    <div class="offcanvas-menu-overlay"></div>
+    <div class="offcanvas-menu-wrapper">
+        <div class="offcanvas__option">
+            <div class="offcanvas__links">
+                <a href="#">Sign in</a>
+                <!-- <a href="#">FAQs</a> -->
+            </div>
+           
+        </div>
+        <div class="offcanvas__nav__option">
+            <a href="#" class="search-switch"><img src="/img/icon/search.png" alt=""></a>
+            <a href="#"><img src="/img/icon/heart.png" alt=""></a>
+            <!-- <a href="#"><img src="/img/icon/cart.png" alt=""> </a> -->
+            <a href="/cart"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="18" viewBox="0 0 576 512"><path d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/></svg></a>
+
+            <a href="/profile"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512"><path d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z"/></svg></a>
+
+        </div>
+        <div id="mobile-menu-wrap"></div>
+        <div class="offcanvas__text">
+            <p>Enjoy your shopping with us...</p>
+        </div>
+    </div>
+    <!-- Offcanvas Menu End -->
+
+    <!-- Header Section Begin -->
+    <header class="header">
+        <div class="header__top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-7">
+                        <div class="header__top__left">
+                            <p>Enjoy your each shopping with us...</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-5">
+                        <div class="header__top__right">
+                            <div class="header__top__links">
+                                <a href="#">Sign in</a>
+                              
+                            </div>
+                          
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3">
+                    <div class="header__logo">
+                        <a href="../user/home.ejs">
+                            <h2 class="ShoeOne-head">ShoeOne</h2>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <nav class="header__menu mobile-menu">
+                        <ul>
+                            <li><a href="./home">Home</a></li>
+                            <li class="active"><a href="./shop">Shop</a></li>
+                            <li><a href="./about">About Us</a></li>
+                            <!-- <li><a href="#">Pages</a>
+                            <ul class="dropdown"> 
+                                <li><a href="./about.html">About Us</a></li>
+                                <li><a href="./shop-details.html">Shop Details</a></li>
+                                <li><a href="./shopping-cart.html">Shopping Cart</a></li>
+                                <li><a href="./checkout.html">Check Out</a></li>
+                               
+                            </ul>
+                        </li> -->
+
+                            <li><a href="./contact.html">Contacts</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-lg-3 col-md-3">
+                    <div class="header__nav__option">
+                        <a href="#" class="search-switch"><img src="/img/icon/search.png" alt=""></a>
+                        <a href="#"><img src="/img/icon/heart.png" alt=""></a>
+                        <!-- <a href="#"><img src="/img/icon/cart.png" alt=""> </a> -->
+                        <a  href="/cart"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="18" viewBox="0 0 576 512"><path d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/></svg></a>
+
+                        <a href="/profile"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512"><path d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z"/></svg></a>
+
+                        <!-- <div class="price">$0.00</div> -->
+                    </div>
+                </div>
+            </div>
+            <div class="canvas__open"><i class="fa fa-bars"></i></div>
+        </div>
+    </header>
+    <!-- Header Section End -->
+
+
+
+
+    <!-- Shop Details Section Begin -->
+    <section class="shop-details">
+        <div class="product__details__pic">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="product__details__breadcrumb">
+                            <a href="./home">Home</a>
+                            <a href="./shop">Shop</a>
+                            <span>Product Details</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div class="row">
+                    <input type="hidden" value="<%= findProduct %>" name="products"> -->
+
+                    <!-- Loop through the images -->
+                    <div class="row">
+                        <input type="hidden" value="<%= findProduct %>" name="products" id="product">
+
+                        <div class="col-lg-3 col-md-3">
+
+                            <ul class="nav nav-tabs" role="tablist">
+                                <% for (let j=0; j < findProduct.image.length; j++) { %>
+                                    <li class="nav-item">
+                                        <a class="nav-link <%= j === 0 ? 'active' : '' %>" data-toggle="tab"
+                                            href="#tabs-<%= j+1 %>" role="tab">
+                                            <div class="product_thumb_pic set-bg"
+                                                data-setbg="/Image/product-details/thumb-<%= j+1 %>.png" >
+                                                        <img src=" /Image/<%=findProduct.image[j] %>" alt=""
+                                                onclick="changeImage(this)">
+                                            </div>
+                                        </a>
+                                    </li>
+                                    <% } %>
+                            </ul>
+                        </div>
+
+                        <div class="col-lg-9 col-md-9"> <!-- Changed from "row" to "col-lg-9 col-md-9" -->
+                            <div class="product-details-container">
+                                <div class="tab-content">
+                                    <div class="image-div">
+                                        <div class="lens"></div>
+                                        <div class="zoom"></div>
+                                        <div class="product_details_pic_item">
+                                            <img src="/Image/<%= findProduct.image[0] %>" style="height: 400px; width: 360px;" alt="">
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                        </div>
+                        
+                    </div>
+           
+                <!-- </div> -->
+            </div>
+            <br><br><br><br>
+            <div class="product__details__content">
+                <div class="container">
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-lg-8">
+                            <div class="product__details__text">
+                                <h4>
+                                    <%= findProduct.productName %>
+                                </h4>
+                                <h6>
+                                    <b>Stock:</b>  <%= findProduct.stock %>
+                                  </h6>
+                                  <h5><span>Categories:</span><b>&nbsp;&nbsp;<%= findProduct.category.categoryName %></b></h5>
+                                <div class="rating">
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star"></i>
+                                    <i class="fa fa-star-o"></i>
+                                    <span> - 5 Reviews</span>
+                                </div>
+                                
+                                <h3> ₹<%= findProduct.Price %>/-
+                                </h3>
+                                
+                                <!-- <p>Coat with quilted lining and an adjustable hood. Featuring long sleeves with
+                                    adjustable
+                                    cuff tabs, adjustable asymmetric hem with elastic side tabs and a front zip
+                                    fastening
+                                    with placket.</p> -->
+                                <div class="product__details__option">
+                                    <div class="product__details__option__size">
+                                        <span>Size:</span>
+                                        <label for="xxl">
+                                            <%= findProduct.productSize %>
+                                                <input type="radio" id="xxl">
+                                        </label><br><br><br>
+                                        
+                                    </div>
+                                    <!-- <div class="product__details__option__color">
+                                
+                                <a href=""><img src="/img/icon/heart.png" alt=""></a>
+                            </div> -->
+                                </div>
+                                <div class="product__details__cart__option">
+                                    
+                                    <% if(typeof findProduct.stock !== "undefined"  && findProduct.stock>0) {%>
+                                        <a type="button" id="btnHr" class="primary-btn add-cart " data-prod-id="<%= findProduct._id %>">add to cart</a>
+                                        
+                                            <% } else { %>
+                                                <p class=" add-cart" style="color: red; font-weight: 800; font-size: large;"> Currently Stock  Unavailable
+                                                   </p>
+                                                    <% } %>
+
+                                    <!-- <a type="button" class="primary-btn" data-prod-id="<%= findProduct._id %>">add to cart</a> -->
+                                    
+                                </div>
+                                <div class="product__details__btns__option">
+                                    <a type="button" class="primary-btn"><span><i class="fa-regular fa-heart"></i>&nbsp;&nbsp;Wish list</span></a>
+                                </div>
+                                <div class="product__details__last__option">
+                                    <h5><span>Guaranteed Safe Checkout</span></h5>
+                                    <img src="/img/shop-details/details-payment.png" alt="">
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="product__details__tab ">
+
+                                <ul class="nav nav-tabs " role="tablist">
+                                    <li class="nav-item ">
+                                        <a class="nav-link active " data-toggle="tab" href="#tabs-5"
+                                            role="tab">Description</a>
+                                    </li>
+                                    
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane active" id="tabs-5" role="tabpanel">
+                                        <div class="product__details__tab__content">
+                                            <p class="note">
+                                                <%= findProduct.description %>
+                                            </p>
+
+                                            
+                                        </div>
+                                    </div>
+                                    <!-- <div class="tab-pane" id="tabs-6" role="tabpanel">
+                                        <div class="product__details__tab__content">
+                                            <div class="product__details__tab__content__item">
+                                                <h5>Products Infomation</h5>
+                                                <p>A Pocket PC is a handheld computer, which features many of the same
+                                                    capabilities as a modern PC. These handy little devices allow
+                                                    individuals to retrieve and store e-mail messages, create a contact
+                                                    file, coordinate appointments, surf the internet, exchange text
+                                                    messages
+                                                    and more. Every product that is labeled as a Pocket PC must be
+                                                    accompanied with specific software to operate the unit and must
+                                                    feature
+                                                    a touchscreen and touchpad.</p>
+                                            </div>
+                                            <div class="product__details__tab__content__item">
+                                                <h5>Material used</h5>
+                                                <p>Polyester is deemed lower quality due to its none natural quality’s.
+                                                    Made
+                                                    from synthetic materials, not natural like wool. Polyester suits
+                                                    become
+                                                    creased easily and are known for not being breathable. Polyester
+                                                    suits
+                                                    </p>
+                                            </div>
+                                        </div>
+                                    </div> -->
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
+    <!-- Shop Details Section End -->
+
+    
+
+
+    <!-- Footer Section Begin -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="footer__about">
+                        <div class="footer__logo">
+                            <a href="#">
+                                <h2 class="ShoeOne-foot">ShoeOne</h2>
+                            </a>
+                        </div>
+                        <p>The customer is at the heart of our unique business model, which includes design.</p>
+                        <a href="#"><img src="/img/payment.png" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
+                    <div class="footer__widget">
+                        <h6>Shopping</h6>
+                        <ul>
+                            <li><a href="#">Clothing Store</a></li>
+                            <li><a href="#">Trending Shoes</a></li>
+                            <li><a href="#">Accessories</a></li>
+                            <li><a href="#">Sale</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-6">
+                    <div class="footer__widget">
+                        <h6>Shopping</h6>
+                        <ul>
+                            <li><a href="#">Contact Us</a></li>
+                            <li><a href="#">Payment Methods</a></li>
+                            <li><a href="#">Delivary</a></li>
+                            <li><a href="#">Return & Exchanges</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 offset-lg-1 col-md-6 col-sm-6">
+                    <div class="footer__widget">
+                        <h6>NewLetter</h6>
+                        <div class="footer__newslatter">
+                            <p>Be the first to know about new arrivals, look books, sales & promos!</p>
+                            <form action="#">
+                                <input type="text" placeholder="Your email">
+                                <button type="submit"><span class="icon_mail_alt"></span></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="footer__copyright__text">
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        <p>Copyright ©
+                            <script>
+                                document.write(new Date().getFullYear());
+                            </script>2020
+                            All rights reserved | This template is made with <i class="fa fa-heart-o"
+                                aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                        </p>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer Section End -->
+
+    <!-- Search Begin -->
+    <div class="search-model">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="search-close-switch">+</div>
+            <form class="search-model-form">
+                <input type="text" id="search-input" placeholder="Search here.....">
+            </form>
+        </div>
+    </div>
+    <!-- Search End -->
+
+    <!-- zzoming and image clicking  -->
+    <script src="/script/ZoomScript.js"> </script>
+
+    <!-- Js Plugins -->
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.nice-select.min.js"></script>
+    <script src="/js/jquery.nicescroll.min.js"></script>
+    <script src="/js/jquery.magnific-popup.min.js"></script>
+    <script src="/js/jquery.countdown.min.js"></script>
+    <script src="/js/jquery.slicknav.js"></script>
+    <script src="/js/mixitup.min.js"></script>
+    <script src="/js/owl.carousel.min.js"></script>
+    <script src="/js/main.js"></script>
+
+
+
+
+    <script>
+        document.querySelectorAll('.add-cart').forEach((btn) => {
+            btn.addEventListener('click', addToCartFn);
+
+            async function addToCartFn() {
+                let prodID = btn.getAttribute('data-prod-id');
+
+                try {
+                    const response = await fetch('/addToCart', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ prodID })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.message) {
+                        // Handle success
+                        console.log("Product added to cart");
+                        // alert(data.message)
+                        Swal.fire({
+                            position: "center",
+                            icon: "success",
+                            title: data.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }else{
+                        Swal.fire({
+                            position: "center",
+                            icon: "info",
+                            title: data.msg,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                } catch (error) {
+                    // Handle error
+                    console.error(error);
+                }
+            }
+        });
+    </script>
+
+
+    <%- include('../layouts/footer.ejs') %>

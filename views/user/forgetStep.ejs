@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Male_Fashion Template">
+    <meta name="keywords" content="Male_Fashion, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ShoeOne</title>
+
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="/img/icon/logo-favicon.png">
+
+    <!-- login styles -->
+
+
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"> -->
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" href="/css/login-style.css">
+
+    <!-- this style for error message validation -->
+
+    <style>
+        .error-message {
+            color: red;
+        }
+    </style>
+
+</head>
+
+<body>
+
+
+    <section class="ftco-section">
+        <!-- <div class="container">
+            <div class="row justify-content-center">
+            <div class="col-md-6 text-center mb-5">
+                <h2 class="heading-section"><b>Sign Up</b></h2>
+            </div>
+        </div> -->
+        <div class="row justify-content-center">
+            <div class="col-md-12 col-lg-10">
+                <div class="wrap d-md-flex">
+                    <div class="text-wrap p-4 p-lg-5 text-center d-flex align-items-center order-md-last">
+                        <div class="text w-100">
+                            <h1>Welcome to <br>
+                                <h3 class="login-h1">ShoeOne</h3>
+                            </h1><br>
+                            <p>Don't have an account?</p>
+                            <a href="./register" class="btn btn-white btn-outline-white">Sign Up</a>
+                        </div>
+                    </div>
+                    <div class="login-wrap p-4 p-lg-5">
+                        <div class="d-flex">
+                            <div class="w-100">
+                                <p class="social-media d-flex justify-content-end">
+                                    <a href="#"
+                                        class="social-icon d-flex align-items-center justify-content-center"><span
+                                            class="fa fa-facebook"></span></a>
+                                    <a href="#"
+                                        class="social-icon d-flex align-items-center justify-content-center"><span
+                                            class="fa fa-twitter"></span></a>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- display a success or error message -->
+
+                        <% if(typeof message !=='undefined' ) { %>
+                            <div class="alert alert-warning text-center mb-4">
+                                <%= message %>
+                            </div>
+                            <% } %>
+
+                                <div class="text-center hoi mb-4">
+                                    <h2><b>Varify for Forget password</b></h2>
+
+                                </div>
+                                <form action="/forgetStepEmal" class="signin-form" method="post">
+
+                                    <div class="form-group mb-3">
+                                        <label class="label" for="email">Email</label>
+                                        <input type="email" id="Email" name="email" class="form-control"
+                                            placeholder="Email" required>
+                                        <span id="emailError" class="error-message"></span>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <button type="submit" class="form-control btn btn-primary submit px-3"
+                                            value="Send Mail">Send Mail
+                                        </button>
+                                    </div>
+
+                                </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/popper.js"></script>
+    <script src="/js/login-bootstrap.min.js"></script>
+    <script src="/js/login-main.js"></script>
+
+    <!-- validation script -->
+    <script src="/script/script.js"> </script>
+
+    <%- include('../layouts/footer.ejs') %>
