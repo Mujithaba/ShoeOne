@@ -276,7 +276,7 @@
                                             <%= product.ProductOrderStatus %>
                                         </h5>
                                         <button class=" cancel-btn"
-                                            onclick="cancelFunction( '<%= product.productId._id %>' )">Cancel</button>
+                                            onclick="cancelFunction( '<%= product.productId._id %>','<%= orderData._id %>' )" >Cancel</button>
 
                                         <% } else{%>
                                             <h5 >
@@ -286,7 +286,7 @@
                                             <!-- return product  function start -->
                                             <% if(product.ProductOrderStatus=='delivered') {%>
                                                 <button class="btn-danger return-btn"
-                                            onclick="returnFunction( '<%= product.productId._id %>' )">Return</button>
+                                            onclick="returnFunction( '<%= product.productId._id %>','<%= orderData._id %>' )">Return</button>
                                                 <% } %>
 
                                                 <!-- return product end -->
@@ -402,13 +402,14 @@
 
 
     <script>
-        function cancelFunction(productId) {
+        function cancelFunction(productId,orderId) {
+            
             fetch('/cancelOrder', {
                 method: 'post',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ productId })
+                body: JSON.stringify({ productId , orderId})
             }).then(response => {
                 return response.json();
             }).then(data => {
@@ -448,14 +449,14 @@
         // **************************************return product function**************************************************
 
 
-        function returnFunction(productId) {
+        function returnFunction(productId,orderId) {
             console.log(productId);
             fetch('/returnOrder', {
                 method: 'post',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ productId })
+                body: JSON.stringify({ productId ,orderId})
             }).then(response => {
                 return response.json();
             }).then(data => {

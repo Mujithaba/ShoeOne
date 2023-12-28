@@ -154,9 +154,11 @@ const cancelOrder = async (req, res) => {
     try {
 
         const productID = req.body.productId
+        const orderID = req.body.orderId
+        console.log(orderID);
 
         const orderDetails = await Order.findOneAndUpdate(
-            { 'products.productId': productID },
+            {_id: orderID, 'products.productId': productID },
             { $set: { 'products.$.ProductOrderStatus': 'Cancelled' } },
             { new: true } // Return the modified document
         )
@@ -196,10 +198,12 @@ const returnOrder = async(req,res)=>{
     try {
 
         const prodID = req.body.productId
+        const order_id =req.body.orderId
+        console.log("return"+order_id);
 
         // order return setting
         const orderReturn = await Order.findOneAndUpdate(
-            { 'products.productId': prodID },
+            { _id: order_id ,'products.productId': prodID },
             { $set: { 'products.$.ProductOrderStatus': 'Returned' } },
             { new: true } // Return the modified document
         )

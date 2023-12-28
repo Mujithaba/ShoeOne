@@ -56,35 +56,44 @@ const insertUser = async (req, res) => {
 
     try {
         const spassword = await securePassword(req.body.password)
-        const user = new User({
 
-            firstName: req.body.Firstname,
-            secondName: req.body.Secondname,
-            email: req.body.email,
-            mobile: req.body.mobile,
-            password: spassword,
-            is_verified: 0,
-            is_admin: 0,
-            is_blocked: 0
-        });
+        const emailExist = await User.findOne({ email: req.body.email })
 
-        const userData = await user.save();
-
-        if (userData) {
-            const otp = generateOTP();
-
-            console.log(otp);
-
-            req.session.otp = otp;
-            req.session.email = req.body.email;
-            req.session.Firstname = req.body.Firstname
-            sendMail(otp, req.session.email, req.session.Firstname);
-
-            res.redirect('/OTPvarification')
+        if (emailExist) {
+            res.render('user/register', { message: "Email already exist ,Try another email..." })
         } else {
-            res.render('user/register', { message: "You registration has been failed." })
-        }
 
+            const user = new User({
+
+                firstName: req.body.Firstname,
+                secondName: req.body.Secondname,
+                email: req.body.email,
+                mobile: req.body.mobile,
+                password: spassword,
+                is_verified: 0,
+                is_admin: 0,
+                is_blocked: 0
+            });
+
+
+            const userData = await user.save();
+
+
+            if (userData) {
+                const otp = generateOTP();
+
+                console.log(otp);
+
+                req.session.otp = otp;
+                req.session.email = req.body.email;
+                req.session.Firstname = req.body.Firstname
+                sendMail(otp, req.session.email, req.session.Firstname);
+
+                res.redirect('/OTPvarification')
+            } else {
+                res.render('user/register', { message: "You registration has been failed." })
+            }
+        }
     } catch (error) {
         console.log(error.message);
 
