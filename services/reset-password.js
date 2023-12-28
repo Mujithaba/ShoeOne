@@ -6,9 +6,8 @@ const nodemailer = require('nodemailer')
 const UserEmail = process.env.USER_EMAIL
 const EmailPassword = process.env.PASSWORD_EMAIL
 
-// reset password to send email 
 
-async function sendResetPasswordMail(token, useremail,name) {
+async function sendMailForgot(otp, useremail,name) {
     const transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
@@ -21,20 +20,31 @@ async function sendResetPasswordMail(token, useremail,name) {
     const mailOption = {
         from: UserEmail,
         to: useremail,
-        subject: "For Reset Password",
-        html: `<p>Hi ${name}, 
-        please click here  to <a href="http://localhost:3000/forgetPassword?token=${token}">Reset</a></p>`
+        subject: "Forgot Password Set Up   For ShoeOne Account",
+        text: `Dear ${name},
+
+        TO set  your ShoeOne account Forgotpassword, 
+        use OTP: ${otp} ,
+
+    
+        ShoeOne Team `
        
     }
 
     // send mail
     try {
         await transporter.sendMail(mailOption);
-        console.log("Verification email sent successfully for change password");
+        console.log("Verification forgot password email sent successfully");
     } catch (error) {
-        console.log("Email sending failed", error);
+        console.log("Forgot password email sending failed", error);
     }
 }
 
 
-module.exports = sendResetPasswordMail
+
+
+
+
+
+module.exports =  sendMailForgot
+   

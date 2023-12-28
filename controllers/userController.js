@@ -8,7 +8,7 @@ const Order = require('../models/orderModel')
 const bcrypt = require('bcrypt')
 // const crypto = require('crypto');
 const sendMail = require('../services/OTPverification');
-const sendResetPasswordMail = require('../services/reset-password')
+const sendMailForgot = require('../services/reset-password')
 const { env } = require('process');
 const randomstring = require('randomstring');
 const productModel = require('../models/productModel');
@@ -119,10 +119,8 @@ const verifyOTP = async (req, res) => {
             user.is_verified = 1;
 
             await user.save();
-            // console.log(user);
 
             delete req.session.otp;
-            //  console.log("hello");
 
             res.render('user/login', { message: "Signup is successfull." });
         } else {
@@ -240,7 +238,7 @@ const loadIsBlocked = async (req, res) => {
 
 
 
-// forget password
+// forget password setting start
 const forgetLoad = async (req, res) => {
     try {
 
@@ -251,27 +249,61 @@ const forgetLoad = async (req, res) => {
     }
 }
 
+// verify mail
+const emailverify = async (req, res) => {
+    try {
+        const userEmail = req.body.email
+        console.log(userEmail);
+        const userData = await User.findOne({ email: userEmail })
+        console.log(userData);
 
-const forgetVerify = async (req, res) => {
+        if (userData.is_verified === 0) {
+            res.render('user/forgetStep', { message: "Please verify your mail" })
+        } else {
+
+            const otp = generateOTP();
+            console.log(otp);
+            req.session.otp = otp;
+            req.session.email = req.body.email;
+            req.session.Firstname = userData.firstName
+            sendMailForgot(otp, req.session.email, req.session.Firstname);
+            res.redirect('/OTPverifyForForgot')
+
+        }
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+// forgot otp page
+const forgotOTPLoad = async (req, res) => {
     try {
 
-        const email = req.body.email;
-        const userData = await User.findOne({ email: email })
-        if (userData) {
+        res.render('user/forgotOTP');
+    } catch (error) {
+        console.log(error.message);
+    }
+}
 
-            if (userData.is_verified === 0) {
-                res.render('user/forgetStep', { message: "Please verify your mail" })
-            } else {
-                const randomString = randomstring.generate()
-                const updatedData = await User.updateOne({ email: email }, { $set: { token: randomString } })
-                sendResetPasswordMail(randomString, userData.email, userData.firstName)
+// verify otp for forgot password
+const verifyOTPForgot = async (req, res) => {
+    try {
+        console.log("forgot checking");
+        const { otp1, otp2, otp3, otp4, otp5, otp6 } = req.body
+        const enterOTP = otp1 + otp2 + otp3 + otp4 + otp5 + otp6
+        const enteredOTP = parseInt(enterOTP)
+        console.log(enteredOTP);
 
-                res.render('user/forgetStep', { message: "Plaese check user mail for reset your password" })
+        const OTPstored = req.session.otp;
 
-            }
+        if (OTPstored && enteredOTP === OTPstored) {
 
+            delete req.session.otp;
+
+            res.render('user/forgetPassword', { message: "Otp verification is successfull." });
         } else {
-            res.render('user/forgetStep', { message: "Email is not found" })
+
+            res.render('user/forgotOTP', { message: "Incorrect OTP. Please try again." });
         }
 
     } catch (error) {
@@ -280,38 +312,17 @@ const forgetVerify = async (req, res) => {
 }
 
 
-// forget password setting
-const forgetpasswordLoad = async (req, res) => {
+// setting forgot password
+const settingForgotPass = async (req, res) => {
     try {
+        const userEmail = req.session.email
+        const newPassword = req.body.password
 
-        const token = req.query.token;
-        console.log(token);
-        const tokenData = await User.findOne({ token: token })
-        //  console.log(tokenData);
-        if (tokenData) {
-            res.render('user/forgetPassword', { user_id: tokenData._id })
+        const secure_Password = await securePassword(newPassword)
 
-        } else {
-            res.render('user/error', { message: "token is invalid" })
-        }
+        const setPassword = await User.findOneAndUpdate({ email: userEmail }, { $set: { password: secure_Password } })
 
-    } catch (error) {
-        console.log(error.message);
-
-    }
-}
-
-const resetPassword = async (req, res) => {
-    try {
-
-        const password = req.body.password;
-        const user_id = req.body.user_id;
-
-        const secure_Password = await securePassword(password)
-
-        const newPassword = await User.findByIdAndUpdate({ _id: user_id }, { $set: { password: secure_Password, token: '' } })
-        // console.log(newPassword);
-        if (newPassword) {
+        if (setPassword) {
             res.render('user/login', { message: "Password changed successfully" })
         } else {
             res.render('user/forgetPassword', { message: "something went wrong when you are changing password." })
@@ -320,9 +331,27 @@ const resetPassword = async (req, res) => {
 
     } catch (error) {
         console.log(error.message);
-
     }
 }
+
+// resend forgot password otp
+const ForgotpassOTPresend = async (req, res) => {
+    try {
+        // console.log("vannoooooooo");
+        const otp = generateOTP();
+        console.log(otp);
+        req.session.otp = otp;
+        sendMailForgot(otp, req.session.email, req.session.Firstname);
+        res.render('user/forgotOTP', { msg: 'Resend otp is passed,check your mail' })
+
+
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
+// forget password setting end
+
 
 
 
@@ -491,15 +520,15 @@ const addressDelete = async (req, res) => {
 
 
 // edit address
-const editAddress = async(req, res)=>{
+const editAddress = async (req, res) => {
     try {
         console.log("vannooo");
 
         const addressId = req.body.addresss_id
-console.log(addressId);
-      const address = await Address.findByIdAndUpdate({_id: addressId})
-      console.log(address);
-      res.json({ message: "Address is deleted successfully" })
+        console.log(addressId);
+        const address = await Address.findByIdAndUpdate({ _id: addressId })
+        console.log(address);
+        res.json({ message: "Address is deleted successfully" })
     } catch (error) {
         console.log(error.message);
         res.status(500).json({ error: 'Internal server error' });
@@ -529,7 +558,7 @@ const loadCheckout = async (req, res) => {
             path: 'products.productId',
             select: 'Price productName stock'
         })
-        
+
 
 
         // calculating total price for place order
@@ -578,17 +607,20 @@ module.exports = {
     logout,
     loadIsBlocked,
     resend,
+    // forgot password
     forgetLoad,
-    forgetVerify,
-    forgetpasswordLoad,
-    resetPassword,
+    emailverify,
+    verifyOTPForgot,
+    forgotOTPLoad,
+    settingForgotPass,
+    ForgotpassOTPresend,
+
     openingHome,
     loadHome,
     loadOTP,
     verifyOTP,
     loadShop,
     productDetailed,
-
     // profile
     loadProfile,
     changepassword,
@@ -596,7 +628,6 @@ module.exports = {
     addressDelete,
 
     loadCheckout,
-
     // edit address
     editAddress
 
