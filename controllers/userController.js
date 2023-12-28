@@ -497,9 +497,9 @@ const editAddress = async(req, res)=>{
 
         const addressId = req.body.addresss_id
 console.log(addressId);
-      const address = await Address.findByIdAndUpdate({_id: addressId},{$set:{fullname: req.body.fullname, mobile:req.body.mobno, address:req.body.address, pincode: req.body.pincode, city:req.body.city, state:req.body.state}})
+      const address = await Address.findByIdAndUpdate({_id: addressId})
       console.log(address);
-      res.redirect('/edit-address?success=true');
+      res.json({ message: "Address is deleted successfully" })
     } catch (error) {
         console.log(error.message);
         res.status(500).json({ error: 'Internal server error' });

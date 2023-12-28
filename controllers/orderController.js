@@ -37,9 +37,9 @@ const orderPlace = async (req, res) => {
         const user_id = req.session.user_id
         const addressId = req.body.addressId;
         const paymentType = req.body.paymentType
-        console.log(user_id + "userid");
-        console.log(addressId + "addresid");
-        console.log("type" + paymentType);
+        // console.log(user_id + "userid");
+        // console.log(addressId + "addresid");
+        // console.log("type" + paymentType);
 
         // taking address from databse
         const ShippingAddress = await Address.findOne({ _id: addressId })
@@ -122,8 +122,6 @@ const loadMyOrder = async (req, res) => {
             select: 'Price image productName quantity'
         })
 
-        //    console.log(orderData);
-
         res.render('user/myOrder', { orderData })
 
     } catch (error) {
@@ -138,7 +136,6 @@ const loadViewOrder = async (req, res) => {
     try {
 
         const order_id = req.query.id
-        // console.log(order_id);
         const orderData = await Order.findOne({ _id: order_id }).populate({
             path: 'products.productId',
             select: 'Price image productName'
@@ -157,16 +154,75 @@ const cancelOrder = async (req, res) => {
     try {
 
         const productID = req.body.productId
-        console.log(productID);
 
         const orderDetails = await Order.findOneAndUpdate(
             { 'products.productId': productID },
             { $set: { 'products.$.ProductOrderStatus': 'Cancelled' } },
             { new: true } // Return the modified document
         )
-console.log(orderDetails);
+
+        // stock increase bcz the product is cancelled
+        if (orderDetails) {
+            const productToCancel = orderDetails.products.find((product) => product.productId == productID);
+            // console.log("kkk" + productToCancel.quantity);
+            
+            if (productToCancel) {
+
+                const productData = await Product.findOneAndUpdate({ _id: productID },
+                    {$inc:{'stock': productToCancel.quantity}},
+                    {new:true})
+                // console.log(productData);
+            }else{
+                console.log("productToCancel not found");
+            }
+
+        }else{
+            console.log("orderDetails is not found");
+        }
+
         res.json({ message: 'Product cancelled successfully' });
 
+    } catch (error) {
+        res.status(500).json({ message: 'Internal server error' });
+
+    }
+}
+
+
+
+
+// return order status fetch
+const returnOrder = async(req,res)=>{
+    try {
+
+        const prodID = req.body.productId
+
+        // order return setting
+        const orderReturn = await Order.findOneAndUpdate(
+            { 'products.productId': prodID },
+            { $set: { 'products.$.ProductOrderStatus': 'Returned' } },
+            { new: true } // Return the modified document
+        )
+
+        // the order returned the stock will increase 
+        if (orderReturn) {
+            console.log("Order products:");
+            const productToReturn = orderReturn.products.find((product) => product.productId == prodID);
+            
+            if (productToReturn) {
+                const productData = await Product.findOneAndUpdate({ _id: prodID },
+                    {$inc:{'stock': productToReturn.quantity}},
+                    {new:true})
+            }else{
+                console.log("productToReturn is  not found");
+            }
+
+        }else{
+            console.log("orderReturn is not found");
+        }
+
+        
+        res.json({ message: 'Product returned successfully' });
 
     } catch (error) {
         res.status(500).json({ message: 'Internal server error' });
@@ -181,6 +237,7 @@ module.exports = {
     loadSuccessPlace,
     loadMyOrder,
     loadViewOrder,
-    cancelOrder
+    cancelOrder,
+    returnOrder
 
 }

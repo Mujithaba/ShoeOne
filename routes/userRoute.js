@@ -59,7 +59,7 @@ user_route.get('/profile',auth.isBlocked,auth.isLogin,userController.loadProfile
 user_route.post('/passwordChange',userController.changepassword)
 user_route.post('/addressAdd',userController.addAddressLoad)
 user_route.post('/deleteAddress',userController.addressDelete)
-user_route.post('/edit-address',userController.editAddress)
+user_route.get('/edit-address',userController.editAddress)
 
 // checkout page
 user_route.get('/checkout',auth.isBlocked,auth.isLogin,userController.loadCheckout)
@@ -70,5 +70,6 @@ user_route.get('/successOrder',auth.isLogin,orderController.loadSuccessPlace)
 user_route.get('/my-Order',auth.isBlocked,auth.isLogin,orderController.loadMyOrder)
 user_route.get('/views-Order',auth.isLogin,orderController.loadViewOrder)
 user_route.post('/cancelOrder',orderController.cancelOrder)
+user_route.post('/returnOrder',orderController.returnOrder)
 
 module.exports= user_route ;

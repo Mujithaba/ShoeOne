@@ -129,6 +129,10 @@
             font-weight: bold;
             color: #333;
         }
+
+        #h5-status {
+            color: red;
+        }
     </style>
 
 
@@ -318,7 +322,7 @@
 
 
                         <!-- order detail products start -->
-
+                        
                         <input type="hidden" name="order" value="<%= orderData %>">
                         <% for (const product of orderData.products) {%>
                             <div class="order-row">
@@ -327,32 +331,62 @@
                                     alt="Product Image" style="width: 180px; height: 200px; border-radius: 7px;">
                                 <div class="order-details">
                                     <!-- <div class="border-btm"> -->
+                                        
                                     <h5>
                                         <%= product.productId.productName %>
                                     </h5>
                                     <p>
+                                        <strong>OrderID:</strong>&nbsp;<%= orderData._id %> <br>
                                         <strong>Quantity:</strong>&nbsp; <%= product.quantity %><br>
-
-                                            <strong>OrderID:</strong>&nbsp;<%= orderData._id %> <br>
-                                                <strong>Total Price:</strong>&nbsp; ₹<%= orderData.totalAmount %> /-
+                                            
+                                            <strong>Price:</strong>&nbsp; ₹<%= product.unitPrice  %> /- <br>
+                                                <strong>Total Price:</strong>&nbsp; ₹<%= product.unitPrice * product.quantity %> /-
                                                     <br>
                                                     <strong>Ordered On:</strong>&nbsp;
                                                     <%=orderData.orderDate.toLocaleString('en-AU',{year:"numeric",month:"2-digit",day:"2-digit"})%>
-                                                        <br>
-                                                        <strong>Address:</strong>&nbsp;
+                                                        <br>      
+                                                        
+                                                        
                                     </p><br>
                                     <!-- </div> -->
                                     <div class="status-div">
                                         <p class="status-p">
                                             <strong>Status:</strong>&nbsp;
                                             <span id="orStatus">
+
+                                                <% if (product.ProductOrderStatus === 'Cancelled' || product.ProductOrderStatus === 'Returned') { %>
+                                                    <h5 id="h5-status"><%= product.ProductOrderStatus %></h5> 
+
+                                                 <% } else { %>
+
                                                 <select class="status-select statusOption" name="ProductOrderStatus" id="setStatus" data-proId="<%= product.productId._id %>" data-orderId="<%= orderData._id %>">
-                                                    <option value="pending<%= orderData.ProductOrderStatus === 'pending' ? 'selected' : '' %>">Pending</option>
-                                                    <option value="processed<%= orderData.ProductOrderStatus === 'processed' ? 'selected' : '' %>">Processed</option>
-                                                    <option value="shipping<%= orderData.ProductOrderStatus === 'shipping' ? 'selected' : '' %>">Shipping</option>
-                                                    <option value="delivered<%= orderData.ProductOrderStatus === 'delivered' ? 'selected' : '' %>">Delivered</option>
+                                                    <% if (product.ProductOrderStatus === 'pending') { %>
+                                                        <option value="pending" selected>Pending</option>
+                                                    <% } else { %>
+                                                        <option value="pending">Pending</option>
+                                                    <% } %>
+                                                
+                                                    <% if (product.ProductOrderStatus === 'processed') { %>
+                                                        <option value="processed" selected>Processed</option>
+                                                    <% } else { %>
+                                                        <option value="processed">Processed</option>
+                                                    <% } %>
+                                                
+                                                    <% if (product.ProductOrderStatus === 'shipping') { %>
+                                                        <option value="shipping" selected>Shipping</option>
+                                                    <% } else { %>
+                                                        <option value="shipping">Shipping</option>
+                                                    <% } %>
+                                                
+                                                    <% if (product.ProductOrderStatus === 'delivered') { %>
+                                                        <option value="delivered" selected>Delivered</option>
+                                                    <% } else { %>
+                                                        <option value="delivered">Delivered</option>
+                                                    <% } %>
                                                 </select>
-                                                <!-- <%= orderData.orderStatus %> -->
+                                                
+                                                 <% } %>
+                                               
                                             </span>
                                         </p>
                                     </div>
@@ -361,6 +395,7 @@
                                 </div>
 
                             </div>
+                        
                             <%}%>
                     </div>
 
@@ -378,11 +413,11 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
-  document.querySelectorAll('.statusOption').forEach((optionSt) => {
+  document.querySelectorAll('.statusOption').forEach((optionSt,index) => {
     optionSt.addEventListener('change', statusOp);
 
-    async function statusOp() {
-      let orderStatus = document.getElementById("setStatus");
+    async function statusOp(event) {
+      let orderStatus = event.currentTarget;
       let productStatus = orderStatus.value;
       let orderID = optionSt.getAttribute('data-orderId');
       let productID = optionSt.getAttribute('data-proId');
@@ -413,6 +448,10 @@
             showConfirmButton: false,
             timer: 1500
           });
+          setTimeout(function () {
+                        location.reload()
+                    }, 1000);
+
         } else {
           Swal.fire({
             position: "center",

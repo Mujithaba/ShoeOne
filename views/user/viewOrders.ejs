@@ -66,30 +66,36 @@
             border-bottom: 2px solid #ddd;
         }
 
-        .cancel-btn{
+        .cancel-btn {
             background-color: #061f39;
             border-radius: 5px;
             padding: 10px;
             color: white;
             margin-left: 900px;
         }
-        .cancel-btn:hover{
+
+        .cancel-btn:hover {
             background-color: #494572;
         }
 
-        .p-cancel{
+        .p-cancel {
             color: rgb(249, 20, 20);
             font-weight: 600;
         }
 
-        .ordStatus{
+        .ordStatus {
             color: black;
         }
 
-        .status-p{
+        .status-p {
             color: black;
         }
-       
+
+        .return-btn {
+            padding: 10px;
+            border-radius: 5px;
+            margin-left: 900px;
+        }
     </style>
 
 
@@ -224,44 +230,70 @@
         <div class="container-bigDiv">
             <h1 class="mt-5 mb-4 text-center"><b>ORDER DETAILS</b></h1>
             <input type="hidden" name="order" value="<%= orderData %>">
+
+            <div>
+                <p> <strong>OrderID:</strong>&nbsp;<%= orderData._id %> <br>
+                        <strong>Ordered
+                            On:</strong>&nbsp;<%=orderData.orderDate.toLocaleString('en-AU',{year:"numeric",month:"2-digit",day:"2-digit"})%>
+                            <br>
+                            <strong>Payment Method:</strong>&nbsp;<%= orderData.paymentMethod %>
+                </p>
+            </div>
+
+            <!-- order product manager start -->
             <% for (const product of orderData.products) {%>
+
                 <div class="order-row">
 
                     <img src="/Image/<%= product.productId.image[0] %>" class="img-fluid" alt="Product Image"
                         style="width: 180px; height: 200px; border-radius: 7px;">
                     <div class="order-details">
-                        <!-- <div class="border-btm"> -->
                         <h5>
                             <%= product.productId.productName %>
                         </h5>
                         <p>
-                                <strong>OrderID:</strong>&nbsp;<%= orderData._id %> <br>
+                            <!-- <strong>OrderID:</strong>&nbsp;<%= orderData._id %> <br> -->
+                            <strong>Price:</strong>&nbsp; ₹<%= product.unitPrice %> /- <br>
                                 <strong>Quantity:</strong>&nbsp; <%= product.quantity %><br>
-                                    <strong>Price:</strong>&nbsp; ₹<%= product.productId.Price %> /- <br>
-                                        <strong>Ordered On:</strong>&nbsp;
-                                        <%=
-                                            orderData.orderDate.toLocaleString('en-AU',{year:"numeric",month:"2-digit",day:"2-digit"})%> <br>
+                                    <strong>Total Price:</strong>&nbsp; ₹<%= product.unitPrice * product.quantity %> /-
+                                        <br>
 
-                                            <!-- <strong>Total Price:</strong>&nbsp; ₹<%= orderData.totalAmount %> /- <br> -->
                         </p><br>
-                        <!-- </div> -->
-                        <div class="status-div">
-                           <strong class="status-p">Status:-</strong>
-                            <h5 class="">
-                                <%= product.ProductOrderStatus %>
-                            </h5>
-                        
 
-                            <% if(product.ProductOrderStatus=='cancelled' ) {%>
-                                <p class="p-cancel"><%= product.ProductOrderStatus %></p>
+                        <div class="status-div">
+                            <strong class="status-p">Status:-</strong>
+
+                            <% if(product.ProductOrderStatus=='Cancelled' || product.ProductOrderStatus=='Returned') {%>
+                                <p class="p-cancel">
+                                    <%= product.ProductOrderStatus %>
+                                </p>
 
                                 <% } else { %>
-                                    <% if(product.ProductOrderStatus=='pending' || product.ProductOrderStatus=='processed' || product.ProductOrderStatus=='shipping') {%>
-                                        <button class=" cancel-btn" onclick="cancelFunction( '<%= product.productId._id %>' )">Cancel</button>
+                                    <% if(product.ProductOrderStatus=='pending' ||
+                                        product.ProductOrderStatus=='processed' ||
+                                        product.ProductOrderStatus=='shipping' ) {%>
+                                        <h5 class="">
+                                            <%= product.ProductOrderStatus %>
+                                        </h5>
+                                        <button class=" cancel-btn"
+                                            onclick="cancelFunction( '<%= product.productId._id %>' )">Cancel</button>
 
-                                        <% } %>
+                                        <% } else{%>
+                                            <h5 >
+                                                <%= product.ProductOrderStatus %>
+                                            </h5>
+
+                                            <!-- return product  function start -->
+                                            <% if(product.ProductOrderStatus=='delivered') {%>
+                                                <button class="btn-danger return-btn"
+                                            onclick="returnFunction( '<%= product.productId._id %>' )">Return</button>
                                                 <% } %>
-                                            
+
+                                                <!-- return product end -->
+
+                                            <% } %>
+                                                <% } %>
+
 
                         </div>
 
@@ -372,6 +404,53 @@
     <script>
         function cancelFunction(productId) {
             fetch('/cancelOrder', {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ productId })
+            }).then(response => {
+                return response.json();
+            }).then(data => {
+                if (data.message) {
+                    console.log(data.message);
+
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: data.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                    setTimeout(function () {
+                        location.reload()
+                    }, 1000);
+
+
+
+                } else {
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: data.error,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            }).catch(error => {
+                console.log(error);
+            });
+
+        }
+
+
+
+        // **************************************return product function**************************************************
+
+
+        function returnFunction(productId) {
+            console.log(productId);
+            fetch('/returnOrder', {
                 method: 'post',
                 headers: {
                     'Content-Type': 'application/json'

@@ -387,6 +387,115 @@
                                         value="<%= userData.mobile%>" readonly>
                                 </div>
                             </div>
+
+                            <!-- address -->
+                            <div id="addressContainer" class="body-address">
+                                <h3 style="text-align: center; color: #333;">Address Details</h3>
+                                <div id="addressDetails">
+                                    <% addresses.forEach(function(address, index) { %>
+                                        <div class="addressItem">
+
+                                            <p>
+                                                <%= address.fullname %>
+                                            </p>
+                                            <p>
+                                                <%= address.mobile %>
+                                            </p>
+                                            <p>
+                                                <%= address.address %>
+                                            </p>
+                                            <p>
+                                                <%= address.pincode %>
+                                            </p>
+                                            <p>
+                                                <%= address.city %>
+                                            </p>
+                                            <p>
+                                                <%= address.state %>
+                                            </p>
+
+                                            <a href="/edit-address?id=<%= address._id%>" class="btn btn-info edit-addrs"
+                                                data-toggle="modal" data-target="#orderDetailsModal"
+                                                data-addrs-id=" <%= address._id %>">Edit</a>
+
+                                            <button type="button" data-address-id="<%= address._id %>"
+                                                class="delete-button">Delete</button>
+                                        </div>
+
+                                        <!-- Modal for Order Details -->
+                                        <div class="modal fade" id="orderDetailsModal" tabindex="-1" role="dialog"
+                                            aria-labelledby="orderDetailsModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="orderDetailsModalLabel">Edit Address
+                                                        </h5>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+
+                                                    <div class="modal-body">
+                                                        <form id="addressForm">
+                                                            <div class="form-group">
+                                                                <!-- <label class="form-label">Full Name<span class="star">*</span></label> -->
+                                                                <input type="text" class="form-control" name="fullname" id="fullname"
+                                                                    placeholder="full name" value="<%= address.fullname %>" required>
+                                                                <div id="fullnameError" class="error"></div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <!-- <label class="form-label">Mobile<span class="star">*</span></label> -->
+                                                                <input type="text" class="form-control" name="mobno" id="mobno"
+                                                                    placeholder=" mobile number" value="<%= address.mobile %>" required pattern="[0-9]{10}">
+                                                                <div id="mobnoError" class="error"></div>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <!-- <label class="form-label">Address<span class="star">*</span></label> -->
+                                                                <input type="text" class="form-control" name="address" id="address"
+                                                                    placeholder="address" required>
+                                                                <div id="addressError" class="error"></div>
+                                                            </div>
+                                                            <div class="form-row">
+                                                                <div class="form-group col-md-6">
+                                                                    <!-- <label class="form-label">Pincode<span class="star">*</span></label> -->
+                                                                    <input type="text" class="form-control" name="pincode" id="pincode"
+                                                                        placeholder="pincode" required pattern="[0-9]{6}">
+                                                                    <div id="pincodeError" class="error"></div>
+                                                                </div>
+                                                                <div class="form-group col-md-6">
+                                                                    <!-- <label class="form-label">Town/City<span class="star">*</span></label> -->
+                                                                    <input type="text" class="form-control" name="city" id="city"
+                                                                        placeholder="your city" required>
+                                                                    <div id="cityError" class="error"></div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group ">
+                                                                <!-- <label class="form-label">State<span class="star">*</span></label> -->
+                                                                <input type="text" class="form-control" name="state" id="state"
+                                                                    placeholder="your state" required>
+                                                                <div id="stateError" class="error"></div>
+                                                            </div>
+                                                            <!-- <div class="text-center">
+                                                                <button type="button" class="btn btn-success btn-sm mt-3 px-5 py-2"
+                                                                    onclick="validateForm()" id="addAddress">Save Address</button>
+                                                            </div> -->
+                                                        </form>
+
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Save</button>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- modal end -->
+                                        <% }); %>
+                                </div>
+                            </div>
+                            <!-- end address -->
                         </div>
                         <div class="tab-pane fade" id="account-change-password">
                             <div class="card-body pb-2">
@@ -462,14 +571,14 @@
                         </div>
                         <!-- add address end -->
 
-                        <div class="tab-pane fade" id="manage-address">
+                        <!-- <div class="tab-pane fade" id="manage-address">
                             <div class="card-body pb-2">
                                 <div id="addressContainer" class="body-address">
                                     <h3 style="text-align: center; color: #333;">Address Details</h3>
                                     <div id="addressDetails">
                                         <% addresses.forEach(function(address, index) { %>
                                             <div class="addressItem">
-                                                <!-- <h5><u>Address <%= index + 1 %></u></h5> -->
+                                                <h5><u>Address <%= index + 1 %></u></h5>
                                                 <p>
                                                     <%= address.fullname %>
                                                 </p>
@@ -499,10 +608,10 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
                         <!-- Modal for Order Details -->
-                        <div class="modal fade" id="orderDetailsModal" tabindex="-1" role="dialog"
+                        <!-- <div class="modal fade" id="orderDetailsModal" tabindex="-1" role="dialog"
                             aria-labelledby="orderDetailsModalLabel" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
@@ -514,7 +623,7 @@
                                     </div>
                                     <% addresses.forEach(function(address, index) { %>
                                         <div class="modal-body">
-                                            <!-- <h5><u>Address <%= index + 1 %></u></h5> -->
+                                            
                                             <p>
                                                 <%= address.fullname %>
                                             </p>
@@ -542,7 +651,7 @@
                                         <% }); %>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <!-- modal end -->
 
 
@@ -930,8 +1039,8 @@
         document.querySelectorAll('.edit-addrs').forEach((btn) => {
             btn.addEventListener('click', addressEdit);
 
-            async function  addressEdit() {
-                let addresss_id = btn.getAttribute('data-addrs-id').trim() ;
+            async function addressEdit() {
+                let addresss_id = btn.getAttribute('data-addrs-id').trim();
 
                 try {
                     const response = await fetch('/edit-address', {
@@ -955,7 +1064,7 @@
                         //     showConfirmButton: false,
                         //     timer: 1500
                         // });
-                    }else{
+                    } else {
                         Swal.fire({
                             position: "center",
                             icon: "info",

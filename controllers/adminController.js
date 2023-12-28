@@ -495,15 +495,16 @@ const changeStatus = async (req, res) => {
         const orderId = req.body.orderID
         const statusPro = req.body.productStatus
         const productID = req.body.productID
-        console.log(typeof statusPro);
-        console.log(orderId);
-        console.log(productID);
+
+        // console.log(statusPro);
+        // console.log(orderId);
+        // console.log(productID);
 
         const statusSet = await Order.findOneAndUpdate({ _id: orderId, 'products.productId': productID },
             { $set: { 'products.$.ProductOrderStatus': statusPro } },
             { new: true })
 
-        console.log(statusSet);
+        // console.log(statusSet);
         res.json({ message: 'Product status changed successfully' });
     } catch (error) {
         res.status(500).json({ message: 'Internal server error' });
