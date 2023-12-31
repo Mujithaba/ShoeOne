@@ -364,6 +364,27 @@ const ForgotpassOTPresend = async (req, res) => {
 
 
 
+
+
+// count cart products 
+const getCartItemCount = async (userId) => {
+    try {
+        const cartExist = await Cart.findOne({ userId });
+
+        if (!cartExist) {
+            return 0; // Cart is empty, so the count is 0
+        } else {
+            const itemCount = cartExist.products.length;
+            return itemCount;
+        }
+    } catch (error) {
+        console.log(error.message);
+        return -1; // An error occurred
+    }
+};
+
+
+
 // home method start
 const openingHome = async (req, res) => {
 
@@ -380,11 +401,15 @@ const openingHome = async (req, res) => {
 
 const loadHome = async (req, res) => {
     try {
-        let userData = null;
-        if (req.session.user_id) {
-            userData = await User.findById({ _id: req.session.user_id });
-        }
-        res.render('user/home');
+        // let userData = null;
+        const user_id = req.session.user_id
+        const  userData = await User.findById({ _id: user_id });
+
+          // Get the cart count
+          const cartItemCount = await getCartItemCount(user_id);
+
+        
+        res.render('user/home',{ cartItemCount });
 
     } catch (error) {
         console.log(error.message);
@@ -395,19 +420,27 @@ const loadHome = async (req, res) => {
 // loading Shop
 const loadShop = async (req, res) => {
     try {
+        const user_id = req.session.user_id
+          // Get the cart count
+          const cartItemCount = await getCartItemCount(user_id);
+
         if (req.query.id) {
+
             const id = req.query.id
             // console.log(id);
             const fullProducts = await Product.find({ is_listed: true, category: id })
             // console.log(fullProducts);
             const category = await Category.find({ is_listed: true })
             // console.log(category);
-            res.render('user/shop', { category, fullProducts })
+
+            
+
+            res.render('user/shop', { category, fullProducts ,cartItemCount})
         } else {
 
             const fullProducts = await Product.find({ is_listed: true })
             const category = await Category.find({ is_listed: true })
-            res.render('user/shop', { category, fullProducts })
+            res.render('user/shop', { category, fullProducts,cartItemCount })
         }
 
 
@@ -420,18 +453,26 @@ const loadShop = async (req, res) => {
 // productDetail Load
 const productDetailed = async (req, res) => {
     try {
+        const user_id = req.session.user_id
         const productid = req.query.id
+
+          // Get the cart count
+          const cartItemCount = await getCartItemCount(user_id);
 
         // console.log(productid);
         const findProduct = await Product.findOne({ _id: productid }).populate('category');
         // console.log(findProduct.category.categoryName);
         const category = await Category.find({ is_listed: true })
-        res.render('user/product-details', { category, findProduct })
+        res.render('user/product-details', { category, findProduct ,cartItemCount })
 
     } catch (error) {
         console.log(error.message);
     }
 }
+
+
+
+
 
 
 // user profilepage load 
@@ -442,7 +483,12 @@ const loadProfile = async (req, res) => {
 
         const userData = await User.findById({ _id: user_id })
         const addressData = await Address.find({ userId: user_id })
-        res.render('user/profile', { userData, addresses: addressData })
+
+          // Get the cart count
+          const cartItemCount = await getCartItemCount(user_id);
+
+
+        res.render('user/profile', { userData, addresses: addressData , cartItemCount})
 
     } catch (error) {
         console.log(error.message);
@@ -515,7 +561,6 @@ const addAddressLoad = async (req, res) => {
 const addressDelete = async (req, res) => {
     try {
         const addressid = req.body.addressId
-        console.log(addressid);
         const delAddress = await Address.findByIdAndDelete({ _id: addressid })
 
         res.json({ message: "Address is deleted successfully" })
@@ -529,28 +574,58 @@ const addressDelete = async (req, res) => {
 
 
 // edit address
-const editAddress = async (req, res) => {
+const loadEditAddress = async (req, res) => {
     try {
-        console.log("vannooo");
 
-        const addressId = req.body.addresss_id
-        console.log(addressId);
-        const address = await Address.findByIdAndUpdate({ _id: addressId })
-        console.log(address);
-        res.json({ message: "Address is deleted successfully" })
+        const addressId = req.query.id.trim();
+        console.log(addressId + "hhh");
+
+        const addressDetails = await Address.findById({ _id: addressId })
+        console.log(addressDetails);
+
+        res.render('user/Edit-Address', { addressDetails })
+
     } catch (error) {
         console.log(error.message);
-        res.status(500).json({ error: 'Internal server error' });
     }
 }
 
 
 
 
+// Saving the edited address
+const editSaveAddress = async (req, res) => {
+    try {
 
+        const addressId = req.body.addressID.trim()
+        console.log(addressId);
 
-
-
+  const addressData = await Address.findOneAndUpdate(
+      {_id:addressId},
+      {
+        $set: {
+          fullname: req.body.name,
+          mobile: req.body.mobile,
+          address: req.body.address,
+          pincode: req.body.pincode,
+          city: req.body.city,
+          state: req.body.state,
+        },
+      },
+      { new: true } // This option returns the modified document
+    );
+    if (addressData) {
+        console.log('Updated document:', addressData);
+        res.redirect('/profile');
+      } else {
+        console.log('Document not found or not updated.');
+        res.status(404).send('Document not found or not updated.');
+      }
+    } catch (error) {
+      console.error('Error:', error.message);
+      res.status(500).send('Internal Server Error');
+    }
+  }
 
 
 
@@ -560,9 +635,11 @@ const loadCheckout = async (req, res) => {
 
         const user_id = req.session.user_id
         // const userData = await User.findById({ _id: user_id })
+          // Get the cart count
+          const cartItemCount = await getCartItemCount(user_id);
+
 
         const addressData = await Address.find({ userId: user_id })
-
         const cartData = await Cart.findOne({ userId: user_id }).populate({
             path: 'products.productId',
             select: 'Price productName stock'
@@ -585,7 +662,7 @@ const loadCheckout = async (req, res) => {
             // stock checking
             if (product.stock >= productData.quantity) {
 
-                res.render('user/checkout', { addresses: addressData, cartData, cartTotal })
+                res.render('user/checkout', { addresses: addressData, cartData, cartTotal ,cartItemCount })
 
 
             } else {
@@ -635,10 +712,12 @@ module.exports = {
     changepassword,
     addAddressLoad,
     addressDelete,
-
-    loadCheckout,
     // edit address
-    editAddress
+    loadEditAddress,
+    editSaveAddress,
+
+    loadCheckout
+
 
 
 

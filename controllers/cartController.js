@@ -4,6 +4,24 @@ const Product = require('../models/productModel')
     const Cart = require('../models/cartModel')
 
 
+    // count cart products 
+const getCartItemCount = async (userId) => {
+    try {
+        const cartExist = await Cart.findOne({ userId });
+
+        if (!cartExist) {
+            return 0; // Cart is empty, so the count is 0
+        } else {
+            const itemCount = cartExist.products.length;
+            return itemCount;
+        }
+    } catch (error) {
+        console.log(error.message);
+        return -1; // An error occurred
+    }
+};
+
+
 
 // loadCart
 const loadCart = async (req, res) => {
@@ -18,9 +36,12 @@ const loadCart = async (req, res) => {
         const cartTotal = cartData.products.reduce((acc, product) => {
             return acc + product.productId.Price * product.quantity;
         }, 0);
-        // console.log(cartTotal);
+        
 
-        res.render('user/cart', { cart: cartData, cartTotal })
+          // Get the cart count
+          const cartItemCount = await getCartItemCount(user_id);
+
+        res.render('user/cart', { cart: cartData, cartTotal ,cartItemCount})
     }else{
         res.render('user/cart')
     }

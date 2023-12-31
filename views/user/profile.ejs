@@ -96,6 +96,15 @@
         #readonly-clr {
             background-color: white;
         }
+        #readonly-clr1 {
+            background-color: white;
+        }
+        #readonly-clr2 {
+            background-color: white;
+        }
+        #readonly-clr3 {
+            background-color: white;
+        }
 
         /* address manage portion style */
         .body-address {
@@ -167,11 +176,11 @@
         }
 
         .editBtn {
-            background-color: #3498db;
+            background-color: #072d47;
         }
 
         .deleteBtn {
-            background-color: #e74c3c;
+            background-color: #d7d7d7;
         }
 
         #btnHover {
@@ -183,6 +192,15 @@
         #btnHover:hover {
             color: rgb(0, 0, 0);
             background-color: rgb(255, 255, 255);
+        }
+
+        #dlt {
+            padding: 7px;
+            margin-left: 240px;
+            background-color: rgb(128, 8, 8);
+        }
+        #dlt:hover {
+            background-color: rgb(224, 15, 15);
         }
     </style>
 
@@ -210,11 +228,11 @@
             <a href="#" class="search-switch"><img src="/img/icon/search.png" alt=""></a>
             <a href="#"><img src="/img/icon/heart.png" alt=""></a>
 
-            <a href="/cart"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="18" viewBox="0 0 576 512">
-                    <path
-                        d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z" />
-                </svg></a>
-
+            <a  href="./cart"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="18" viewBox="0 0 576 512"><path d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/></svg>
+                <span class="position-absolute top-0 start-100 translate-middle p-2  border border-light rounded-circle" style="background-color: red;">
+                    <span class="visually-hidden">New alerts</span>
+                  </span>
+            </a>
             <a href="/profile"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512">
                     <path
                         d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z" />
@@ -277,11 +295,12 @@
                         <a href="#" class="search-switch"><img src="/img/icon/search.png" alt=""></a>
                         <a href="#"><img src="/img/icon/heart.png" alt=""></a>
                         <!-- <a href="#"><img src="/img/icon/cart.png" alt=""> </a> -->
-                        <a class="active" href="./cart"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="18"
-                                viewBox="0 0 576 512">
-                                <path
-                                    d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z" />
-                            </svg></a>
+                        <a  href="./cart"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="18" viewBox="0 0 576 512"><path d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/></svg>
+                            <span class="position-absolute top-0 start-100 translate-middle px-1  border border-light rounded-circle" style="background-color: red; font-size: 10px">
+                                <%= cartItemCount %>
+                                <span class="visually-hidden">New alerts</span>
+                              </span>
+                        </a>
 
                         <a href="/profile"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="14"
                                 viewBox="0 0 448 512">
@@ -323,7 +342,7 @@
             Account settings
         </h3>
 
-
+       
 
         <div class="col-lg-6 col-md-6 col-sm-6c ">
             <div class="continue__btn ">
@@ -372,18 +391,18 @@
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Second Name</label>
-                                    <input type="text" class="form-control  " id="readonly-clr" name="secondName"
+                                    <input type="text" class="form-control  " id="readonly-clr1" name="secondName"
                                         value="<%= userData.secondName%>" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">E-mail</label>
-                                    <input type="text" class="form-control mb-1 " id="readonly-clr"
+                                    <input type="text" class="form-control mb-1 " id="readonly-clr2"
                                         value="<%= userData.email%>" readonly>
 
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label">Mobile</label>
-                                    <input type="text" class="form-control " id="readonly-clr" name="mobile"
+                                    <input type="text" class="form-control " id="readonly-clr3" name="mobile"
                                         value="<%= userData.mobile%>" readonly>
                                 </div>
                             </div>
@@ -414,84 +433,17 @@
                                                 <%= address.state %>
                                             </p>
 
-                                            <a href="/edit-address?id=<%= address._id%>" class="btn btn-info edit-addrs"
-                                                data-toggle="modal" data-target="#orderDetailsModal"
-                                                data-addrs-id=" <%= address._id %>">Edit</a>
+                                            <td><a href="/editAddress?id= <%= address._id %>" class="btn btn-warning">Edit</a>
 
-                                            <button type="button" data-address-id="<%= address._id %>"
-                                                class="delete-button">Delete</button>
+
+                                                <!-- delete address button -->
+                                                <button type="button" id="dlt" data-address-id="<%= address._id %>"
+                                                    class="delete-button btn-danger"><i
+                                                        class="fa-solid fa-trash"></i></button>
+                                            </td>
                                         </div>
 
-                                        <!-- Modal for Order Details -->
-                                        <div class="modal fade" id="orderDetailsModal" tabindex="-1" role="dialog"
-                                            aria-labelledby="orderDetailsModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="orderDetailsModalLabel">Edit Address
-                                                        </h5>
-                                                        <button type="button" class="close" data-dismiss="modal"
-                                                            aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
 
-                                                    <div class="modal-body">
-                                                        <form id="addressForm">
-                                                            <div class="form-group">
-                                                                <!-- <label class="form-label">Full Name<span class="star">*</span></label> -->
-                                                                <input type="text" class="form-control" name="fullname" id="fullname"
-                                                                    placeholder="full name" value="<%= address.fullname %>" required>
-                                                                <div id="fullnameError" class="error"></div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <!-- <label class="form-label">Mobile<span class="star">*</span></label> -->
-                                                                <input type="text" class="form-control" name="mobno" id="mobno"
-                                                                    placeholder=" mobile number" value="<%= address.mobile %>" required pattern="[0-9]{10}">
-                                                                <div id="mobnoError" class="error"></div>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <!-- <label class="form-label">Address<span class="star">*</span></label> -->
-                                                                <input type="text" class="form-control" name="address" id="address"
-                                                                    placeholder="address" required>
-                                                                <div id="addressError" class="error"></div>
-                                                            </div>
-                                                            <div class="form-row">
-                                                                <div class="form-group col-md-6">
-                                                                    <!-- <label class="form-label">Pincode<span class="star">*</span></label> -->
-                                                                    <input type="text" class="form-control" name="pincode" id="pincode"
-                                                                        placeholder="pincode" required pattern="[0-9]{6}">
-                                                                    <div id="pincodeError" class="error"></div>
-                                                                </div>
-                                                                <div class="form-group col-md-6">
-                                                                    <!-- <label class="form-label">Town/City<span class="star">*</span></label> -->
-                                                                    <input type="text" class="form-control" name="city" id="city"
-                                                                        placeholder="your city" required>
-                                                                    <div id="cityError" class="error"></div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="form-group ">
-                                                                <!-- <label class="form-label">State<span class="star">*</span></label> -->
-                                                                <input type="text" class="form-control" name="state" id="state"
-                                                                    placeholder="your state" required>
-                                                                <div id="stateError" class="error"></div>
-                                                            </div>
-                                                            <!-- <div class="text-center">
-                                                                <button type="button" class="btn btn-success btn-sm mt-3 px-5 py-2"
-                                                                    onclick="validateForm()" id="addAddress">Save Address</button>
-                                                            </div> -->
-                                                        </form>
-
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-dismiss="modal">Save</button>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- modal end -->
                                         <% }); %>
                                 </div>
                             </div>
@@ -609,50 +561,6 @@
                                 </div>
                             </div>
                         </div> -->
-
-                        <!-- Modal for Order Details -->
-                        <!-- <div class="modal fade" id="orderDetailsModal" tabindex="-1" role="dialog"
-                            aria-labelledby="orderDetailsModalLabel" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="orderDetailsModalLabel">Edit Address</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <% addresses.forEach(function(address, index) { %>
-                                        <div class="modal-body">
-                                            
-                                            <p>
-                                                <%= address.fullname %>
-                                            </p>
-                                            <p>
-                                                <%= address.mobile %>
-                                            </p>
-                                            <p>
-                                                <%= address.address %>
-                                            </p>
-                                            <p>
-                                                <%= address.pincode %>
-                                            </p>
-                                            <p>
-                                                <%= address.city %>
-                                            </p>
-                                            <p>
-                                                <%= address.state %>
-                                            </p>
-
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-dismiss="modal">Save</button>
-                                        </div>
-                                        <% }); %>
-                                </div>
-                            </div>
-                        </div> -->
-                        <!-- modal end -->
 
 
                     </div>
@@ -981,7 +889,7 @@
                     hideError('passwordMatchError');
                 }
 
-                // If validation passes, proceed with the password change
+                // validation passes, proceed with the password change
                 try {
                     const response = await fetch('/passwordChange', {
                         method: 'POST',
@@ -1035,50 +943,116 @@
 
 
 
-        // *********************************Edit product******************************************
-        document.querySelectorAll('.edit-addrs').forEach((btn) => {
-            btn.addEventListener('click', addressEdit);
 
-            async function addressEdit() {
-                let addresss_id = btn.getAttribute('data-addrs-id').trim();
 
-                try {
-                    const response = await fetch('/edit-address', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ addresss_id })
-                    });
 
-                    const data = await response.json();
 
-                    if (data.success) {
-                        // Handle success
-                        console.log("Product added to cart");
-                        alert(data.success)
-                        // Swal.fire({
-                        //     position: "center",
-                        //     icon: "success",
-                        //     title: data.message,
-                        //     showConfirmButton: false,
-                        //     timer: 1500
-                        // });
-                    } else {
-                        Swal.fire({
-                            position: "center",
-                            icon: "info",
-                            title: data.msg,
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-                    }
-                } catch (error) {
-                    // Handle error
-                    console.error(error);
-                }
-            }
-        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // *********************************Edit address******************************************
+                    // address getting to the edit modal  //
+
+    //    async function openEditModal(addressId) {
+    //         console.log("gg" + addressId);
+
+
+    //         await fetch(`/getAddressDetails/${addressId}`)
+    //             .then(response => response.json())
+    //             .then(data => {
+    //                 document.getElementById('editFullname').value = data.fullname;
+    //                 document.getElementById('editMobile').value = data.mobile;
+    //                 document.getElementById('editAddress').value = data.address;
+    //                 document.getElementById('editPincode').value = data.pincode;
+    //                 document.getElementById('editCity').value = data.city;
+    //                 document.getElementById('editState').value = data.state;
+    //             })
+    //             .catch(error => console.error('Error fetching address details:', error));
+    //     }
+
+
+    //     document.querySelectorAll('.edit-addrs').forEach((btn) => {
+    //         btn.addEventListener('click', async () => {
+    //             const addressId = btn.getAttribute('data-id');
+    //             await openEditModal(addressId);
+    //         });
+    //     });
+
+        //------- The edited address SAVE to the database ------//
+
+        // document.querySelectorAll('.saving-edit-ad').forEach((btn) => {
+        //     btn.addEventListener('click', saveEditedData);
+
+        //     async function saveEditedData() {
+        //         const addressId = btn.getAttribute('data-Id');
+        //         console.log("save"+addressId);
+        //         const FullName = document.getElementById('editFullname').value
+        //         const Mobilenum = document.getElementById('editMobile').value
+        //         const Addresses = document.getElementById('editAddress').value
+        //         const Pincode = document.getElementById('editPincode').value
+        //         const City = document.getElementById('editCity').value
+        //         const State = document.getElementById('editState').value
+
+        //         try {
+        //             const response = await fetch(`/UpdateAddressDetails/${addressId}`, {
+        //                 method: 'POST',
+        //                 headers: {
+        //                     'Content-Type': 'application/json'
+        //                 },
+        //                 body: JSON.stringify({ FullName ,Mobilenum, Addresses, Pincode, City, State})
+        //             });
+
+        //             const data = await response.json();
+
+        //             if (data.message) {
+        //             //    const myModal =  new bootstrap.Modal(document.querySelector('#editModal'));;
+        //             //    myModal.hide();
+        //                 console.log("saved");
+        //                 // alert(data.message)
+        //                 Swal.fire({
+        //                     position: "center",
+        //                     icon: "success",
+        //                     title: data.message,
+        //                     showConfirmButton: false,
+        //                     timer: 1500
+        //                 });
+        //                 // Close the modal after saving changes
+        //          // Hide the modal after a delay
+        //          setTimeout(function () {
+        //             const modal = new bootstrap.Modal(document.getElementById('editModal'));
+        //             modal.hide();
+        //             location.reload();
+        //         }, 1000);
+        //             }else{
+        //                 Swal.fire({
+        //                     position: "center",
+        //                     icon: "info",
+        //                     title: data.error,
+        //                     showConfirmButton: false,
+        //                     timer: 1500
+        //                 });
+        //             }
+
+                    
+        //         } catch (error) {
+        //             // Handle error
+        //             console.error(error);
+        //         }
+        //     }
+        // });
+
+
+        
 
 
 

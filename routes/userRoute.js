@@ -56,7 +56,8 @@ user_route.get('/profile',auth.isBlocked,auth.isLogin,userController.loadProfile
 user_route.post('/passwordChange',userController.changepassword)
 user_route.post('/addressAdd',userController.addAddressLoad)
 user_route.post('/deleteAddress',userController.addressDelete)
-user_route.get('/edit-address',userController.editAddress)
+user_route.get('/editAddress',userController.loadEditAddress)
+user_route.post('/updateAddress',userController.editSaveAddress)
 
 // checkout page
 user_route.get('/checkout',auth.isBlocked,auth.isLogin,userController.loadCheckout)
