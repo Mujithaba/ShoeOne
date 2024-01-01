@@ -53,9 +53,6 @@ const orderPlace = async (req, res) => {
         const user_id = req.session.user_id
         const addressId = req.body.addressId;
         const paymentType = req.body.paymentType
-        // console.log(user_id + "userid");
-        // console.log(addressId + "addresid");
-        // console.log("type" + paymentType);
 
         // taking address from databse
         const ShippingAddress = await Address.findOne({ _id: addressId })

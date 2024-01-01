@@ -401,20 +401,22 @@ const openingHome = async (req, res) => {
 
 const loadHome = async (req, res) => {
     try {
-        // let userData = null;
-        const user_id = req.session.user_id
-        const  userData = await User.findById({ _id: user_id });
+        let userData = null;
+        const user_id = req.session.user_id;
 
-          // Get the cart count
-          const cartItemCount = await getCartItemCount(user_id);
+        if (user_id) {
+            userData = await User.findById({ _id: user_id });
+        }
 
-        
-        res.render('user/home',{ cartItemCount });
+        // Get the cart count
+        const cartItemCount = await getCartItemCount(user_id);
+
+        res.render('user/home', { userData, cartItemCount });
 
     } catch (error) {
         console.log(error.message);
     }
-}
+};
 
 
 // loading Shop
