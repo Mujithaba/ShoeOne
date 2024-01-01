@@ -579,13 +579,18 @@ const addressDelete = async (req, res) => {
 const loadEditAddress = async (req, res) => {
     try {
 
+        const user_id = req.session.user_id
+
         const addressId = req.query.id.trim();
         console.log(addressId + "hhh");
 
         const addressDetails = await Address.findById({ _id: addressId })
         console.log(addressDetails);
 
-        res.render('user/Edit-Address', { addressDetails })
+         // Get the cart count
+         const cartItemCount = await getCartItemCount(user_id);
+
+        res.render('user/Edit-Address', { addressDetails,cartItemCount })
 
     } catch (error) {
         console.log(error.message);
