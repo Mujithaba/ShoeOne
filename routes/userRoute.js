@@ -62,6 +62,7 @@ user_route.post('/updateAddress',userController.editSaveAddress)
 // checkout page
 user_route.get('/checkout',auth.isBlocked,auth.isLogin,userController.loadCheckout)
 user_route.post('/placeOrder',auth.isLogin,orderController.orderPlace)
+user_route.post('/verifyOnlinePayment',orderController.verifyPayment)
 
 user_route.get('/successOrder',auth.isLogin,orderController.loadSuccessPlace)
 

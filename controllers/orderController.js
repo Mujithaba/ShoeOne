@@ -4,6 +4,15 @@ const Product = require('../models/productModel')
 const Address = require('../models/addressModel')
 const Cart = require('../models/cartModel')
 const Order = require('../models/orderModel')
+const Razorpay = require('razorpay')
+
+const { Razorpay_key_id, Razorpay_key_secrete } = process.env
+
+var instance = new Razorpay({
+    key_id: Razorpay_key_id,
+    key_secret: Razorpay_key_secrete,
+});
+
 
 
 // count cart products 
@@ -53,6 +62,8 @@ const orderPlace = async (req, res) => {
         const user_id = req.session.user_id
         const addressId = req.body.addressId;
         const paymentType = req.body.paymentType
+        console.log(paymentType);
+
 
         // taking address from databse
         const ShippingAddress = await Address.findOne({ _id: addressId })
@@ -69,48 +80,159 @@ const orderPlace = async (req, res) => {
         }, 0)
 
 
-        // order database creating
+        // Cash on delivery placeorder checking
+        if (paymentType === 'COD') {
 
-        const orderDetails = new Order({
-            userId: user_id,
-            shippingAddress: {
-                fullname: ShippingAddress.fullname,
-                mobile: ShippingAddress.mobile,
-                address: ShippingAddress.address,
-                pincode: ShippingAddress.pincode,
-                city: ShippingAddress.city,
-                state: ShippingAddress.state
-            },
-            products: cartData.products.map(product => {
-                return {
-                    productId: product.productId,
-                    quantity: product.quantity,
-                    unitPrice: product.productId.Price,
-                    ProductOrderStatus: 'pending'
-                }
-            }),
-            OrderStatus: 'ordered',
-            StatusLevel: 1,
-            totalAmount: cartTotal,
-            paymentMethod: paymentType
+            // order database creating
 
-        })
+            const orderDetails = new Order({
+                userId: user_id,
+                shippingAddress: {
+                    fullname: ShippingAddress.fullname,
+                    mobile: ShippingAddress.mobile,
+                    address: ShippingAddress.address,
+                    pincode: ShippingAddress.pincode,
+                    city: ShippingAddress.city,
+                    state: ShippingAddress.state
+                },
+                products: cartData.products.map(product => {
+                    return {
+                        productId: product.productId,
+                        quantity: product.quantity,
+                        unitPrice: product.productId.Price,
+                        ProductOrderStatus: 'pending'
+                    }
+                }),
+                OrderStatus: 'ordered',
+                StatusLevel: 1,
+                totalAmount: cartTotal,
+                paymentMethod: paymentType
 
-        const order = await orderDetails.save()
-        console.log("orders" + order);
-        if (order) {
-            const deleteCart = await Cart.findOneAndDelete({ userId: user_id })
-            await StockAdjusting(cartData.products)
+            })
+
+            const order = await orderDetails.save()
+            console.log("orders" + order);
+            if (order) {
+                const deleteCart = await Cart.findOneAndDelete({ userId: user_id })
+                await StockAdjusting(cartData.products)
+            } else {
+                console.log("Not deleted the product");
+            }
+            res.json({ message: "Order placed successfully" })
+
+
+
         } else {
-            console.log("Not deleted the product");
+            const userData = await User.findOne({ _id: user_id })
+            console.log(userData);
+
+            var options = {
+                amount: cartTotal,  // amount in the smallest currency unit
+                currency: "INR",
+                receipt: user_id
+            };
+            instance.orders.create(options, function (err, order) {
+                console.log(order);
+                res.json({ success: true, userData, Razorpay_key_id, cartTotal, order })
+            });
+
         }
-        res.json({ message: "Order placed successfully" })
+
 
     } catch (error) {
         console.log(error.message);
         res.status(500).json({ error: 'Internal server error' });
     }
 }
+
+
+const verifyPayment = async (req, res) => {
+    try {
+        const user_id = req.session.user_id
+        const paymentType = req.body.paymentType
+        const addressId = req.body.addressId;
+        const payment = req.body.payment
+
+         // taking address from databse
+         const ShippingAddress = await Address.findOne({ _id: addressId })
+          // taking product details from the cart based
+        const cartData = await Cart.findOne({ userId: user_id }).populate({
+            path: 'products.productId',
+            select: 'Price '
+        })
+
+         // calculating total price for place order
+         const cartTotal = cartData.products.reduce((acc, product) => {
+            return acc + product.productId.Price * product.quantity;
+        }, 0)
+        console.log(cartTotal);
+
+        // crypto 
+        const crypto = require("crypto");
+        const hmac = crypto.createHmac('sha256', Razorpay_key_secrete);
+        hmac.update(payment.razorpay_order_id + "|" + payment.razorpay_payment_id);
+        let generatedSignature = hmac.digest('hex');
+        console.log(generatedSignature);
+
+        // checking the signature
+        if (generatedSignature === payment.razorpay_signature) {
+            console.log("payment successfull");
+
+            const orderDetails = new Order({
+                userId: user_id,
+                shippingAddress: {
+                    fullname: ShippingAddress.fullname,
+                    mobile: ShippingAddress.mobile,
+                    address: ShippingAddress.address,
+                    pincode: ShippingAddress.pincode,
+                    city: ShippingAddress.city,
+                    state: ShippingAddress.state
+                },
+                products: cartData.products.map(product => {
+                    return {
+                        productId: product.productId,
+                        quantity: product.quantity,
+                        unitPrice: product.productId.Price,
+                        ProductOrderStatus: 'pending'
+                    }
+                }),
+                OrderStatus: 'ordered',
+                StatusLevel: 1,
+                totalAmount: cartTotal,
+                paymentMethod: paymentType
+
+            })
+
+            const order = await orderDetails.save()
+            console.log("orders" + order);
+            if (order) {
+                const deleteCart = await Cart.findOneAndDelete({ userId: user_id })
+                await StockAdjusting(cartData.products)
+            } else {
+                console.log("Not deleted the product");
+            }
+
+
+            res.json({ status: true })
+        } else {
+            console.log("its not matching");
+            res.json({ msg: "Something went wrong in your order " })
+        }
+
+
+
+    } catch (error) {
+
+        console.log(error.message);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+
+
+
+
+
 
 
 // success page for place order
@@ -135,10 +257,10 @@ const loadMyOrder = async (req, res) => {
             select: 'Price image productName quantity'
         })
 
-          // Get the cart count
-          const cartItemCount = await getCartItemCount(user_id);
+        // Get the cart count
+        const cartItemCount = await getCartItemCount(user_id);
 
-        res.render('user/myOrder', { orderData ,cartItemCount })
+        res.render('user/myOrder', { orderData, cartItemCount })
 
     } catch (error) {
         console.log(error.message);
@@ -158,10 +280,10 @@ const loadViewOrder = async (req, res) => {
             select: 'Price image productName'
         })
 
-          // Get the cart count
-          const cartItemCount = await getCartItemCount(user_id);
+        // Get the cart count
+        const cartItemCount = await getCartItemCount(user_id);
 
-        res.render('user/viewOrders', { orderData ,cartItemCount})
+        res.render('user/viewOrders', { orderData, cartItemCount })
 
     } catch (error) {
         console.log(error.message);
@@ -178,7 +300,7 @@ const cancelOrder = async (req, res) => {
         console.log(orderID);
 
         const orderDetails = await Order.findOneAndUpdate(
-            {_id: orderID, 'products.productId': productID },
+            { _id: orderID, 'products.productId': productID },
             { $set: { 'products.$.ProductOrderStatus': 'Cancelled' } },
             { new: true } // Return the modified document
         )
@@ -187,18 +309,18 @@ const cancelOrder = async (req, res) => {
         if (orderDetails) {
             const productToCancel = orderDetails.products.find((product) => product.productId == productID);
             // console.log("kkk" + productToCancel.quantity);
-            
+
             if (productToCancel) {
 
                 const productData = await Product.findOneAndUpdate({ _id: productID },
-                    {$inc:{'stock': productToCancel.quantity}},
-                    {new:true})
+                    { $inc: { 'stock': productToCancel.quantity } },
+                    { new: true })
                 // console.log(productData);
-            }else{
+            } else {
                 console.log("productToCancel not found");
             }
 
-        }else{
+        } else {
             console.log("orderDetails is not found");
         }
 
@@ -214,16 +336,16 @@ const cancelOrder = async (req, res) => {
 
 
 // return order status fetch
-const returnOrder = async(req,res)=>{
+const returnOrder = async (req, res) => {
     try {
 
         const prodID = req.body.productId
-        const order_id =req.body.orderId
-        console.log("return"+order_id);
+        const order_id = req.body.orderId
+        console.log("return" + order_id);
 
         // order return setting
         const orderReturn = await Order.findOneAndUpdate(
-            { _id: order_id ,'products.productId': prodID },
+            { _id: order_id, 'products.productId': prodID },
             { $set: { 'products.$.ProductOrderStatus': 'Returned' } },
             { new: true } // Return the modified document
         )
@@ -232,20 +354,20 @@ const returnOrder = async(req,res)=>{
         if (orderReturn) {
             console.log("Order products:");
             const productToReturn = orderReturn.products.find((product) => product.productId == prodID);
-            
+
             if (productToReturn) {
                 const productData = await Product.findOneAndUpdate({ _id: prodID },
-                    {$inc:{'stock': productToReturn.quantity}},
-                    {new:true})
-            }else{
+                    { $inc: { 'stock': productToReturn.quantity } },
+                    { new: true })
+            } else {
                 console.log("productToReturn is  not found");
             }
 
-        }else{
+        } else {
             console.log("orderReturn is not found");
         }
 
-        
+
         res.json({ message: 'Product returned successfully' });
 
     } catch (error) {
@@ -258,6 +380,7 @@ const returnOrder = async(req,res)=>{
 module.exports = {
 
     orderPlace,
+    verifyPayment,
     loadSuccessPlace,
     loadMyOrder,
     loadViewOrder,
