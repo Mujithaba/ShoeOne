@@ -514,6 +514,69 @@ const changeStatus = async (req, res) => {
 }
 
 
+
+// sales report
+const LoadSalesPage = async(req,res)=>{
+    try {
+
+        res.render('admin/salesPage')
+        
+    } catch (error) {
+        console.log(message.error);
+    }
+}
+
+
+
+// collect report based on the date
+
+const salesReportCollect =async(req, res)=>{
+    try {
+
+        console.log("ethyooooo");
+
+        let { startDate, endDate } = req.body;
+
+        startDate=startDate.split('/')
+        endDate=endDate.split('/')
+        console.log(startDate);
+        console.log(endDate);
+
+        const fromDate = new Date(`${startDate[2]}/${startDate[1]}/${startDate[0]}`);
+        const toDate = new Date(`${endDate[2]}/${endDate[1]}/${endDate[0]}`);
+        
+        console.log('startDate:', fromDate);
+        console.log('endDate:', toDate);
+        
+
+       const salesOrders = await Order.aggregate([
+            {
+              $match: {
+                $and: [
+                  { orderDate: { $gte: fromDate } },
+                  { orderDate: { $lte: toDate } }
+                ]
+              }
+            }
+          ]);
+        
+          if (salesOrders) {
+            console.log(salesOrders);
+           
+
+          }else{
+            console.log("no sales happened these dates");
+          }
+          res.json({ message: 'Sales report processed successfully', salesOrders });
+       
+        
+    } catch (error) {
+        console.log(message.error);
+        res.status(500).json({ message: 'Internal server error' });
+
+    }
+}
+
 module.exports = {
     loadlogin,
     verifyLogin,
@@ -539,6 +602,12 @@ module.exports = {
     // user orders
     loadUserorders,
     loadOrders,
-    changeStatus
+    changeStatus,
+
+    // sale report
+    LoadSalesPage,
+    salesReportCollect
+
+
 
 }

@@ -377,6 +377,23 @@ const returnOrder = async (req, res) => {
 }
 
 
+
+
+const walletLoad =async(req, res)=>{
+    try {
+
+        const user_id = req.session.user_id
+
+         // Get the cart count
+         const cartItemCount = await getCartItemCount(user_id);
+
+        res.render('user/wallet',{ cartItemCount })
+
+    } catch (error) {
+        console.log(message.error);
+    }
+}
+
 module.exports = {
 
     orderPlace,
@@ -385,6 +402,7 @@ module.exports = {
     loadMyOrder,
     loadViewOrder,
     cancelOrder,
-    returnOrder
+    returnOrder,
+    walletLoad
 
 }

@@ -48,8 +48,11 @@ admin_route.patch('/Unlist-product/:prodID', adminController.productUnlist)
 
 // user-orders details
 admin_route.get('/user-Orders',auth.isLogin,adminController.loadUserorders)
-admin_route.get('/order-info',adminController.loadOrders)
-
+admin_route.get('/order-info',auth.isLogin,adminController.loadOrders)
 admin_route.post('/statusChange',adminController.changeStatus)
+
+// sales report
+admin_route.get('/Sales-page-Date',adminController.LoadSalesPage)
+admin_route.post('/salesReport',adminController.salesReportCollect)
 
 module.exports = admin_route;

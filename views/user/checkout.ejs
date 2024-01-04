@@ -718,13 +718,13 @@
                     // razorpay finction
 
                     var options = {
-                        "key": data.Razorpay_key_id, // Enter the Key ID generated from the Dashboard
-                        "amount": data.cartTotal, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                        "key": data.Razorpay_key_id, 
+                        "amount": data.cartTotal, 
                         "currency": "INR",
-                        "name": "Acme Corp",
+                        "name": "ShoeOne",
                         "description": "Test Transaction",
-                        "image": "https://example.com/your_logo",
-                        "order_id": data.order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+                        "image": "/assets/images/logos/ShoeOne-Logo.png",
+                        "order_id": data.order.id, 
                         "handler": function (response) {
                             // alert(response.razorpay_payment_id);
                             // alert(response.razorpay_order_id);
@@ -736,6 +736,7 @@
 
                             console.log("try something");
 
+                            // verify payment function calling
                             verifyPayment(response, data.order.id, paymentmethod, addressId)
 
 
@@ -754,13 +755,13 @@
                     };
                     var rzp1 = new Razorpay(options);
                     rzp1.on('payment.failed', function (response) {
-                        alert(response.error.code);
-                        alert(response.error.description);
-                        alert(response.error.source);
-                        alert(response.error.step);
-                        alert(response.error.reason);
-                        alert(response.error.metadata.order_id);
-                        alert(response.error.metadata.payment_id);
+                        // alert(response.error.code);
+                        // alert(response.error.description);
+                        // alert(response.error.source);
+                        // alert(response.error.step);
+                        // alert(response.error.reason);
+                        // alert(response.error.metadata.order_id);
+                        // alert(response.error.metadata.payment_id);
                     });
                     rzp1.open();
 
@@ -779,6 +780,7 @@
 
 
 
+        // verify payment function
         async function verifyPayment(payment, order, paymentType, addressId) {
             console.log("fddf" + paymentType);
 

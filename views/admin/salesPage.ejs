@@ -1,0 +1,381 @@
+<%- include('../layouts/header.ejs') %>
+
+    <style>
+        /* Additional styles for better appearance */
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .card {
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            border-bottom: none;
+            background-color: #1d3232;
+            color: white;
+            border-radius: 15px 15px 0 0;
+        }
+
+        .card-header h3 {
+            color: white;
+        }
+
+        .card-body {
+            padding: 20px;
+        }
+
+        .chart-container {
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #e0e0e0;
+        }
+
+        .btn1:hover {
+            background-color: rgb(255, 249, 249);
+            color: rgb(0, 0, 0);
+        }
+    </style>
+
+
+    <!--  Body Wrapper -->
+    <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+        data-sidebar-position="fixed" data-header-position="fixed">
+        <!-- Sidebar Start -->
+        <aside class="left-sidebar">
+            <!-- Sidebar scroll-->
+            <div>
+
+                <div class="brand-logo d-flex align-items-center justify-content-between">
+                    <a href="./index.html" class="text-nowrap logo-img">
+                        <img src="../assets/images/logos/ShoeOne-Logo.png" width="180" alt="" />
+                    </a>
+                    <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
+                        <i class="ti ti-x fs-8"></i>
+                    </div>
+                </div>
+                <!-- Sidebar navigation-->
+                <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+                    <ul id="sidebarnav">
+                        <li class="nav-small-cap">
+                            <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                            <span class="hide-menu">Home</span>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link " href="/admin/dashboard" aria-expanded="false">
+                                <span>
+                                    <i class="ti ti-layout-dashboard"></i>
+                                </span>
+                                <span class="hide-menu">Dashboard</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="/admin/customersList" aria-expanded="false">
+                                <span>
+                                    <i class="ti ti-user-plus"></i>
+                                </span>
+                                <span class="hide-menu">Customers</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link active" href="/admin/Sales-page-Date" aria-expanded="false">
+                                <span>
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </span>
+                                <span class="hide-menu">Sales Report</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="/admin/category" aria-expanded="false">
+                                <span>
+                                    <i class="ti ti-article"></i>
+                                </span>
+                                <span class="hide-menu">Categories</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="/admin/product" aria-expanded="false">
+                                <span>
+                                    <i class="fa-solid fa-layer-group"></i>
+                                </span>
+                                <span class="hide-menu">Products</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="/admin/user-Orders" aria-expanded="false">
+                                <span>
+                                    <i class="ti ti-file-description"></i>
+                                </span>
+                                <span class="hide-menu">Orders</span>
+                            </a>
+                        </li>
+
+                        <!-- <li class="sidebar-item">
+                            <a class="sidebar-link" href="./ui-buttons.html" aria-expanded="false">
+                                <span>
+                                    <i class="ti ti-cards"></i>
+                                </span>
+                                <span class="hide-menu">Payments</span>
+                            </a>
+                        </li> -->
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="/admin/logout" aria-expanded="false">
+                                <span>
+                                    <i class="ti ti-login"></i>
+                                </span>
+                                <span class="hide-menu">Logout</span>
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </nav>
+                <!-- End Sidebar navigation -->
+            </div>
+            <!-- End Sidebar scroll-->
+        </aside>
+        <!--  Sidebar End -->
+        <!--  Main wrapper -->
+        <div class="body-wrapper">
+            <!--  Header Start -->
+            <header class="app-header">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <ul class="navbar-nav">
+                        <li class="nav-item d-block d-xl-none">
+                            <a class="nav-link sidebartoggler nav-icon-hover" id="headerCollapse"
+                                href="javascript:void(0)">
+                                <i class="ti ti-menu-2"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-icon-hover" href="javascript:void(0)">
+                                <i class="ti ti-bell-ringing"></i>
+                                <div class="notification bg-primary rounded-circle"></div>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
+                        <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
+                            <a href="https://adminmart.com/product/modernize-free-bootstrap-admin-dashboard/"
+                                target="_blank" class="btn btn-primary">Profile</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img src="../assets/images/profile/user-1.jpg" alt="" width="35" height="35"
+                                        class="rounded-circle">
+                                </a>
+
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </header>
+            <!--  Header End -->
+
+        </div>
+
+        <div class="container-fluid">
+
+            <div class="container ">
+                <div class="row">
+                    <div class="col-md-8 offset-md-2" style="margin-top: 120px; margin-left: 300px;">
+                        <div class="card">
+                            <div class="card-header text-center">
+                                <h3 class="mb-0">Sales Report</h3>
+                            </div>
+                            <div class="card-body">
+                                <!-- Date Range Picker -->
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="fromDate">From Date:</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control datepicker" id="fromDate"
+                                                placeholder="Day/Month/Year">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text"><i
+                                                        class="fa-solid fa-calendar-days"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="toDate">To Date:</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control datepicker" id="toDate"
+                                                placeholder="Day/Month/Year">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text"><i
+                                                        class="fa-solid fa-calendar-days"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><br><br>
+
+                                <div class="form-group text-center">
+                                    <button type="submit" class="btn btn-dark btn1" id="generateReportBtn">Generate
+                                        Report</button>
+                                </div>
+                                <br><br>
+                                <hr>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered mt-4">
+                                        <thead>
+                                            <tr>
+                                                <!-- <th scope="col">From Date</th>
+                                          <th scope="col">To Date</th> -->
+                                                <th scope="col">ordered On</th>
+                                                <th scope="col">Order ID</th>
+                                                <th scope="col">Total Amount</th>
+                                                <th scope="col">Payment Method</th>
+                                                <th scope="col">Shipping Address</th>
+                                          <!-- <th scope="col">order</th> -->
+                                                <!-- Add more columns as needed -->
+                                            </tr>
+                                        </thead>
+                                        <tbody id="reportBody"></tbody>
+                                    </table>
+                                </div>
+
+                                <!-- <div class="row">
+                          <div class="col-md-6">
+                            <h5 class="text-center mb-4">Earnings this month</h5>
+                            <div class="chart-container" id="earningsChart"></div>
+                          </div>
+                          <div class="col-md-6">
+                            <h5 class="text-center mb-4">Expense this month</h5>
+                            <div class="chart-container" id="expenseChart"></div>
+                          </div>
+                        </div> -->
+                                <!-- <hr>
+                        <div class="row">
+                          <div class="col-md-12">
+                            <h5 class="text-center mb-4">Sales this month</h5>
+                            <div class="chart-container" id="salesChart"></div>
+                          </div>
+                        </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+    <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/sidebarmenu.js"></script>
+    <script src="../assets/js/app.min.js"></script>
+    <script src="../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+    <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
+    <script src="../assets/js/dashboard.js"></script>
+
+    <!-- Bootstrap JS and Popper.js (required for Bootstrap JavaScript components) -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+    <!-- Bootstrap Datepicker JS -->
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
+
+
+    <script>
+        // Initialize datepickers
+        $(document).ready(function () {
+            $('.datepicker').datepicker({
+                format: 'dd/mm/yyyy',
+                autoclose: true
+            });
+        });
+
+
+
+        // Add click event for the "Generate Report" button
+        document.getElementById('generateReportBtn').addEventListener('click', function () {
+            // Retrieve selected date range and generate the report
+            let startDate = document.getElementById('fromDate').value;
+            let endDate = document.getElementById('toDate').value;
+
+            console.log('Generating report from', startDate, 'to', endDate);
+
+
+            fetch('/admin/salesReport', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ startDate, endDate })
+            }).then(response => {
+                return response.json();
+            }).then(data => {
+                if (data.message) {
+                    console.log(data.message);
+
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: data.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+
+                    //sales data 
+                    if (data.salesOrders) {
+                        console.log(data.salesOrders[0].totalAmount);
+
+
+                        // // Create and append rows to display the selected date range and details
+                        let tableBody = document.getElementById('reportBody');
+                        tableBody.innerHTML = ''; // Clear previous content
+
+                        for (let sales of data.salesOrders) { // Use data.salesOrders here
+
+                            let row = tableBody.insertRow();
+                            let cellOrderedOn = row.insertCell(0);
+                            let cellOrderID = row.insertCell(1);
+                            let cellTotalAmount = row.insertCell(2);
+                            let cellPayment = row.insertCell(3);
+                            let cellShippingAddress =row.insertCell(4)
+
+                            cellOrderedOn.textContent = new Date(sales.orderDate).toLocaleString('en-AU', {
+                                year: 'numeric',
+                                month: '2-digit',
+                                day: '2-digit'
+                            });
+                            cellOrderID.textContent = sales._id;
+                            cellTotalAmount.textContent = sales.totalAmount;
+                            cellPayment.textContent = sales.paymentMethod;
+                            cellShippingAddress.innerHTML = `${sales.shippingAddress.fullname},<br> ${sales.shippingAddress.mobile},<br> ${sales.shippingAddress.address},<br> ${sales.shippingAddress.pincode},<br> ${sales.shippingAddress.city}, ${sales.shippingAddress.state}`;
+                        }
+                    } else {
+                        console.log('No salesOrders data available.');
+                    }
+
+                } else {
+                    Swal.fire({
+                        position: "center",
+                        icon: "error",
+                        title: data.error,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            }).catch(error => {
+                console.log(error);
+            });
+
+
+
+        });
+    </script>
+
+
+
+
+    <%- include('../layouts/footer.ejs') %>
