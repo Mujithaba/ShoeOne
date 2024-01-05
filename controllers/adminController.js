@@ -516,11 +516,11 @@ const changeStatus = async (req, res) => {
 
 
 // sales report
-const LoadSalesPage = async(req,res)=>{
+const LoadSalesPage = async (req, res) => {
     try {
 
         res.render('admin/salesPage')
-        
+
     } catch (error) {
         console.log(message.error);
     }
@@ -530,50 +530,306 @@ const LoadSalesPage = async(req,res)=>{
 
 // collect report based on the date
 
-const salesReportCollect =async(req, res)=>{
+const salesReportCollect = async (req, res) => {
     try {
 
         console.log("ethyooooo");
 
         let { startDate, endDate } = req.body;
 
-        startDate=startDate.split('/')
-        endDate=endDate.split('/')
+        startDate = startDate.split('/')
+        endDate = endDate.split('/')
         console.log(startDate);
         console.log(endDate);
 
         const fromDate = new Date(`${startDate[2]}/${startDate[1]}/${startDate[0]}`);
         const toDate = new Date(`${endDate[2]}/${endDate[1]}/${endDate[0]}`);
-        
+
         console.log('startDate:', fromDate);
         console.log('endDate:', toDate);
-        
 
-       const salesOrders = await Order.aggregate([
+
+        const salesOrders = await Order.aggregate([
             {
-              $match: {
-                $and: [
-                  { orderDate: { $gte: fromDate } },
-                  { orderDate: { $lte: toDate } }
-                ]
-              }
+                $match: {
+                    $and: [
+                        { orderDate: { $gte: fromDate } },
+                        { orderDate: { $lte: toDate } }
+                    ]
+                }
             }
-          ]);
-        
-          if (salesOrders) {
-            console.log(salesOrders);
-           
+        ]);
 
-          }else{
+        if (salesOrders) {
+            console.log(salesOrders);
+
+
+        } else {
             console.log("no sales happened these dates");
-          }
-          res.json({ message: 'Sales report processed successfully', salesOrders });
-       
-        
+        }
+        res.json({ message: 'Sales report processed successfully', salesOrders });
+
+
     } catch (error) {
         console.log(message.error);
         res.status(500).json({ message: 'Internal server error' });
 
+    }
+}
+
+
+// graph dashboard
+const sendDashboardData = async (req, res) => {
+    try {
+
+        const customerArray = await User.aggregate([{ $count: "customers" }]);
+
+        console.log(customerArray);
+        let customers = 0;
+
+        if (customerArray.length) {
+            [{ customers }] = customerArray
+        }
+
+        const { time } = req.query;
+        let timeFrame = new Date(new Date().setHours(0, 0, 0, 0));
+        let pipeline = [
+            {
+                $match: {
+
+                    orderDate: {
+                        $gte: new Date(new Date().setHours(0, 0, 0, 0)),
+                        $lte: new Date(new Date().setHours(23, 59, 59, 999)),
+                    },
+                },
+            },
+            {
+                $group: {
+                    _id: null, // Group all documents
+                    totalAmount: { $sum: "$totalAmount" },
+                    orderCount: { $sum: 1 }, // Count the number of orders
+                },
+            },
+            {
+                $project: {
+                    _id: 0, // Exclude _id field
+                    totalAmount: 1,
+                    orderCount: 1,
+                    label: "Today",
+                },
+            },
+        ];
+
+
+        if (time === "week") {
+            timeFrame = new Date(new Date().setHours(0, 0, 0, 0) - new Date().getDay() * 86400000);
+            pipeline = [
+                {
+                    $match: {
+                        orderDate: {
+                            $gte: new Date(new Date().setHours(0, 0, 0, 0) - new Date().getDay() * 86400000),
+                            $lte: new Date(new Date().setHours(23, 59, 59, 999)),
+                        },
+                    },
+                },
+                {
+                    $group: {
+                        _id: { $dayOfWeek: "$orderDate" }, // Group by day of the week
+                        totalAmount: { $sum: "$totalAmount" },
+                        orderCount: { $sum: 1 }, // Count the number of orders
+                    },
+                },
+                {
+                    $project: {
+                        _id: 0, // Exclude _id field
+                        label: "$_id", // Rename _id to dayOfWeek
+                        totalAmount: 1,
+                        orderCount: 1,
+                    },
+                },
+                {
+                    $sort: { label: 1 },
+                },
+            ];
+        }
+
+        if (time === "month") {
+            timeFrame = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+            pipeline = [
+                {
+                    $match: {
+                        orderDate: {
+                            $gte: new Date(new Date().setDate(1)),
+                            $lte: new Date(new Date().setHours(23, 59, 59, 999)),
+                        },
+                    },
+                },
+                {
+                    $group: {
+                        _id: { $dayOfMonth: "$orderDate" }, // Group by day of the month
+                        totalAmount: { $sum: "$totalAmount" },
+                        orderCount: { $sum: 1 }, // Count the number of orders 
+                    },
+                },
+                {
+                    $project: {
+                        _id: 0, // Exclude _id field
+                        label: "$_id", // Rename _id to dayOfMonth
+                        totalAmount: 1,
+                        orderCount: 1,
+                    },
+                },
+                {
+                    $sort: { label: 1 },
+                },
+            ];
+        }
+
+        if (time === "year") {
+            timeFrame = new Date(new Date().getFullYear(), 0, 1);
+            pipeline = [
+                {
+                    $match: {
+                        orderDate: {
+                            $gte: new Date(new Date().getFullYear(), 0, 1),
+                            $lte: new Date(new Date().setHours(23, 59, 59, 999)),
+                        },
+                    },
+                },
+                {
+                    $group: {
+                        _id: { $month: "$orderDate" }, // Group by month
+                        totalAmount: { $sum: "$totalAmount" },
+                        orderCount: { $sum: 1 }, // Count the number of orders
+                    },
+                },
+                {
+                    $project: {
+                        _id: 0, // Exclude _id field
+                        label: { $monthToString: { month: "$_id", style: "short" } }, // Transform numeric month to short month name
+                        totalAmount: 1,
+                        orderCount: 1,
+                    },
+                },
+                {
+                    $sort: { label: 1 },
+                },
+            ];
+            // pipeline = [
+            //     {
+            //         $match: {
+            //             orderDate: {
+            //                 $gte: new Date(new Date().setMonth(0, 1)),
+            //                 $lte: new Date(new Date().setHours(23, 59, 59, 999)),
+            //             },
+            //         },
+            //     },
+            //     {
+            //         $group: {
+            //             _id: { $month: "$orderDate" }, // Group by month
+            //             totalAmount: { $sum: "$totalAmount" },
+            //             orderCount: { $sum: 1 }, // Count the number of orders
+            //         },
+            //     },
+            //     {
+            //         $project: {
+            //             _id: 0, // Exclude _id field
+            //             label: { $monthToString: { month: "$_id", style: "short" } }, // Transform numeric month to short month name
+            //             totalAmount: 1,
+            //             orderCount: 1,
+            //         },
+            //     },
+            //     {
+            //         $sort: { label: 1 },
+            //     },
+            // ];
+        }
+        
+
+
+
+
+        // payment method
+        const paymentMethods = await Order.aggregate([
+            { $match: { orderDate: { $gte: timeFrame } } },
+            { $group: { _id: "$paymentMethod", orderCount: { $sum: 1 } } },
+        ]);
+        
+        const payment = {
+            online: paymentMethods.find(({ _id }) => _id === "online")?.orderCount || 0,
+            cod: paymentMethods.find(({ _id }) => _id === "COD")?.orderCount || 0,
+        };
+        
+
+
+        // const productDetails = await Order.aggregate([
+        //     { $match: { orderDate: { $gte: timeFrame } } },
+        //     {
+        //         $unwind: "$products",
+        //     },
+        //     { $project: { products: 1 } },
+        //     {
+        //         $group: {
+        //             _id: "$products.productId",
+        //             count: { $sum: "$products.quantity" },
+        //         },
+        //     },
+        //     { $sort: { count: -1 } },
+        //     { $limit: 5 },
+        //     {
+        //         $lookup: {
+        //             from: "products",
+        //             localField: "_id",
+        //             foreignField: "_id",
+        //             as: "productDetails",
+        //         },
+        //     },
+        //     {
+        //         $project: { "productDetails.name": 1, count: 1 },
+        //     },
+        // ]);
+        // const products = {
+        //     productName: [],
+        //     productCount: [],
+        // };
+        // // console.log("here PRODUCT DETAILS :",productDetails)
+        // productDetails.forEach((item) => {
+        //     // products.productName.push(item.productDetails[0].productName);
+        //     products.productCount.push(item.count);
+        // });
+
+
+        // sales
+        const salesDetails = await Order.aggregate(pipeline);
+
+        const sales = {
+            totalAmount: 0,
+            orderCount: [],
+            label: [],
+        };
+        console.log(salesDetails);
+        sales.totalAmount = salesDetails.reduce((acc, { totalAmount }) => {
+            return acc + Number(totalAmount);
+        }, 0);
+        sales.orderCount = salesDetails.map(({ orderCount }) => orderCount);
+        sales.label = salesDetails.map(({ label }) => label);
+
+        console.log(payment);
+        // console.log(products);
+        console.log(sales);
+
+        res.status(200).json({
+            status: "success",
+            customers,
+            payment,
+            // products,
+            sales,
+
+        });
+
+    } catch (error) {
+        // console.log(message.error);
+        res.status(500).json({ message: 'Internal server error' });
     }
 }
 
@@ -606,7 +862,10 @@ module.exports = {
 
     // sale report
     LoadSalesPage,
-    salesReportCollect
+    salesReportCollect,
+    // graph dashboard
+    sendDashboardData
+
 
 
 

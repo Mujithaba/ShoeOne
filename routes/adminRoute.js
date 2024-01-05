@@ -15,6 +15,7 @@ admin_route.post('/', adminController.verifyLogin)
 
 // dashboard route
 admin_route.get('/dashboard', auth.isLogin,adminController.loadDashboard)
+admin_route.get('/dashboard-data',adminController.sendDashboardData)
 // logout
 admin_route.get('/logout',auth.isLogin,adminController.logout)
 

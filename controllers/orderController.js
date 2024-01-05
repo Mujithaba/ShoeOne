@@ -127,7 +127,7 @@ const orderPlace = async (req, res) => {
             console.log(userData);
 
             var options = {
-                amount: cartTotal,  // amount in the smallest currency unit
+                amount: cartTotal *100,  // amount in the smallest currency unit
                 currency: "INR",
                 receipt: user_id
             };
