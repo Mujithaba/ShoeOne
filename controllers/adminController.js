@@ -685,65 +685,102 @@ const sendDashboardData = async (req, res) => {
             ];
         }
 
+
+
+
+
         if (time === "year") {
-            timeFrame = new Date(new Date().getFullYear(), 0, 1);
+            const currentYear = new Date().getFullYear();
+            timeFrame = new Date(currentYear, 0, 1);
+        
             pipeline = [
                 {
                     $match: {
                         orderDate: {
-                            $gte: new Date(new Date().getFullYear(), 0, 1),
+                            $gte: new Date(currentYear, 0, 1),
                             $lte: new Date(new Date().setHours(23, 59, 59, 999)),
                         },
                     },
                 },
                 {
                     $group: {
-                        _id: { $month: "$orderDate" }, // Group by month
+                        _id: null, // Group all data, as it's for the entire year
                         totalAmount: { $sum: "$totalAmount" },
-                        orderCount: { $sum: 1 }, // Count the number of orders
+                        orderCount: { $sum: 1 },
                     },
                 },
                 {
                     $project: {
-                        _id: 0, // Exclude _id field
-                        label: { $monthToString: { month: "$_id", style: "short" } }, // Transform numeric month to short month name
+                        _id: 0,
+                        label: currentYear.toString(),
                         totalAmount: 1,
                         orderCount: 1,
                     },
                 },
-                {
-                    $sort: { label: 1 },
-                },
             ];
-            // pipeline = [
-            //     {
-            //         $match: {
-            //             orderDate: {
-            //                 $gte: new Date(new Date().setMonth(0, 1)),
-            //                 $lte: new Date(new Date().setHours(23, 59, 59, 999)),
-            //             },
-            //         },
-            //     },
-            //     {
-            //         $group: {
-            //             _id: { $month: "$orderDate" }, // Group by month
-            //             totalAmount: { $sum: "$totalAmount" },
-            //             orderCount: { $sum: 1 }, // Count the number of orders
-            //         },
-            //     },
-            //     {
-            //         $project: {
-            //             _id: 0, // Exclude _id field
-            //             label: { $monthToString: { month: "$_id", style: "short" } }, // Transform numeric month to short month name
-            //             totalAmount: 1,
-            //             orderCount: 1,
-            //         },
-            //     },
-            //     {
-            //         $sort: { label: 1 },
-            //     },
-            // ];
         }
+
+
+
+        // if (time === "year") {
+        //     timeFrame = new Date(new Date().getFullYear(), 0, 1);
+        //     pipeline = [
+        //         {
+        //             $match: {
+        //                 orderDate: {
+        //                     $gte: new Date(new Date().getFullYear(), 0, 1),
+        //                     $lte: new Date(new Date().setHours(23, 59, 59, 999)),
+        //                 },
+        //             },
+        //         },
+        //         {
+        //             $group: {
+        //                 _id: { $month: "$orderDate" }, // Group by month
+        //                 totalAmount: { $sum: "$totalAmount" },
+        //                 orderCount: { $sum: 1 }, // Count the number of orders
+        //             },
+        //         },
+        //         {
+        //             $project: {
+        //                 _id: 0, // Exclude _id field
+        //                 label: { $monthToString: { month: "$_id", style: "short" } }, // Transform numeric month to short month name
+        //                 totalAmount: 1,
+        //                 orderCount: 1,
+        //             },
+        //         },
+        //         {
+        //             $sort: { label: 1 },
+        //         },
+        //     ];
+        //     // pipeline = [
+        //     //     {
+        //     //         $match: {
+        //     //             orderDate: {
+        //     //                 $gte: new Date(new Date().setMonth(0, 1)),
+        //     //                 $lte: new Date(new Date().setHours(23, 59, 59, 999)),
+        //     //             },
+        //     //         },
+        //     //     },
+        //     //     {
+        //     //         $group: {
+        //     //             _id: { $month: "$orderDate" }, // Group by month
+        //     //             totalAmount: { $sum: "$totalAmount" },
+        //     //             orderCount: { $sum: 1 }, // Count the number of orders
+        //     //         },
+        //     //     },
+        //     //     {
+        //     //         $project: {
+        //     //             _id: 0, // Exclude _id field
+        //     //             label: { $monthToString: { month: "$_id", style: "short" } }, // Transform numeric month to short month name
+        //     //             totalAmount: 1,
+        //     //             orderCount: 1,
+        //     //         },
+        //     //     },
+        //     //     {
+        //     //         $sort: { label: 1 },
+        //     //     },
+        //     // ];
+        // }
         
 
 
@@ -756,47 +793,13 @@ const sendDashboardData = async (req, res) => {
         ]);
         
         const payment = {
-            online: paymentMethods.find(({ _id }) => _id === "online")?.orderCount || 0,
-            cod: paymentMethods.find(({ _id }) => _id === "COD")?.orderCount || 0,
+
+            
+            online: paymentMethods.find(({ _id }) => _id === "online")?.orderCount ?? 0,
+            cod: paymentMethods.find(({ _id }) => _id === "COD")?.orderCount ?? 0,
         };
         
 
-
-        // const productDetails = await Order.aggregate([
-        //     { $match: { orderDate: { $gte: timeFrame } } },
-        //     {
-        //         $unwind: "$products",
-        //     },
-        //     { $project: { products: 1 } },
-        //     {
-        //         $group: {
-        //             _id: "$products.productId",
-        //             count: { $sum: "$products.quantity" },
-        //         },
-        //     },
-        //     { $sort: { count: -1 } },
-        //     { $limit: 5 },
-        //     {
-        //         $lookup: {
-        //             from: "products",
-        //             localField: "_id",
-        //             foreignField: "_id",
-        //             as: "productDetails",
-        //         },
-        //     },
-        //     {
-        //         $project: { "productDetails.name": 1, count: 1 },
-        //     },
-        // ]);
-        // const products = {
-        //     productName: [],
-        //     productCount: [],
-        // };
-        // // console.log("here PRODUCT DETAILS :",productDetails)
-        // productDetails.forEach((item) => {
-        //     // products.productName.push(item.productDetails[0].productName);
-        //     products.productCount.push(item.count);
-        // });
 
 
         // sales
@@ -807,7 +810,7 @@ const sendDashboardData = async (req, res) => {
             orderCount: [],
             label: [],
         };
-        console.log(salesDetails);
+        // console.log(salesDetails);
         sales.totalAmount = salesDetails.reduce((acc, { totalAmount }) => {
             return acc + Number(totalAmount);
         }, 0);
@@ -822,7 +825,7 @@ const sendDashboardData = async (req, res) => {
             status: "success",
             customers,
             payment,
-            // products,
+           salesDetails,
             sales,
 
         });

@@ -11,18 +11,17 @@ $(function () {
     if (rawData.ok) {
       const data = await rawData.json();
       if (data.status === "success") {
-        const { customers, payment, products, sales } = data;
-        // document.querySelector("[data-customer]").innerText = customers;
-        // document.querySelector("[data-pending]").innerText = pendingOrders;
-
+        const { customers, payment,  sales,salesDetails } = data;
+        
         document.getElementById('AmountTotal').innerHTML = sales.totalAmount
         document.getElementById('amountTotal').innerHTML = sales.totalAmount
 
         console.log(customers)
-        console.log(payment)
-        // console.log(sales)
+        console.log(payment.online)
+        console.log(payment.cod)
+        // console.log(salesDetails{totalAmount});
 
-        salesGraph(sales);
+        salesGraph(sales, salesDetails);
         paymentGraph(payment);
 
       }
@@ -147,15 +146,16 @@ $(function () {
 // Initialize a global variable to store the ApexCharts instance
 
 
-function salesGraph(sale) {
+function salesGraph(sale , salesDetails) {
   let orderCount = sale.orderCount;
   let label = sale.label;
+ 
 
   // Check if the chart instance is already created
   if (!salesChart) {
     // If not, create a new instance
     salesChart = new ApexCharts(document.querySelector("#chart"), {
-      series: [{ name: "Orders this month:", data: orderCount }],
+      series: [{ name: "Orders ", data: orderCount }],
       chart: {
         type: "bar",
         height: 345,
@@ -246,12 +246,6 @@ function salesGraph(sale) {
     salesChart.updateSeries([{ data: orderCount }]);
   }
 
-  // ... (rest of your code for other charts)
-
-
-
-
-
 
 
 
@@ -261,6 +255,9 @@ function salesGraph(sale) {
     // Earning
     // =====================================
     var earning = {
+
+      
+
       chart: {
         id: "sparkline3",
         type: "area",
@@ -274,9 +271,9 @@ function salesGraph(sale) {
       },
       series: [
         {
-          name: "Earnings",
+          name: "Orders",
           color: "#49BEFF",
-          data: [25, 66, 20, 40, 12, 58, 20],
+          data: orderCount,
         },
       ],
       stroke: {
@@ -314,10 +311,76 @@ function salesGraph(sale) {
   // =====================================
   // Breakup
   // =====================================
+  // var breakup = {
+  //   color: "#adb5bd",
+  //   series: COD,online,
+  //   labels: ["COD","Online"],
+  //   chart: {
+  //     width: 180,
+  //     type: "donut",
+  //     fontFamily: "Plus Jakarta Sans', sans-serif",
+  //     foreColor: "#adb0bb",
+  //   },
+  //   plotOptions: {
+  //     pie: {
+  //       startAngle: 0,
+  //       endAngle: 360,
+  //       donut: {
+  //         size: '75%',
+  //       },
+  //     },
+  //   },
+  //   stroke: {
+  //     show: false,
+  //   },
+
+  //   dataLabels: {
+  //     enabled: false,
+  //   },
+
+  //   legend: {
+  //     show: false,
+  //   },
+  //   colors: ["#5D87FF", "#ecf2ff", "#F9F9FD"],
+
+  //   responsive: [
+  //     {
+  //       breakpoint: 991,
+  //       options: {
+  //         chart: {
+  //           width: 150,
+  //         },
+  //       },
+  //     },
+  //   ],
+  //   tooltip: {
+  //     theme: "dark",
+  //     fillSeriesColor: false,
+  //   },
+  // };
+
+  // var chart = new ApexCharts(document.querySelector("#breakup"), breakup);
+  // chart.render();
+
+
+
+
+  function paymentGraph(payment) {
+  console.log("Payment:", payment);
+  let online = payment.online;
+  let COD = payment.cod;
+  console.log("Online:", online);
+  console.log("COD:", COD);
+
+
+  // document.getElementById('cash').innerHTML ="COD", COD
+  // document.getElementById('onli').innerHTML ="Online", online
+
+
   var breakup = {
     color: "#adb5bd",
-    series: [38, 40, 25],
-    labels: ["2022", "2021", "2020"],
+    series: [COD, online], // Separate series for COD and Online
+    labels: ["COD", "Online"], // Corresponding labels
     chart: {
       width: 180,
       type: "donut",
@@ -336,16 +399,13 @@ function salesGraph(sale) {
     stroke: {
       show: false,
     },
-
     dataLabels: {
       enabled: false,
     },
-
     legend: {
       show: false,
     },
     colors: ["#5D87FF", "#ecf2ff", "#F9F9FD"],
-
     responsive: [
       {
         breakpoint: 991,
@@ -365,10 +425,17 @@ function salesGraph(sale) {
   var chart = new ApexCharts(document.querySelector("#breakup"), breakup);
   chart.render();
 
+  
+  
+}
 
 
 
 
+// Vanilla JavaScript
+window.addEventListener("load", () => {
+  fetchDashBoardData("today");
+});
 
 
 

@@ -96,12 +96,15 @@
         #readonly-clr {
             background-color: white;
         }
+
         #readonly-clr1 {
             background-color: white;
         }
+
         #readonly-clr2 {
             background-color: white;
         }
+
         #readonly-clr3 {
             background-color: white;
         }
@@ -199,6 +202,7 @@
             margin-left: 240px;
             background-color: rgb(128, 8, 8);
         }
+
         #dlt:hover {
             background-color: rgb(224, 15, 15);
         }
@@ -239,13 +243,18 @@
             <a href="#" class="search-switch"><img src="/img/icon/search.png" alt=""></a>
             <a href="#"><img src="/img/icon/heart.png" alt=""></a>
 
-            <a  href="./cart"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="18" viewBox="0 0 576 512"><path d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/></svg>
-                <% if (cartItemCount > 0) { %>
-                    <span class="position-absolute top-0 start-100 translate-middle px-1 border border-light rounded-circle" style="background-color: red; font-size: 10px">
+            <a href="./cart"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="18" viewBox="0 0 576 512">
+                    <path
+                        d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z" />
+                </svg>
+                <% if (cartItemCount> 0) { %>
+                    <span
+                        class="position-absolute top-0 start-100 translate-middle px-1 border border-light rounded-circle"
+                        style="background-color: red; font-size: 10px">
                         <%= cartItemCount %>
-                        <span class="visually-hidden">New alerts</span>
+                            <span class="visually-hidden">New alerts</span>
                     </span>
-                <% } %>
+                    <% } %>
             </a>
             <a href="/profile"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512">
                     <path
@@ -309,13 +318,19 @@
                         <a href="#" class="search-switch"><img src="/img/icon/search.png" alt=""></a>
                         <a href="#"><img src="/img/icon/heart.png" alt=""></a>
                         <!-- <a href="#"><img src="/img/icon/cart.png" alt=""> </a> -->
-                        <a  href="./cart"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="18" viewBox="0 0 576 512"><path d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/></svg>
-                            <% if (cartItemCount > 0) { %>
-                                <span class="position-absolute top-0 start-100 translate-middle px-1 border border-light rounded-circle" style="background-color: red; font-size: 10px">
+                        <a href="./cart"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="18"
+                                viewBox="0 0 576 512">
+                                <path
+                                    d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z" />
+                            </svg>
+                            <% if (cartItemCount> 0) { %>
+                                <span
+                                    class="position-absolute top-0 start-100 translate-middle px-1 border border-light rounded-circle"
+                                    style="background-color: red; font-size: 10px">
                                     <%= cartItemCount %>
-                                    <span class="visually-hidden">New alerts</span>
+                                        <span class="visually-hidden">New alerts</span>
                                 </span>
-                            <% } %>
+                                <% } %>
                         </a>
 
                         <a href="/profile"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="14"
@@ -358,7 +373,7 @@
             Account settings
         </h3>
 
-       
+
 
         <div class="row">
             <div class="col-lg-6 col-md-6 col-sm-6c">
@@ -366,15 +381,15 @@
                     <a id="btnHover" href="/my-Order"><i class="fas fa-shopping-cart"></i>My Orders</a>
                 </div>
             </div>
-        
+
             <div class="col-lg-6 col-md-6 col-sm-6c ml-auto">
                 <div class="continue__btn">
                     <a id="btnHover" href="/your-wallet"><i class="fas fa-wallet"></i>Your Wallet</a>
                 </div>
             </div>
         </div>
-        
-        
+
+
 
         <br><br><br>
         <div class="card overflow-hidden">
@@ -460,14 +475,15 @@
                                                 <%= address.state %>
                                             </p>
 
-                                            <td><a href="/editAddress?id= <%= address._id %>" class="btn btn-warning">Edit</a>
+                                            <a href="/editAddress?id= <%= address._id %>"
+                                                class="btn btn-warning">Edit</a>
 
 
-                                                <!-- delete address button -->
-                                                <button type="button" id="dlt" data-address-id="<%= address._id %>"
-                                                    class="delete-button btn-danger"><i
-                                                        class="fa-solid fa-trash"></i></button>
-                                            </td>
+                                            <!-- delete address button -->
+                                            <button type="button" id="dlt" data-address-id="<%= address._id %>"
+                                                class="delete-button btn-danger"><i
+                                                    class="fa-solid fa-trash"></i></button>
+
                                         </div>
 
 
@@ -735,6 +751,83 @@
                         const data = await response.json();
 
                         if (data.message) {
+
+                            console.log(data.addedAddress, "hghjfhghg");
+                            if (data.addedAddress) {
+                                // Assuming data.addedAddress is an object with user information
+                                const userAddress = data.addedAddress;
+
+                                // Construct the HTML content using the user information
+                                const addressHTML = `
+                                        
+                                        <p> ${userAddress.fullname}</p>
+                                        <p>${userAddress.mobile}</p>
+                                        <p> ${userAddress.address}</p>
+                                        <p> ${userAddress.pincode}</p>
+                                        <p> ${userAddress.city}</p>
+                                        <p> ${userAddress.state}</p>
+
+                                        <a href="/editAddress?id= ${userAddress._id}  "
+                                                    class="btn btn-warning">Edit</a>
+
+
+                                                <!-- delete address button -->
+                                                <button type="button" id="dlt" data-address-id="${userAddress._id}"
+                                                    class="delete-button btn-danger"><i
+                                                        class="fa-solid fa-trash"></i></button>
+                                   
+                                    `;
+
+                                // Update the content of the element with id 'addressDetails'
+                                let addressTab = document.getElementById('addressDetails');
+                                const div = document.createElement('div');
+                                div.setAttribute("class", "addressItem");
+                                div.innerHTML = addressHTML
+                                addressTab.appendChild(div)
+                                let button = document.querySelector(`[data-address-id="${userAddress._id}"]`)
+                                button.addEventListener('click', () => {
+                                    let addressId = button.getAttribute('data-address-id');
+                                    console.log(addressId);
+                                    // let url ='/deleteAddress'
+                                    fetch('/deleteAddress/', {
+                                        method: 'post',
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify({ addressId })
+                                    }).then(response => {
+                                        return response.json();
+                                    }).then(data => {
+                                        if (data.message) {
+                                            console.log(data.message);
+
+                                            Swal.fire({
+                                                position: "center",
+                                                icon: "success",
+                                                title: data.message,
+                                                showConfirmButton: false,
+                                                timer: 1500
+                                            });
+                                            button.parentNode.remove()
+                                            // location.reload()
+
+                                        } else {
+                                            Swal.fire({
+                                                position: "center",
+                                                icon: "error",
+                                                title: data.error,
+                                                showConfirmButton: false,
+                                                timer: 1500
+                                            });
+                                        }
+                                    }).catch(error => {
+                                        console.log(error);
+                                    });
+                                });
+                            }
+
+
+
                             Swal.fire({
                                 position: 'center',
                                 icon: 'success',
@@ -970,116 +1063,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-        // *********************************Edit address******************************************
-                    // address getting to the edit modal  //
-
-    //    async function openEditModal(addressId) {
-    //         console.log("gg" + addressId);
-
-
-    //         await fetch(`/getAddressDetails/${addressId}`)
-    //             .then(response => response.json())
-    //             .then(data => {
-    //                 document.getElementById('editFullname').value = data.fullname;
-    //                 document.getElementById('editMobile').value = data.mobile;
-    //                 document.getElementById('editAddress').value = data.address;
-    //                 document.getElementById('editPincode').value = data.pincode;
-    //                 document.getElementById('editCity').value = data.city;
-    //                 document.getElementById('editState').value = data.state;
-    //             })
-    //             .catch(error => console.error('Error fetching address details:', error));
-    //     }
-
-
-    //     document.querySelectorAll('.edit-addrs').forEach((btn) => {
-    //         btn.addEventListener('click', async () => {
-    //             const addressId = btn.getAttribute('data-id');
-    //             await openEditModal(addressId);
-    //         });
-    //     });
-
-        //------- The edited address SAVE to the database ------//
-
-        // document.querySelectorAll('.saving-edit-ad').forEach((btn) => {
-        //     btn.addEventListener('click', saveEditedData);
-
-        //     async function saveEditedData() {
-        //         const addressId = btn.getAttribute('data-Id');
-        //         console.log("save"+addressId);
-        //         const FullName = document.getElementById('editFullname').value
-        //         const Mobilenum = document.getElementById('editMobile').value
-        //         const Addresses = document.getElementById('editAddress').value
-        //         const Pincode = document.getElementById('editPincode').value
-        //         const City = document.getElementById('editCity').value
-        //         const State = document.getElementById('editState').value
-
-        //         try {
-        //             const response = await fetch(`/UpdateAddressDetails/${addressId}`, {
-        //                 method: 'POST',
-        //                 headers: {
-        //                     'Content-Type': 'application/json'
-        //                 },
-        //                 body: JSON.stringify({ FullName ,Mobilenum, Addresses, Pincode, City, State})
-        //             });
-
-        //             const data = await response.json();
-
-        //             if (data.message) {
-        //             //    const myModal =  new bootstrap.Modal(document.querySelector('#editModal'));;
-        //             //    myModal.hide();
-        //                 console.log("saved");
-        //                 // alert(data.message)
-        //                 Swal.fire({
-        //                     position: "center",
-        //                     icon: "success",
-        //                     title: data.message,
-        //                     showConfirmButton: false,
-        //                     timer: 1500
-        //                 });
-        //                 // Close the modal after saving changes
-        //          // Hide the modal after a delay
-        //          setTimeout(function () {
-        //             const modal = new bootstrap.Modal(document.getElementById('editModal'));
-        //             modal.hide();
-        //             location.reload();
-        //         }, 1000);
-        //             }else{
-        //                 Swal.fire({
-        //                     position: "center",
-        //                     icon: "info",
-        //                     title: data.error,
-        //                     showConfirmButton: false,
-        //                     timer: 1500
-        //                 });
-        //             }
-
-                    
-        //         } catch (error) {
-        //             // Handle error
-        //             console.error(error);
-        //         }
-        //     }
-        // });
-
-
-        
 
 
 

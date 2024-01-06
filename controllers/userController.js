@@ -550,9 +550,9 @@ const addAddressLoad = async (req, res) => {
             state: addAddress.state
 
         });
-        await userAddress.save()
-        // console.log(userAddress);
-        res.json({ message: "Address added Successfully" })
+      const addedAddress =  await userAddress.save()
+        console.log(addedAddress);
+        res.json({ message: "Address added Successfully" ,addedAddress})
     } catch (error) {
         console.log(error.message);
         res.status(500).json({ error: 'Internal server error' });
