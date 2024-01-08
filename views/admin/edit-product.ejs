@@ -22,11 +22,15 @@
                 <!-- Existing Images (You can use the existing images or upload new ones) -->
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label for="existingImages"><b>Existing Images:</b></label>
-                        <!-- Display existing images or provide an option to delete them -->
-                        <!-- Example: <img src="<%= product.image1 %>" alt="Image 1"> -->
-                        <input type="file" class="form-control" id="existingImages" name="Image"
-                            accept="image/<%= product.image %>"  multiple>
+                        <label for="existingImages"><b>Existing Images:</b></label> <br>
+                        <% product.image.forEach(item=> { %>
+                            <img src="/Image/<%= item %>" alt="" style="width: 70px; height: 70px; border-radius: 5px;">
+                            <% }) %>
+                                <br><br>
+
+                                <!-- Display existing images -->
+                                <input type="file" class="form-control" id="existingImages" name="Image"
+                                    accept="image/<%= product.image %>" multiple>
                     </div>
                 </div>
 
@@ -79,3 +83,30 @@
     </div>
 
     <%- include('../layouts/footer.ejs') %>
+
+
+
+        <!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            async function updated(event) {
+              event.preventDefault(); // Prevent the default behavior of the button
+          
+              Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, Update it!",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  Swal.fire({
+                    title: "Updated!",
+                    text: "Successfully updated.",
+                    icon: "success",
+                  });
+                }
+              });
+            }
+          </script> -->

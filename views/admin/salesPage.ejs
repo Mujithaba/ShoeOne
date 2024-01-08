@@ -224,38 +224,27 @@
                                     <table class="table table-bordered mt-4">
                                         <thead>
                                             <tr>
-                                                <!-- <th scope="col">From Date</th>
-                                          <th scope="col">To Date</th> -->
+                                       
                                                 <th scope="col">ordered On</th>
                                                 <th scope="col">Order ID</th>
                                                 <th scope="col">Total Amount</th>
                                                 <th scope="col">Payment Method</th>
                                                 <th scope="col">Shipping Address</th>
-                                          <!-- <th scope="col">order</th> -->
+                                                <!-- <th scope="col">order</th> -->
                                                 <!-- Add more columns as needed -->
                                             </tr>
                                         </thead>
                                         <tbody id="reportBody"></tbody>
                                     </table>
+                                    <!-- Add Download PDF button -->
+                                    <button class="btn btn-success" id="downloadPDFButton">Download PDF</button>
+
+                                    <!-- Add Download CSV button -->
+                                    <button class="btn btn-success" id="downloadCSVButton" onclick="downloadReport('CSV')">Download CSV</button>
+
                                 </div>
 
-                                <!-- <div class="row">
-                          <div class="col-md-6">
-                            <h5 class="text-center mb-4">Earnings this month</h5>
-                            <div class="chart-container" id="earningsChart"></div>
-                          </div>
-                          <div class="col-md-6">
-                            <h5 class="text-center mb-4">Expense this month</h5>
-                            <div class="chart-container" id="expenseChart"></div>
-                          </div>
-                        </div> -->
-                                <!-- <hr>
-                        <div class="row">
-                          <div class="col-md-12">
-                            <h5 class="text-center mb-4">Sales this month</h5>
-                            <div class="chart-container" id="salesChart"></div>
-                          </div>
-                        </div> -->
+
                             </div>
                         </div>
                     </div>
@@ -298,7 +287,6 @@
 
         // Add click event for the "Generate Report" button
         document.getElementById('generateReportBtn').addEventListener('click', function () {
-            // Retrieve selected date range and generate the report
             let startDate = document.getElementById('fromDate').value;
             let endDate = document.getElementById('toDate').value;
 
@@ -330,7 +318,7 @@
                         console.log(data.salesOrders[0].totalAmount);
 
 
-                        // // Create and append rows to display the selected date range and details
+                        // Create and append rows to display the selected date range and details
                         let tableBody = document.getElementById('reportBody');
                         tableBody.innerHTML = ''; // Clear previous content
 
@@ -341,7 +329,7 @@
                             let cellOrderID = row.insertCell(1);
                             let cellTotalAmount = row.insertCell(2);
                             let cellPayment = row.insertCell(3);
-                            let cellShippingAddress =row.insertCell(4)
+                            let cellShippingAddress = row.insertCell(4)
 
                             cellOrderedOn.textContent = new Date(sales.orderDate).toLocaleString('en-AU', {
                                 year: 'numeric',
@@ -353,6 +341,7 @@
                             cellPayment.textContent = sales.paymentMethod;
                             cellShippingAddress.innerHTML = `${sales.shippingAddress.fullname},<br> ${sales.shippingAddress.mobile},<br> ${sales.shippingAddress.address},<br> ${sales.shippingAddress.pincode},<br> ${sales.shippingAddress.city}, ${sales.shippingAddress.state}`;
                         }
+
                     } else {
                         console.log('No salesOrders data available.');
                     }
@@ -374,6 +363,8 @@
 
         });
     </script>
+
+
 
 
 

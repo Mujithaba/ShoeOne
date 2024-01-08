@@ -128,7 +128,7 @@
 
         </div>
         <div class="offcanvas__nav__option">
-            <a href="#" class="search-switch"><img src="/img/icon/search.png" alt=""></a>
+            <!-- <a href="#" class="search-switch"><img src="/img/icon/search.png" alt=""></a> -->
             <a href="#"><img src="/img/icon/heart.png" alt=""></a>
             <!-- <a href="#"><img src="/img/icon/cart.png" alt=""> </a> -->
             <a href="./cart"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="18" viewBox="0 0 576 512">
@@ -203,7 +203,7 @@
                 </div>
                 <div class="col-lg-3 col-md-3">
                     <div class="header__nav__option">
-                        <a href="#" class="search-switch"><img src="/img/icon/search.png" alt=""></a>
+                        <!-- <a href="#" class="search-switch"><img src="/img/icon/search.png" alt=""></a> -->
                         <a href="#"><img src="/img/icon/heart.png" alt=""></a>
                         <!-- <a href="#"><img src="/img/icon/cart.png" alt=""> </a> -->
                         <a href="./cart"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="18"
@@ -292,8 +292,11 @@
                                                     <%= address.state %>
                                                 </p>
 
-                                                <button type="button" id="dlt" data-address-id="<%= address._id %>"
-                                                    class="delete-button ">Delete</button><br>
+
+
+                                                <!-- <button id="dlt" 
+                                                    class="delete-button ">Delete</button><br> -->
+
 
                                                 <input type="radio" id="address1" data-address-id="<%= address._id %>"
                                                     class="forAddress" name="select" value="select">
@@ -306,10 +309,11 @@
 
 
                             <!-- added address showing end -->
-
+<!-- 
                             <h6 class="coupon__code"><span class="icon_tag_alt"></span> Have a coupon? <a href="#">Click
-                                    here</a> to enter your code</h6>
-                            <h6 class="checkout__title">Billing Details</h6>
+                                    here</a> to enter your code</h6> -->
+                                    <br>
+                            <h6 class="checkout__title"><u>Address Details:</u></h6>
                             <!-- add address begin -->
 
                             <div class="card-body pb-3">

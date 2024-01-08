@@ -7,6 +7,9 @@ const upload = require('../multer')
 const Address = require('../models/addressModel')
 const Cart = require('../models/cartModel')
 const Order = require('../models/orderModel')
+// const PDFDocument = require('pdfkit');
+// const doc = new PDFDocument;
+const fs = require('fs');
 
 const path = require('path');
 const { log } = require('console');
@@ -560,22 +563,37 @@ const salesReportCollect = async (req, res) => {
             }
         ]);
 
+       
+
         if (salesOrders) {
             console.log(salesOrders);
+
+            
 
 
         } else {
             console.log("no sales happened these dates");
         }
+
+
+
+            
+
+            
+        
+
         res.json({ message: 'Sales report processed successfully', salesOrders });
 
 
     } catch (error) {
-        console.log(message.error);
+        console.log(error);
         res.status(500).json({ message: 'Internal server error' });
 
     }
 }
+
+
+
 
 
 // graph dashboard
@@ -605,14 +623,14 @@ const sendDashboardData = async (req, res) => {
             },
             {
                 $group: {
-                    _id: null, // Group all documents
+                    _id: null,
                     totalAmount: { $sum: "$totalAmount" },
-                    orderCount: { $sum: 1 }, // Count the number of orders
+                    orderCount: { $sum: 1 }, 
                 },
             },
             {
                 $project: {
-                    _id: 0, // Exclude _id field
+                    _id: 0, 
                     totalAmount: 1,
                     orderCount: 1,
                     label: "Today",
@@ -621,8 +639,45 @@ const sendDashboardData = async (req, res) => {
         ];
 
 
+        // if (time === "week") {
+        //     timeFrame = new Date(new Date().setHours(0, 0, 0, 0) - new Date().getDay() * 86400000);
+        //     pipeline = [
+        //         {
+        //             $match: {
+        //                 orderDate: {
+        //                     $gte: new Date(new Date().setHours(0, 0, 0, 0) - new Date().getDay() * 86400000),
+        //                     $lte: new Date(new Date().setHours(23, 59, 59, 999)),
+        //                 },
+        //             },
+        //         },
+        //         {
+        //             $group: {
+        //                 _id: { $dayOfWeek: "$orderDate" }, // Group by day of the week
+        //                 totalAmount: { $sum: "$totalAmount" },
+        //                 orderCount: { $sum: 1 }, // Count the number of orders
+        //             },
+        //         },
+        //         {
+        //             $project: {
+        //                 _id: 0, // Exclude _id field
+        //                 label: "$_id", // Rename _id to dayOfWeek
+        //                 totalAmount: 1,
+        //                 orderCount: 1,
+        //             },
+        //         },
+        //         {
+        //             $sort: { label: 1 },
+        //         },
+        //     ];
+        // }
+
+
+
+
+
         if (time === "week") {
             timeFrame = new Date(new Date().setHours(0, 0, 0, 0) - new Date().getDay() * 86400000);
+        
             pipeline = [
                 {
                     $match: {
@@ -634,27 +689,45 @@ const sendDashboardData = async (req, res) => {
                 },
                 {
                     $group: {
-                        _id: { $dayOfWeek: "$orderDate" }, // Group by day of the week
+                        _id: { $dayOfWeek: "$orderDate" }, 
                         totalAmount: { $sum: "$totalAmount" },
-                        orderCount: { $sum: 1 }, // Count the number of orders
+                        orderCount: { $sum: 1 }, 
                     },
                 },
                 {
                     $project: {
-                        _id: 0, // Exclude _id field
-                        label: "$_id", // Rename _id to dayOfWeek
+                        _id: 0, 
+                        label: {
+                            $switch: {
+                                branches: [
+                                    { case: { $eq: ["$_id", 1] }, then: "Sunday" },
+                                    { case: { $eq: ["$_id", 2] }, then: "Monday" },
+                                    { case: { $eq: ["$_id", 3] }, then: "Tuesday" },
+                                    { case: { $eq: ["$_id", 4] }, then: "Wednesday" },
+                                    { case: { $eq: ["$_id", 5] }, then: "Thursday" },
+                                    { case: { $eq: ["$_id", 6] }, then: "Friday" },
+                                    { case: { $eq: ["$_id", 7] }, then: "Saturday" },
+                                ],
+                                default: "Unknown",
+                            },
+                        },
                         totalAmount: 1,
                         orderCount: 1,
                     },
                 },
                 {
-                    $sort: { label: 1 },
+                    $sort: { _id: 1 },
                 },
             ];
         }
+        
+
+
+
 
         if (time === "month") {
-            timeFrame = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
+            timeFrame = new Date(new Date().getFullYear(), 0, 1); 
+        
             pipeline = [
                 {
                     $match: {
@@ -666,24 +739,26 @@ const sendDashboardData = async (req, res) => {
                 },
                 {
                     $group: {
-                        _id: { $dayOfMonth: "$orderDate" }, // Group by day of the month
+                        _id: { $month: "$orderDate" }, 
                         totalAmount: { $sum: "$totalAmount" },
-                        orderCount: { $sum: 1 }, // Count the number of orders 
+                        orderCount: { $sum: 1 }, 
                     },
                 },
                 {
                     $project: {
-                        _id: 0, // Exclude _id field
-                        label: "$_id", // Rename _id to dayOfMonth
+                        _id: 0, 
+                        label: { $dateToString: { format: "%B", date: { $dateFromParts: { year: new Date().getFullYear(), month: "$_id" } } } }, // Format month name
                         totalAmount: 1,
                         orderCount: 1,
                     },
                 },
                 {
-                    $sort: { label: 1 },
+                    $sort: { _id: 1 }, 
                 },
             ];
         }
+        
+
 
 
 
@@ -691,96 +766,45 @@ const sendDashboardData = async (req, res) => {
 
         if (time === "year") {
             const currentYear = new Date().getFullYear();
-            timeFrame = new Date(currentYear, 0, 1);
-        
+            const firstYear = currentYear - 4; 
+          
+            timeFrame = new Date(firstYear, 0, 1);
+          
             pipeline = [
-                {
-                    $match: {
-                        orderDate: {
-                            $gte: new Date(currentYear, 0, 1),
-                            $lte: new Date(new Date().setHours(23, 59, 59, 999)),
-                        },
-                    },
+              {
+                $match: {
+                  orderDate: {
+                    $gte: new Date(firstYear, 0, 1),
+                    $lte: new Date(new Date().setHours(23, 59, 59, 999)),
+                  },
                 },
-                {
-                    $group: {
-                        _id: null, // Group all data, as it's for the entire year
-                        totalAmount: { $sum: "$totalAmount" },
-                        orderCount: { $sum: 1 },
-                    },
+              },
+              {
+                $group: {
+                  _id: { $year: "$orderDate" }, 
+                  totalAmount: { $sum: "$totalAmount" },
+                  orderCount: { $sum: 1 },
                 },
-                {
-                    $project: {
-                        _id: 0,
-                        label: currentYear.toString(),
-                        totalAmount: 1,
-                        orderCount: 1,
-                    },
+              },
+              {
+                $project: {
+                  _id: 0,
+                  label: "$_id",
+                  totalAmount: 1,
+                  orderCount: 1,
                 },
+              },
+              {
+                $sort: { label: 1 },
+              },
             ];
-        }
+          }
+          
+          
 
 
 
-        // if (time === "year") {
-        //     timeFrame = new Date(new Date().getFullYear(), 0, 1);
-        //     pipeline = [
-        //         {
-        //             $match: {
-        //                 orderDate: {
-        //                     $gte: new Date(new Date().getFullYear(), 0, 1),
-        //                     $lte: new Date(new Date().setHours(23, 59, 59, 999)),
-        //                 },
-        //             },
-        //         },
-        //         {
-        //             $group: {
-        //                 _id: { $month: "$orderDate" }, // Group by month
-        //                 totalAmount: { $sum: "$totalAmount" },
-        //                 orderCount: { $sum: 1 }, // Count the number of orders
-        //             },
-        //         },
-        //         {
-        //             $project: {
-        //                 _id: 0, // Exclude _id field
-        //                 label: { $monthToString: { month: "$_id", style: "short" } }, // Transform numeric month to short month name
-        //                 totalAmount: 1,
-        //                 orderCount: 1,
-        //             },
-        //         },
-        //         {
-        //             $sort: { label: 1 },
-        //         },
-        //     ];
-        //     // pipeline = [
-        //     //     {
-        //     //         $match: {
-        //     //             orderDate: {
-        //     //                 $gte: new Date(new Date().setMonth(0, 1)),
-        //     //                 $lte: new Date(new Date().setHours(23, 59, 59, 999)),
-        //     //             },
-        //     //         },
-        //     //     },
-        //     //     {
-        //     //         $group: {
-        //     //             _id: { $month: "$orderDate" }, // Group by month
-        //     //             totalAmount: { $sum: "$totalAmount" },
-        //     //             orderCount: { $sum: 1 }, // Count the number of orders
-        //     //         },
-        //     //     },
-        //     //     {
-        //     //         $project: {
-        //     //             _id: 0, // Exclude _id field
-        //     //             label: { $monthToString: { month: "$_id", style: "short" } }, // Transform numeric month to short month name
-        //     //             totalAmount: 1,
-        //     //             orderCount: 1,
-        //     //         },
-        //     //     },
-        //     //     {
-        //     //         $sort: { label: 1 },
-        //     //     },
-        //     // ];
-        // }
+       
         
 
 

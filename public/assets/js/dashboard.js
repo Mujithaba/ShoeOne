@@ -14,7 +14,7 @@ $(function () {
         const { customers, payment,  sales,salesDetails } = data;
         
         document.getElementById('AmountTotal').innerHTML = sales.totalAmount
-        document.getElementById('amountTotal').innerHTML = sales.totalAmount
+        // document.getElementById('amountTotal').innerHTML = sales.totalAmount
 
         console.log(customers)
         console.log(payment.online)
@@ -365,69 +365,138 @@ function salesGraph(sale , salesDetails) {
 
 
 
-  function paymentGraph(payment) {
-  console.log("Payment:", payment);
-  let online = payment.online;
-  let COD = payment.cod;
-  console.log("Online:", online);
-  console.log("COD:", COD);
+//   function paymentGraph(payment) {
+//   console.log("Payment:", payment);
+//   let online = payment.online;
+//   let COD = payment.cod;
+//   console.log("Online:", online);
+//   console.log("COD:", COD);
 
 
-  // document.getElementById('cash').innerHTML ="COD", COD
-  // document.getElementById('onli').innerHTML ="Online", online
+//   // document.getElementById('cash').innerHTML ="COD", COD
+//   // document.getElementById('onli').innerHTML ="Online", online
 
 
-  var breakup = {
-    color: "#adb5bd",
-    series: [COD, online], // Separate series for COD and Online
-    labels: ["COD", "Online"], // Corresponding labels
-    chart: {
-      width: 180,
-      type: "donut",
-      fontFamily: "Plus Jakarta Sans', sans-serif",
-      foreColor: "#adb0bb",
-    },
-    plotOptions: {
-      pie: {
-        startAngle: 0,
-        endAngle: 360,
-        donut: {
-          size: '75%',
-        },
-      },
-    },
-    stroke: {
-      show: false,
-    },
-    dataLabels: {
-      enabled: false,
-    },
-    legend: {
-      show: false,
-    },
-    colors: ["#5D87FF", "#ecf2ff", "#F9F9FD"],
-    responsive: [
-      {
-        breakpoint: 991,
-        options: {
-          chart: {
-            width: 150,
-          },
-        },
-      },
-    ],
-    tooltip: {
-      theme: "dark",
-      fillSeriesColor: false,
-    },
-  };
+//   var breakup = {
+//     color: "#adb5bd",
+//     series: [COD, online], // Separate series for COD and Online
+//     labels: ["COD", "Online"], // Corresponding labels
+//     chart: {
+//       width: 180,
+//       type: "donut",
+//       fontFamily: "Plus Jakarta Sans', sans-serif",
+//       foreColor: "#adb0bb",
+//     },
+//     plotOptions: {
+//       pie: {
+//         startAngle: 0,
+//         endAngle: 360,
+//         donut: {
+//           size: '75%',
+//         },
+//       },
+//     },
+//     stroke: {
+//       show: false,
+//     },
+//     dataLabels: {
+//       enabled: false,
+//     },
+//     legend: {
+//       show: false,
+//     },
+//     colors: ["#5D87FF", "#ecf2ff", "#F9F9FD"],
+//     responsive: [
+//       {
+//         breakpoint: 991,
+//         options: {
+//           chart: {
+//             width: 150,
+//           },
+//         },
+//       },
+//     ],
+//     tooltip: {
+//       theme: "dark",
+//       fillSeriesColor: false,
+//     },
+//   };
 
-  var chart = new ApexCharts(document.querySelector("#breakup"), breakup);
-  chart.render();
+//   var chart = new ApexCharts(document.querySelector("#breakup"), breakup);
+//   chart.render();
 
   
   
+// }
+
+
+
+
+let chart; // Declare a global variable to store the chart instance
+
+function paymentGraph(payment) {
+    console.log("Payment:", payment);
+    let online = payment.online;
+    let COD = payment.cod;
+    console.log("Online:", online);
+    console.log("COD:", COD);
+
+    // Destroy the existing chart if it exists
+    if (chart) {
+        chart.destroy();
+    }
+
+    var breakup = {
+        color: "#adb5bd",
+        series: [COD, online],
+        labels: ["COD", "Online"],
+        chart: {
+            width: 180,
+            type: "donut",
+            fontFamily: "Plus Jakarta Sans', sans-serif",
+            foreColor: "#adb0bb",
+        },
+        plotOptions: {
+            pie: {
+                startAngle: 0,
+                endAngle: 360,
+                donut: {
+                    size: '75%',
+                },
+            },
+        },
+        stroke: {
+            show: false,
+        },
+        dataLabels: {
+            enabled: false,
+        },
+        legend: {
+            show: false,
+        },
+        colors: ["#5D87FF", "#ecf2ff", "#F9F9FD"],
+        responsive: [
+            {
+                breakpoint: 991,
+                options: {
+                    chart: {
+                        width: 150,
+                    },
+                },
+            },
+        ],
+        tooltip: {
+            theme: "dark",
+            fillSeriesColor: false,
+        },
+    };
+
+    chart = new ApexCharts(document.querySelector("#breakup"), breakup);
+    chart.render();
 }
+
+
+
 
 
 
