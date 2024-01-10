@@ -43,7 +43,7 @@ user_route.get('/home',auth.isBlocked,auth.isLogin,userController.loadHome);
 
 // route shop
 user_route.get('/shop',auth.isBlocked,auth.isLogin,userController.loadShop)
-user_route.get('/productDetail',auth.isLogin,userController.productDetailed)
+user_route.get('/productDetail',auth.isBlocked,auth.isLogin,userController.productDetailed)
 
 // cart
 user_route.get('/cart',auth.isBlocked,auth.isLogin,cartController.loadCart)
@@ -56,7 +56,7 @@ user_route.get('/profile',auth.isBlocked,auth.isLogin,userController.loadProfile
 user_route.post('/passwordChange',userController.changepassword)
 user_route.post('/addressAdd',userController.addAddressLoad)
 user_route.post('/deleteAddress',userController.addressDelete)
-user_route.get('/editAddress',userController.loadEditAddress)
+user_route.get('/editAddress',auth.isBlocked,userController.loadEditAddress)
 user_route.post('/updateAddress',userController.editSaveAddress)
 
 // checkout page
@@ -64,15 +64,15 @@ user_route.get('/checkout',auth.isBlocked,auth.isLogin,userController.loadChecko
 user_route.post('/placeOrder',auth.isLogin,orderController.orderPlace)
 user_route.post('/verifyOnlinePayment',orderController.verifyPayment)
 
-user_route.get('/successOrder',auth.isLogin,orderController.loadSuccessPlace)
+user_route.get('/successOrder',auth.isBlocked,auth.isLogin,orderController.loadSuccessPlace)
 
 // myorder
 user_route.get('/my-Order',auth.isBlocked,auth.isLogin,orderController.loadMyOrder)
-user_route.get('/views-Order',auth.isLogin,orderController.loadViewOrder)
+user_route.get('/views-Order',auth.isBlocked,auth.isLogin,orderController.loadViewOrder)
 user_route.post('/cancelOrder',orderController.cancelOrder)
 user_route.post('/returnOrder',orderController.returnOrder)
 
 // wallet
-user_route.get('/your-wallet',orderController.walletLoad)
+user_route.get('/your-wallet',auth.isBlocked,orderController.walletLoad)
 
 module.exports= user_route ;

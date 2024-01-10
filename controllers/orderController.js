@@ -232,9 +232,6 @@ const verifyPayment = async (req, res) => {
 
 
 
-
-
-
 // success page for place order
 const loadSuccessPlace = async (req, res) => {
     try {

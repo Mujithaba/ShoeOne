@@ -416,15 +416,13 @@ const productList = async (req, res) => {
     try {
 
         const prodID = req.params.prodID
-        // console.log("gfgfg",prodID);
         const product = await Product.findOne({ _id: prodID })
-        // console.log(product);
         if (!product) {
             return res.status(404).json({ error: 'product not found' });
         }
         product.is_listed = true;
         await product.save()
-        // console.log(product);
+        
         console.log('product listed successfully.');
         res.json({ message: 'product listed successfully' })
 
@@ -476,7 +474,6 @@ const loadUserorders = async (req, res) => {
 // order view each ussers
 const loadOrders = async (req, res) => {
     try {
-        console.log("helloooo");
         const order_id = req.query.id
         // console.log(order_id);
         const orderData = await Order.findOne({ _id: order_id }).populate({
@@ -498,10 +495,6 @@ const changeStatus = async (req, res) => {
         const orderId = req.body.orderID
         const statusPro = req.body.productStatus
         const productID = req.body.productID
-
-        // console.log(statusPro);
-        // console.log(orderId);
-        // console.log(productID);
 
         const statusSet = await Order.findOneAndUpdate({ _id: orderId, 'products.productId': productID },
             { $set: { 'products.$.ProductOrderStatus': statusPro } },
@@ -575,11 +568,6 @@ const salesReportCollect = async (req, res) => {
             console.log("no sales happened these dates");
         }
 
-
-
-            
-
-            
         
 
         res.json({ message: 'Sales report processed successfully', salesOrders });
@@ -637,40 +625,6 @@ const sendDashboardData = async (req, res) => {
                 },
             },
         ];
-
-
-        // if (time === "week") {
-        //     timeFrame = new Date(new Date().setHours(0, 0, 0, 0) - new Date().getDay() * 86400000);
-        //     pipeline = [
-        //         {
-        //             $match: {
-        //                 orderDate: {
-        //                     $gte: new Date(new Date().setHours(0, 0, 0, 0) - new Date().getDay() * 86400000),
-        //                     $lte: new Date(new Date().setHours(23, 59, 59, 999)),
-        //                 },
-        //             },
-        //         },
-        //         {
-        //             $group: {
-        //                 _id: { $dayOfWeek: "$orderDate" }, // Group by day of the week
-        //                 totalAmount: { $sum: "$totalAmount" },
-        //                 orderCount: { $sum: 1 }, // Count the number of orders
-        //             },
-        //         },
-        //         {
-        //             $project: {
-        //                 _id: 0, // Exclude _id field
-        //                 label: "$_id", // Rename _id to dayOfWeek
-        //                 totalAmount: 1,
-        //                 orderCount: 1,
-        //             },
-        //         },
-        //         {
-        //             $sort: { label: 1 },
-        //         },
-        //     ];
-        // }
-
 
 
 
@@ -840,10 +794,6 @@ const sendDashboardData = async (req, res) => {
         }, 0);
         sales.orderCount = salesDetails.map(({ orderCount }) => orderCount);
         sales.label = salesDetails.map(({ label }) => label);
-
-        console.log(payment);
-        // console.log(products);
-        console.log(sales);
 
         res.status(200).json({
             status: "success",

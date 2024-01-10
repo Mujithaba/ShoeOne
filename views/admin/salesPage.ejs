@@ -224,7 +224,7 @@
                                     <table class="table table-bordered mt-4">
                                         <thead>
                                             <tr>
-                                       
+
                                                 <th scope="col">ordered On</th>
                                                 <th scope="col">Order ID</th>
                                                 <th scope="col">Total Amount</th>
@@ -237,10 +237,10 @@
                                         <tbody id="reportBody"></tbody>
                                     </table>
                                     <!-- Add Download PDF button -->
-                                    <button class="btn btn-success" id="downloadPDFButton">Download PDF</button>
+                                    <button class="btn  btn-dark btn1" id="downloadPDFButton">Download PDF</button>
 
-                                    <!-- Add Download CSV button -->
-                                    <button class="btn btn-success" id="downloadCSVButton" onclick="downloadReport('CSV')">Download CSV</button>
+                                   
+                                    
 
                                 </div>
 
@@ -273,6 +273,11 @@
         src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 
 
+
+
+    <!-- jspdf and html2canvas scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
 
     <script>
         // Initialize datepickers
