@@ -93,20 +93,41 @@
         }
 
         .btn-red {
-    background-color: red;
-    color: white; /* You may adjust the text color to make it visible on the red background */
-  }
+            background-color: red;
+            color: white;
+            /* You may adjust the text color to make it visible on the red background */
+        }
 
-  .btn-green {
-    background-color: green;
-    color: white; /* You may adjust the text color to make it visible on the green background */
-  }
-  .btn-green:hover {
-    background-color: rgb(102, 193, 11);
-  }
-  .btn-red:hover {
-    background-color: brown;
-  }
+        .btn-green {
+            background-color: green;
+            color: white;
+            /* You may adjust the text color to make it visible on the green background */
+        }
+
+        .btn-green:hover {
+            background-color: rgb(102, 193, 11);
+        }
+
+        .btn-red:hover {
+            background-color: brown;
+        }
+
+
+        /* pagination style */
+
+        #btnPage {
+            color: rgb(241, 241, 241);
+            background-color: rgb(30, 26, 65);
+
+            padding-right: 6px;
+            border-radius: 20px;
+            border: 1px solid black;
+        }
+
+        #btnPage:hover {
+            color: rgb(0, 0, 0);
+            background-color: rgb(255, 255, 255);
+        }
     </style>
 
     <body>
@@ -262,8 +283,10 @@
                 </header>
                 <!-- //User Details Page -->
                 <div class="container-fluid">
-                    <div ><h1 style="font-weight: 700;" >Customers</h1></div>
-                 
+                    <div>
+                        <h1 style="font-weight: 700;">Customers</h1>
+                    </div>
+
                     <form class="mt-5">
                         <div class="input-group">
                             <input type="text" class="form-control rounded-pill py-2"
@@ -333,7 +356,17 @@
 
 
                         </tbody>
-                    </table>
+                    </table><br><br><br>
+                    <div class="text-center">
+                        <% for(let j=1 ; j <=totalPage ; j++) {%>
+
+                            <a class="btn" id="btnPage" href="?page=<%= j %>">
+                                <%= j %> &nbsp;&nbsp;
+                            </a>
+
+                            <%}%>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -343,7 +376,7 @@
             document.querySelectorAll('.block-button ').forEach((button) => {
                 button.addEventListener('click', () => {
                     let userID = button.getAttribute('data-userid');
-                 
+
                     let currentState = button.getAttribute('data-state')
                     console.log(currentState);
                     let url
@@ -363,30 +396,30 @@
                         return response.json();
                     }).then(data => {
                         if (data.message) {
-                           
+
                             if (currentState == 'Unblocked') {
                                 button.setAttribute('data-state', 'Blocked')
                                 button.textContent = 'Unblock'
                                 button.classList.replace('btn-green', 'btn-red');
                                 Swal.fire({
-                                position: "center",
-                                icon: "info",
-                                title: "The User is Blocked",
-                                showConfirmButton: false,
-                                timer: 1500
-                            });
+                                    position: "center",
+                                    icon: "info",
+                                    title: "The User is Blocked",
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
 
                             } else {
                                 button.setAttribute('data-state', 'Unblocked')
                                 button.textContent = 'Block'
                                 button.classList.replace('btn-red', 'btn-green');
                                 Swal.fire({
-                                position: "center",
-                                icon: "success",
-                                title: "The User is Unblocked",
-                                showConfirmButton: false,
-                                timer: 1500
-                            });
+                                    position: "center",
+                                    icon: "success",
+                                    title: "The User is Unblocked",
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
 
                             }
 

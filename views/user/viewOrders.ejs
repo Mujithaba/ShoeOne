@@ -254,7 +254,8 @@
                         <strong>Ordered
                             On:</strong>&nbsp;<%=orderData.orderDate.toLocaleString('en-AU',{year:"numeric",month:"2-digit",day:"2-digit"})%>
                             <br>
-                            <strong>Payment Method:</strong>&nbsp;<%= orderData.paymentMethod %>
+                            <strong>Payment Method:</strong>&nbsp;<%= orderData.paymentMethod %> <br>
+                            <strong>Total Amount:</strong>&nbsp;&nbsp; ₹<%= orderData.totalAmount %> /-
                 </p>
             </div>
 

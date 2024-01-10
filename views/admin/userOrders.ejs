@@ -68,6 +68,19 @@ h2 {
     text-decoration: underline;
 }
 
+#btnPage {
+    color: rgb(241, 241, 241);
+    background-color: rgb(30, 26, 65);
+    
+    padding-right: 6px;
+    border-radius: 20px;
+    border: 1px solid black;
+}
+#btnPage:hover {
+    color: rgb(0, 0, 0);
+    background-color: rgb(255, 255, 255);
+}
+
 </style>
 
     
@@ -238,7 +251,7 @@ h2 {
                                         <thead>
                                             
                                             <tr>
-                                                <th class="text-white">Sl No</th>
+                                                <!-- <th class="text-white">Sl No</th> -->
                                                 <th class="text-white">Ordered Date</th>
                                                 <th class="text-white">Order ID</th>
                                                 <th class="text-white">Name</th>
@@ -250,11 +263,11 @@ h2 {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <% let slno = 1 %>
+                                            <!-- <% let slno = 1 %> -->
                                         
                                             <% for (const order of orderData) { %>
                                                 <tr>
-                                                    <td><%= slno %></td>
+                                                    <!-- <td><%= slno %></td> -->
                                                     <td><%= order.orderDate.toLocaleString('en-AU',{year:"numeric",month:"2-digit",day:"2-digit"}) %></td>
                                                     <td>
                                                         <%= order._id %> <br>
@@ -283,15 +296,24 @@ h2 {
                                                     <td><%= order.paymentMethod %></td>
                                                     <td><a href="/admin/order-info?id=<%=order._id%>" class="btn btn-warning" >Manage </i></a></td>
 
-                                                    <!-- <td><a href="/admin/order-info?id=<%=order._id%>" class="btn btn-dark" >Detail View</i></a></td> -->
                                                 </tr>
-                                                <% slno++; %>
+                                                <!-- <% slno++; %> -->
                                             <% } %>
                                         </tbody>
                                         
                                         
                                         
                                     </table>
+
+                                    <div class="text-center">
+                                        <% for(let j=1 ; j <=totalPage ; j++) {%>
+        
+                                            <a class="btn" id="btnPage" href="?page=<%= j %>">
+                                                <%= j %> &nbsp;&nbsp;
+                                            </a>
+        
+                                            <%}%>
+                                    </div>
                                 </div>
                             </div>
                             

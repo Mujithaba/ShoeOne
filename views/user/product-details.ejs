@@ -50,9 +50,9 @@
     </style>
 
     <!-- Page Preloder -->
-    <div id="preloder">
+    <!-- <div id="preloder">
         <div class="loader"></div>
-    </div>
+    </div> -->
 
     <!-- Offcanvas Menu Begin -->
     <div class="offcanvas-menu-overlay"></div>
@@ -476,6 +476,9 @@
                             showConfirmButton: false,
                             timer: 1500
                         });
+                        setTimeout(function () {
+                            location.reload()
+                        }, 800);
                     }else{
                         Swal.fire({
                             position: "center",

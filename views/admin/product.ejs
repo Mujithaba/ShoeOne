@@ -10,26 +10,50 @@
             max-height: 100px;
         }
 
+        .thhead {
+            background-color: aquamarine;
+        }
+
+
         .action-buttons {
             white-space: nowrap;
 
         }
 
         .btn-red {
-    background-color: red;
-    color: white; /* You may adjust the text color to make it visible on the red background */
-  }
+            background-color: red;
+            color: white;
+            /* You may adjust the text color to make it visible on the red background */
+        }
 
-  .btn-green {
-    background-color: green;
-    color: white; /* You may adjust the text color to make it visible on the green background */
-  }
-  .btn-green:hover {
-    background-color: rgb(102, 193, 11);
-  }
-  .btn-red:hover {
-    background-color: brown;
-  }
+        .btn-green {
+            background-color: green;
+            color: white;
+            /* You may adjust the text color to make it visible on the green background */
+        }
+
+        .btn-green:hover {
+            background-color: rgb(102, 193, 11);
+        }
+
+        .btn-red:hover {
+            background-color: brown;
+        }
+
+
+        #btnPage {
+            color: rgb(241, 241, 241);
+            background-color: rgb(30, 26, 65);
+
+            padding-right: 6px;
+            border-radius: 20px;
+            border: 1px solid black;
+        }
+
+        #btnPage:hover {
+            color: rgb(0, 0, 0);
+            background-color: rgb(255, 255, 255);
+        }
     </style>
 
     <!--  Body Wrapper -->
@@ -203,18 +227,19 @@
                             <br><br>
                             <!-- Search Bar -->
                             <div class="input-group mb-3">
-                                <input type="text" class="form-control" placeholder="Product Name, Category..." id="searchInput"
-                                    aria-label="Search" aria-describedby="basic-addon2">
+                                <input type="text" class="form-control" placeholder="Product Name, Category..."
+                                    id="searchInput" aria-label="Search" aria-describedby="basic-addon2">
                                 <div class="input-group-append">
-                                    <button class="btn btn-outline-secondary" type="button" id="searchButton">Search</button>
+                                    <button class="btn btn-outline-secondary" type="button"
+                                        id="searchButton">Search</button>
                                 </div>
                             </div>
-                            
+
 
                             <!-- Product Table -->
                             <input type="hidden" value="<%= fullProduct %>" name="Product">
                             <table class="table table-bordered" id="productTable">
-                                <thead>
+                                <thead class="thhead">
                                     <tr>
                                         <th>No</th>
                                         <th>Image</th>
@@ -277,7 +302,19 @@
                                         </tr>
                                         <% } %>
                                 </tbody>
+                               
                             </table>
+
+                            <div class="text-center">
+                                <% for(let j=1 ; j <=totalPage ; j++) {%>
+
+                                    <a class="btn btnPage" href="?page=<%= j %>">
+                                        <%= j %> &nbsp;&nbsp;
+                                    </a>
+
+                                    <%}%>
+                            </div>
+                            
                 </div>
 
 
@@ -351,23 +388,23 @@
 
     <!-- search -->
     <script>
-    document.getElementById('searchButton').addEventListener('click', () => {
-    let searchInput = document.getElementById('searchInput').value.toLowerCase();
-    let rows = document.querySelectorAll('#productTable tbody tr');
+        document.getElementById('searchButton').addEventListener('click', () => {
+            let searchInput = document.getElementById('searchInput').value.toLowerCase();
+            let rows = document.querySelectorAll('#productTable tbody tr');
 
-    rows.forEach(row => {
-        let productName = row.querySelector('td:nth-child(3)').innerText.toLowerCase(); // Assuming product name is in the third column
-        let category = row.querySelector('td:nth-child(8)').innerText.toLowerCase(); // Assuming category is in the eighth column
+            rows.forEach(row => {
+                let productName = row.querySelector('td:nth-child(3)').innerText.toLowerCase(); // Assuming product name is in the third column
+                let category = row.querySelector('td:nth-child(8)').innerText.toLowerCase(); // Assuming category is in the eighth column
 
-        let searchData = `${productName} ${category}`;
-        
-        if (searchData.includes(searchInput)) {
-            row.style.display = ''; // Display the row if it matches the search criteria
-        } else {
-            row.style.display = 'none'; // Hide the row if it doesn't match
-        }
-    });
-});
+                let searchData = `${productName} ${category}`;
+
+                if (searchData.includes(searchInput)) {
+                    row.style.display = ''; // Display the row if it matches the search criteria
+                } else {
+                    row.style.display = 'none'; // Hide the row if it doesn't match
+                }
+            });
+        });
 
     </script>
 

@@ -8,7 +8,7 @@ const Product = require('../models/productModel')
 const getCartItemCount = async (userId) => {
     try {
         const cartExist = await Cart.findOne({ userId });
-
+console.log("hi there",cartExist);
         if (!cartExist) {
             return 0; // Cart is empty, so the count is 0
         } else {
@@ -32,18 +32,19 @@ const loadCart = async (req, res) => {
             select: 'Price image stock productName' // Add any other fields , separated by space
         });
 
+        // Get the cart count
+        const cartItemCount = await getCartItemCount(user_id);
+
         if(cartData){// total whole product price in the cart
         const cartTotal = cartData.products.reduce((acc, product) => {
             return acc + product.productId.Price * product.quantity;
         }, 0);
         
 
-          // Get the cart count
-          const cartItemCount = await getCartItemCount(user_id);
 
         res.render('user/cart', { cart: cartData, cartTotal ,cartItemCount})
     }else{
-        res.render('user/cart')
+        res.render('user/cart',{ cartItemCount })
     }
     } catch (error) {
         console.log(error.message);

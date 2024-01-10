@@ -70,6 +70,20 @@ h2 {
     text-decoration: underline;
 }
 
+
+#btnPage {
+            color: rgb(241, 241, 241);
+            background-color: rgb(30, 26, 65);
+
+            padding-right: 6px;
+            border-radius: 20px;
+            border: 1px solid black;
+        }
+
+        #btnPage:hover {
+            color: rgb(0, 0, 0);
+            background-color: rgb(255, 255, 255);
+        }
 </style>
 
     
@@ -267,6 +281,16 @@ h2 {
                 
                 
             </table>
+
+            <div class="text-center">
+                <% for(let j=1 ; j <=totalPage ; j++) {%>
+
+                    <a class="btn" id="btnPage" href="?page=<%= j %>">
+                        <%= j %> &nbsp;&nbsp;
+                    </a>
+
+                    <%}%>
+            </div>
         </div>
     </div>
 

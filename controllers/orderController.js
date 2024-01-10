@@ -249,15 +249,31 @@ const loadMyOrder = async (req, res) => {
         const user_id = req.session.user_id
         // console.log(user_id);
 
+        let page = 1;
+        if (req.query.page) {
+            page = req.query.page
+        }
+
+        const limit = 2
+
+
+
         const orderData = await Order.find({ userId: user_id }).populate({
             path: 'products.productId',
             select: 'Price image productName quantity'
         })
+        .limit(limit * 1)
+        .skip((page - 1) * limit)
+        .sort({ orderDate: -1 })
+        .exec()
+
+
+        const orderCount = await Order.find({ userId: user_id }).countDocuments()
 
         // Get the cart count
         const cartItemCount = await getCartItemCount(user_id);
 
-        res.render('user/myOrder', { orderData, cartItemCount })
+        res.render('user/myOrder', { orderData, cartItemCount ,totalPage: Math.ceil(orderCount/limit),currentPage: page})
 
     } catch (error) {
         console.log(error.message);

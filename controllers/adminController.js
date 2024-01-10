@@ -7,12 +7,13 @@ const upload = require('../multer')
 const Address = require('../models/addressModel')
 const Cart = require('../models/cartModel')
 const Order = require('../models/orderModel')
+const { parseISO, isValid, isAfter, isBefore, isToday } = require('date-fns');
 // const PDFDocument = require('pdfkit');
 // const doc = new PDFDocument;
 const fs = require('fs');
 
 const path = require('path');
-const { log } = require('console');
+const { log, count } = require('console');
 
 // admin login
 
@@ -102,18 +103,47 @@ const LoadUserDetails = async (req, res) => {
             search = req.query.search;
         }
 
+        let page = 1;
+        if (req.query.page) {
+            page = req.query.page || ""
+        }
+
+        const limit = 3
+
         const userData = await User.find({
             is_admin: 0,
             $or: [
                 { firstName: { $regex: '.*' + search + '.*', $options: 'i' } },
                 { secondName: { $regex: '.*' + search + '.*', $options: 'i' } },
                 { email: { $regex: '.*' + search + '.*', $options: 'i' } },
-                // { mobile:{ $regex: '.*'+search+'.*',$options:'i' }}
+
 
             ]
         })
+            .limit(limit * 1)
+            .skip((page - 1) * limit)
+            .exec()
+            
 
-        res.render('admin/customersList', { users: userData })
+
+        const userCount = await User.find({
+            is_admin: 0,
+            $or: [
+                { firstName: { $regex: '.*' + search + '.*', $options: 'i' } },
+                { secondName: { $regex: '.*' + search + '.*', $options: 'i' } },
+                { email: { $regex: '.*' + search + '.*', $options: 'i' } },
+
+
+            ]
+        }).countDocuments()
+
+
+
+        res.render('admin/customersList', {
+            users: userData,
+            totalPage:Math.ceil(userCount / limit),
+            currentPage: page
+        })
 
     } catch (error) {
 
@@ -287,10 +317,28 @@ const productLoad = async (req, res) => {
 
     try {
 
+
+        
+        let page = 1;
+        if (req.query.page) {
+            page = req.query.page
+        }
+
+        const limit = 3
+
+
         const fullProduct = await Product.find().populate('category')
+        .limit(limit * 1)
+        .skip((page - 1) * limit)
+        .exec()
         //   console.log(fullProduct);
 
-        res.render('admin/product', { fullProduct })
+        const productCount = await Product.find()
+        .countDocuments()
+
+
+        res.render('admin/product', { fullProduct ,totalPage: Math.ceil(productCount/limit) })
+        
 
     } catch (error) {
         console.log(error.message);
@@ -422,7 +470,7 @@ const productList = async (req, res) => {
         }
         product.is_listed = true;
         await product.save()
-        
+
         console.log('product listed successfully.');
         res.json({ message: 'product listed successfully' })
 
@@ -458,12 +506,29 @@ const productUnlist = async (req, res) => {
 const loadUserorders = async (req, res) => {
     try {
 
+             
+        let page = 1;
+        if (req.query.page) {
+            page = req.query.page
+        }
+
+        const limit = 4
+
+
         const orderData = await Order.find().populate({
             path: 'products.productId',
             select: 'Price image productName quantity'
         })
+        .limit(limit * 1)
+        .skip((page - 1) * limit)
+        .sort({ orderDate: -1 })
+        .exec()
 
-        res.render('admin/userOrders', { orderData })
+        const orderCount = await Order.findOne().countDocuments();
+
+
+
+        res.render('admin/userOrders', { orderData ,totalPage: Math.ceil(orderCount/limit) })
 
     } catch (error) {
         console.log(error.message);
@@ -476,11 +541,15 @@ const loadOrders = async (req, res) => {
     try {
         const order_id = req.query.id
         // console.log(order_id);
+
+
         const orderData = await Order.findOne({ _id: order_id }).populate({
             path: 'products.productId',
             select: 'Price image productName'
         })
-        // console.log(orderData);
+        
+
+
         res.render('admin/order-info', { orderData })
 
     } catch (error) {
@@ -533,13 +602,32 @@ const salesReportCollect = async (req, res) => {
 
         let { startDate, endDate } = req.body;
 
-        startDate = startDate.split('/')
-        endDate = endDate.split('/')
-        console.log(startDate);
-        console.log(endDate);
 
-        const fromDate = new Date(`${startDate[2]}/${startDate[1]}/${startDate[0]}`);
-        const toDate = new Date(`${endDate[2]}/${endDate[1]}/${endDate[0]}`);
+         // Validate date format (you can use a library like moment.js for more sophisticated date parsing)
+         const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
+         if (!dateRegex.test(startDate) || !dateRegex.test(endDate)) {
+             return res.status(400).json({ message: 'Invalid date format. Use DD/MM/YYYY.' });
+         }
+ 
+         startDate = startDate.split('/');
+         endDate = endDate.split('/');
+ 
+         // Parse the dates
+         const fromDate = new Date(`${startDate[2]}/${startDate[1]}/${startDate[0]}`);
+         const toDate = new Date(`${endDate[2]}/${endDate[1]}/${endDate[0]}`);
+ 
+         // Validate date range
+         if (isNaN(fromDate.getTime()) || isNaN(toDate.getTime()) || fromDate > toDate) {
+             return res.status(400).json({ error: 'Invalid date range. End date should be equal to or later than the start date.' });
+         }
+ 
+
+        // startDate = startDate.split('/')
+        // endDate = endDate.split('/')
+      
+
+        // const fromDate = new Date(`${startDate[2]}/${startDate[1]}/${startDate[0]}`);
+        // const toDate = new Date(`${endDate[2]}/${endDate[1]}/${endDate[0]}`);
 
         console.log('startDate:', fromDate);
         console.log('endDate:', toDate);
@@ -556,23 +644,14 @@ const salesReportCollect = async (req, res) => {
             }
         ]);
 
-       
 
-        if (salesOrders) {
+        if (salesOrders.length > 0) {
             console.log(salesOrders);
-
-            
-
-
+            res.json({ message: 'Sales report processed successfully', salesOrders });
         } else {
-            console.log("no sales happened these dates");
+            console.log("No sales happened within these dates");
+            res.json({ error: 'No sales happened within these dates', salesOrders: [] });
         }
-
-        
-
-        res.json({ message: 'Sales report processed successfully', salesOrders });
-
-
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: 'Internal server error' });
@@ -613,12 +692,12 @@ const sendDashboardData = async (req, res) => {
                 $group: {
                     _id: null,
                     totalAmount: { $sum: "$totalAmount" },
-                    orderCount: { $sum: 1 }, 
+                    orderCount: { $sum: 1 },
                 },
             },
             {
                 $project: {
-                    _id: 0, 
+                    _id: 0,
                     totalAmount: 1,
                     orderCount: 1,
                     label: "Today",
@@ -631,7 +710,7 @@ const sendDashboardData = async (req, res) => {
 
         if (time === "week") {
             timeFrame = new Date(new Date().setHours(0, 0, 0, 0) - new Date().getDay() * 86400000);
-        
+
             pipeline = [
                 {
                     $match: {
@@ -643,14 +722,14 @@ const sendDashboardData = async (req, res) => {
                 },
                 {
                     $group: {
-                        _id: { $dayOfWeek: "$orderDate" }, 
+                        _id: { $dayOfWeek: "$orderDate" },
                         totalAmount: { $sum: "$totalAmount" },
-                        orderCount: { $sum: 1 }, 
+                        orderCount: { $sum: 1 },
                     },
                 },
                 {
                     $project: {
-                        _id: 0, 
+                        _id: 0,
                         label: {
                             $switch: {
                                 branches: [
@@ -674,14 +753,14 @@ const sendDashboardData = async (req, res) => {
                 },
             ];
         }
-        
+
 
 
 
 
         if (time === "month") {
-            timeFrame = new Date(new Date().getFullYear(), 0, 1); 
-        
+            timeFrame = new Date(new Date().getFullYear(), 0, 1);
+
             pipeline = [
                 {
                     $match: {
@@ -693,25 +772,25 @@ const sendDashboardData = async (req, res) => {
                 },
                 {
                     $group: {
-                        _id: { $month: "$orderDate" }, 
+                        _id: { $month: "$orderDate" },
                         totalAmount: { $sum: "$totalAmount" },
-                        orderCount: { $sum: 1 }, 
+                        orderCount: { $sum: 1 },
                     },
                 },
                 {
                     $project: {
-                        _id: 0, 
+                        _id: 0,
                         label: { $dateToString: { format: "%B", date: { $dateFromParts: { year: new Date().getFullYear(), month: "$_id" } } } }, // Format month name
                         totalAmount: 1,
                         orderCount: 1,
                     },
                 },
                 {
-                    $sort: { _id: 1 }, 
+                    $sort: { _id: 1 },
                 },
             ];
         }
-        
+
 
 
 
@@ -720,46 +799,41 @@ const sendDashboardData = async (req, res) => {
 
         if (time === "year") {
             const currentYear = new Date().getFullYear();
-            const firstYear = currentYear - 4; 
-          
+            const firstYear = currentYear - 4;
+
             timeFrame = new Date(firstYear, 0, 1);
-          
+
             pipeline = [
-              {
-                $match: {
-                  orderDate: {
-                    $gte: new Date(firstYear, 0, 1),
-                    $lte: new Date(new Date().setHours(23, 59, 59, 999)),
-                  },
+                {
+                    $match: {
+                        orderDate: {
+                            $gte: new Date(firstYear, 0, 1),
+                            $lte: new Date(new Date().setHours(23, 59, 59, 999)),
+                        },
+                    },
                 },
-              },
-              {
-                $group: {
-                  _id: { $year: "$orderDate" }, 
-                  totalAmount: { $sum: "$totalAmount" },
-                  orderCount: { $sum: 1 },
+                {
+                    $group: {
+                        _id: { $year: "$orderDate" },
+                        totalAmount: { $sum: "$totalAmount" },
+                        orderCount: { $sum: 1 },
+                    },
                 },
-              },
-              {
-                $project: {
-                  _id: 0,
-                  label: "$_id",
-                  totalAmount: 1,
-                  orderCount: 1,
+                {
+                    $project: {
+                        _id: 0,
+                        label: "$_id",
+                        totalAmount: 1,
+                        orderCount: 1,
+                    },
                 },
-              },
-              {
-                $sort: { label: 1 },
-              },
+                {
+                    $sort: { label: 1 },
+                },
             ];
-          }
-          
-          
+        }
 
 
-
-       
-        
 
 
 
@@ -769,14 +843,14 @@ const sendDashboardData = async (req, res) => {
             { $match: { orderDate: { $gte: timeFrame } } },
             { $group: { _id: "$paymentMethod", orderCount: { $sum: 1 } } },
         ]);
-        
+
         const payment = {
 
-            
+
             online: paymentMethods.find(({ _id }) => _id === "online")?.orderCount ?? 0,
             cod: paymentMethods.find(({ _id }) => _id === "COD")?.orderCount ?? 0,
         };
-        
+
 
 
 
@@ -799,7 +873,7 @@ const sendDashboardData = async (req, res) => {
             status: "success",
             customers,
             payment,
-           salesDetails,
+            salesDetails,
             sales,
 
         });
