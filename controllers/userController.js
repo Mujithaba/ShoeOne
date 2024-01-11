@@ -12,6 +12,8 @@ const sendMailForgot = require('../services/reset-password')
 const { env } = require('process');
 const randomstring = require('randomstring');
 const productModel = require('../models/productModel');
+const Coupon =  require('../models/couponModel')
+
 
 
 
@@ -701,6 +703,10 @@ const loadCheckout = async (req, res) => {
         }, 0)
 
 
+        // Coupon
+        const couponData = await Coupon.find()
+
+
         // stock checking loop
         for (let productData of cartData.products) {
 
@@ -710,7 +716,7 @@ const loadCheckout = async (req, res) => {
             // stock checking
             if (product.stock >= productData.quantity) {
 
-                res.render('user/checkout', { addresses: addressData, cartData, cartTotal, cartItemCount })
+                res.render('user/checkout', { addresses: addressData, cartData, cartTotal, cartItemCount, couponData })
 
 
             } else {
@@ -720,7 +726,7 @@ const loadCheckout = async (req, res) => {
             }
 
         }
-
+       
 
     } catch (error) {
         console.log(error.message);

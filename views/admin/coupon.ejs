@@ -1,0 +1,376 @@
+<%- include('../layouts/header.ejs') %>
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            /* background-color: #f4f4f4; */
+        }
+
+        h3 {
+            color: #000000;
+            /* margin-top: 50px; */
+           
+        }
+
+        /* .couponTable {
+            margin-top: 40px;
+            margin-left: 150px;
+        } */
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            /* margin-left: 165px; */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border-radius: 8px;
+            background-color: #fff;
+        }
+
+        th,
+        td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #1ccc9d;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        td i {
+            cursor: pointer;
+            margin-right: 10px;
+            color: #e74c3c;
+            transition: color 0.3s;
+        }
+
+        td i:hover {
+            color: #c0392b;
+        }
+
+        tr:nth-child(even) {
+            background-color: #ecf0f1;
+        }
+
+        tr:hover {
+            background-color: #e9ddda;
+        }
+
+        .action-buttons {
+            white-space: nowrap;
+
+        }
+
+        .btn-red {
+            background-color: red;
+            color: white;
+            /* You may adjust the text color to make it visible on the red background */
+        }
+
+        .btn-green {
+            background-color: green;
+            color: white;
+            /* You may adjust the text color to make it visible on the green background */
+        }
+
+        .btn-green:hover {
+            background-color: rgb(102, 193, 11);
+        }
+
+        .btn-red:hover {
+            background-color: brown;
+        }
+
+        @media only screen and (max-width: 600px) {
+
+            th,
+            td {
+                padding: 10px;
+            }
+        }
+    </style>
+
+    <!--  Body Wrapper -->
+    <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+        data-sidebar-position="fixed" data-header-position="fixed">
+        <!-- Sidebar Start -->
+        <aside class="left-sidebar">
+            <!-- Sidebar scroll-->
+            <div>
+
+                <div class="brand-logo d-flex align-items-center justify-content-between">
+                    <a href="./index.html" class="text-nowrap logo-img">
+                        <img src="../assets/images/logos/ShoeOne-Logo.png" width="180" alt="" />
+                    </a>
+                    <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
+                        <i class="ti ti-x fs-8"></i>
+                    </div>
+                </div>
+                <!-- Sidebar navigation-->
+                <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+                    <ul id="sidebarnav">
+                        <li class="nav-small-cap">
+                            <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                            <span class="hide-menu">Home</span>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link " href="/admin/dashboard" aria-expanded="false">
+                                <span>
+                                    <i class="ti ti-layout-dashboard"></i>
+                                </span>
+                                <span class="hide-menu">Dashboard</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="/admin/customersList" aria-expanded="false">
+                                <span>
+                                    <i class="ti ti-user-plus"></i>
+                                </span>
+                                <span class="hide-menu">Customers</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="/admin/Sales-page-Date" aria-expanded="false">
+                                <span>
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </span>
+                                <span class="hide-menu">Sales Report</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="/admin/category" aria-expanded="false">
+                                <span>
+                                    <i class="ti ti-article"></i>
+                                </span>
+                                <span class="hide-menu">Categories</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="/admin/product" aria-expanded="false">
+                                <span>
+                                    <i class="fa-solid fa-layer-group"></i>
+                                </span>
+                                <span class="hide-menu">Products</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link active" href="/admin/couponAdmin" aria-expanded="false">
+                                <span>
+                                    <i class="fa-solid fa-tag"></i>
+                                </span>
+                                <span class="hide-menu">Coupon</span>
+                            </a>
+                        </li>
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="/admin/user-Orders" aria-expanded="false">
+                                <span>
+                                    <i class="ti ti-file-description"></i>
+                                </span>
+                                <span class="hide-menu">Orders</span>
+                            </a>
+                        </li>
+
+                        <!-- <li class="sidebar-item">
+                            <a class="sidebar-link" href="./ui-buttons.html" aria-expanded="false">
+                                <span>
+                                    <i class="ti ti-cards"></i>
+                                </span>
+                                <span class="hide-menu">Payments</span>
+                            </a>
+                        </li> -->
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link" href="/admin/logout" aria-expanded="false">
+                                <span>
+                                    <i class="ti ti-login"></i>
+                                </span>
+                                <span class="hide-menu">Logout</span>
+                            </a>
+                        </li>
+
+                    </ul>
+
+                </nav>
+                <!-- End Sidebar navigation -->
+            </div>
+            <!-- End Sidebar scroll-->
+        </aside>
+        <!--  Sidebar End -->
+        <!--  Main wrapper -->
+        <div class="body-wrapper">
+            <!--  Header Start -->
+            <header class="app-header">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <ul class="navbar-nav">
+                        <li class="nav-item d-block d-xl-none">
+                            <a class="nav-link sidebartoggler nav-icon-hover" id="headerCollapse"
+                                href="javascript:void(0)">
+                                <i class="ti ti-menu-2"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-icon-hover" href="javascript:void(0)">
+                                <i class="ti ti-bell-ringing"></i>
+                                <div class="notification bg-primary rounded-circle"></div>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
+                        <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
+                            <a href="https://adminmart.com/product/modernize-free-bootstrap-admin-dashboard/"
+                                target="_blank" class="btn btn-primary">Profile</a>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link nav-icon-hover" href="javascript:void(0)" id="drop2"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img src="../assets/images/profile/user-1.jpg" alt="" width="35" height="35"
+                                        class="rounded-circle">
+                                </a>
+
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </header>
+            <!--  Header End -->
+
+
+
+            <div class="container-fluid">
+
+                <div class="container ">
+
+
+                    <h3><b>Coupons:</b></h3><br>
+
+                    <!-- <%= couponData[0]._id %> -->
+
+                    <a type="button" class="btn btn-primary mb-2" 
+                                 href="/admin/add-Coupon">
+                               <b>Add Coupon</b> 
+                            </a>
+                            <br>
+
+                    <table class="couponTable">
+
+                        <input type="hidden" name="coupon" value="<%= couponData %>">
+                        <thead>
+                            <tr>
+                                <th>Coupon Code</th>
+                                <th>Discount Amount</th>
+                                <th>Valid From Date</th>
+                                <th>Expiry Date</th>
+                                <th>Minimum Cart Value</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody  >
+                            <% for(let coupons of couponData) {%>
+                            <tr >
+                                <td><%= coupons.code %></td>
+                                <td><%= coupons.discountAmount %></td>
+                                <td><%= coupons.validFrom %></td>
+                                <td><%= coupons.expiry %></td>
+                                <td>₹<%= coupons.minimumCartValue %></td>
+                                <td>
+                                    <a href="/admin/edit-coupon?id= <%= coupons._id %>" class="btn btn-warning ">Edit</a>
+
+                                    <button class="btn  list-button <%= coupons.is_listed==true ? 'btn-red ' : 'btn-green'%>"
+                                        data-couponid="<%= coupons._id %>"
+                                        data-state="<%= coupons.is_listed ? 'Listed' : 'Unlisted' %>">
+                                        <%= coupons.is_listed ? 'Unlist' : 'List' %></button>
+                                </td>
+                            </tr>
+                            <!-- Add more rows as needed -->
+                        </tbody>
+                       <%}%>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+        integrity="sha384-wsHiBhAe2vUHHpEepjMLLewr93CqDYb3BlZzI1VNL6sCxiXwmy2a2rjJrDA0I1W6"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KC5UlFbp0Ex2jGXu2zPr5NfiLkq4H5F/JffDOHIqmi"
+        crossorigin="anonymous"></script> -->
+
+
+    <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="../assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/sidebarmenu.js"></script>
+    <script src="../assets/js/app.min.js"></script>
+    <script src="../assets/libs/apexcharts/dist/apexcharts.min.js"></script>
+    <script src="../assets/libs/simplebar/dist/simplebar.js"></script>
+    <script src="../assets/js/dashboard.js"></script>
+
+
+    <script>
+        document.querySelectorAll('.list-button').forEach((button) => {
+            button.addEventListener('click', () => {
+                let couponID = button.getAttribute('data-couponid');
+                console.log(couponID);
+                let currentState = button.getAttribute('data-state');
+                console.log(currentState);
+                let url;
+
+                if (currentState == 'Unlisted') {
+                    url = `/admin/list-coupon/${couponID}`;
+                } else {
+                    url = `/admin/Unlist-coupon/${couponID}`;
+                }
+
+                fetch(url, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(response => {
+                    return response.json();
+                }).then(data => {
+                    if (data.message) {
+                        // console.log("hellooo");
+                        if (currentState == 'Unlisted') {
+                            button.setAttribute('data-state', 'listed');
+                            button.textContent = 'Unlist';
+                            button.classList.replace('btn-green','btn-red');
+                            Swal.fire({
+                                position: "center",
+                                icon: "success",
+                                title: "Listed the products",
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        } else {
+                            button.setAttribute('data-state', 'Unlisted');
+                            button.textContent = 'List';
+                            button.classList.replace('btn-red','btn-green');
+                            Swal.fire({
+                                position: "center",
+                                icon: "info",
+                                title: "Unlisted the products",
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+                    }
+                }).catch(error => {
+                    console.log(error);
+                });
+            });
+        });
+
+    </script>
+
+
+
+
+    <%- include('../layouts/footer.ejs') %>

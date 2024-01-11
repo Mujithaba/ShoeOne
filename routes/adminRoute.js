@@ -52,5 +52,13 @@ admin_route.get('/user-Orders',auth.isLogin,adminController.loadUserorders)
 admin_route.get('/order-info',auth.isLogin,adminController.loadOrders)
 admin_route.post('/statusChange',adminController.changeStatus)
 
+// coupon
+admin_route.get('/couponAdmin',adminController.loadCoupon)
+admin_route.get('/add-Coupon',adminController.addCouponLoad)
+admin_route.post('/uploadAddCoupon',adminController.uploadCoupon)
+admin_route.patch('/list-coupon/:couponID', adminController.couponList)
+admin_route.patch('/Unlist-coupon/:couponID', adminController.couponUnlist)
+admin_route.get('/edit-coupon',adminController.editCoupon)
+admin_route.post('/updateEditCoupon',adminController.updatedCoupon)
 
 module.exports = admin_route;
