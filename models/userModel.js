@@ -22,6 +22,35 @@ const userSchema = mongoose.Schema({
         type: String,
         require: true
     },
+
+    wallet: {
+        balance: {
+            type: Number,
+            required: true,
+            default: "0"
+        },
+        history: [
+            {
+                type: {
+                    type: String,
+
+                },
+                amount: {
+                    type: Number,
+
+                },
+                reason: {
+                    type: String,
+
+                },
+                date: {
+                    type: Date,
+                    default: Date.now()
+                }
+            }
+        ],
+    },
+
     is_admin: {
         type: Number,
         require: true

@@ -704,7 +704,7 @@ const loadCheckout = async (req, res) => {
 
 
         // Coupon
-        const couponData = await Coupon.find()
+        const couponData = await Coupon.find({is_listed: true})
 
 
         // stock checking loop

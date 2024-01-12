@@ -63,9 +63,10 @@ const orderPlace = async (req, res) => {
         const addressId = req.body.addressId;
         const paymentType = req.body.paymentType
         const totalOrderAmount = req.body.totalProdAmount
-        const couponDiscount = req.body.couponDiscount
+        const addedCouponDiscount = req.body.couponDiscount
         console.log(totalOrderAmount, "coupon included");
-        console.log(couponDiscount, "discount");
+        console.log(addedCouponDiscount, "discount");
+
 
 
         // taking address from databse 
@@ -113,8 +114,9 @@ const orderPlace = async (req, res) => {
                     }),
                     OrderStatus: 'ordered',
                     StatusLevel: 1,
-                    totalAmount: cartTotal,
-                    paymentMethod: paymentType
+                    totalAmount: totalOrderAmount,
+                    paymentMethod: paymentType,
+                    couponAmountDis: addedCouponDiscount
 
                 })
 
@@ -141,7 +143,7 @@ const orderPlace = async (req, res) => {
                 };
                 instance.orders.create(options, function (err, order) {
                     console.log(order);
-                    res.json({ success: true, userData, Razorpay_key_id, cartTotal, order, totalOrderAmount })
+                    res.json({ success: true, userData, Razorpay_key_id, cartTotal, order, totalOrderAmount, addedCouponDiscount })
                 });
 
             }
@@ -181,6 +183,7 @@ const orderPlace = async (req, res) => {
 
                 const order = await orderDetails.save()
                 console.log("orders" + order);
+                
                 if (order) {
                     const deleteCart = await Cart.findOneAndDelete({ userId: user_id })
                     await StockAdjusting(cartData.products)
@@ -226,8 +229,11 @@ const verifyPayment = async (req, res) => {
         const paymentType = req.body.paymentType
         const addressId = req.body.addressId;
         const payment = req.body.payment
+
         const totalOrderAmount = req.body.totalOrderAmount
+        const couponDiscount = req.body.couponDiscount
         console.log(totalOrderAmount, "bye bye");
+        console.log(couponDiscount, "ta taa");
 
         // taking address from databse
         const ShippingAddress = await Address.findOne({ _id: addressId })
@@ -237,7 +243,7 @@ const verifyPayment = async (req, res) => {
             path: 'products.productId',
             select: 'Price '
         })
-
+ 
         // calculating total price for place order
         const cartTotal = cartData.products.reduce((acc, product) => {
             return acc + product.productId.Price * product.quantity;
@@ -255,6 +261,7 @@ const verifyPayment = async (req, res) => {
         if (generatedSignature === payment.razorpay_signature) {
             console.log("payment successfull");
 
+            // if coupon is included this will work
             if (totalOrderAmount > 0) {
                 const orderDetails = new Order({
                     userId: user_id,
@@ -277,7 +284,8 @@ const verifyPayment = async (req, res) => {
                     OrderStatus: 'ordered',
                     StatusLevel: 1,
                     totalAmount: totalOrderAmount,
-                    paymentMethod: paymentType
+                    paymentMethod: paymentType,
+                    couponAmountDis: couponDiscount
 
                 })
 
@@ -383,8 +391,11 @@ const loadMyOrder = async (req, res) => {
             .sort({ orderDate: -1 })
             .exec()
 
+           
 
         const orderCount = await Order.find({ userId: user_id }).countDocuments()
+
+       
 
         // Get the cart count
         const cartItemCount = await getCartItemCount(user_id);
@@ -409,6 +420,7 @@ const loadViewOrder = async (req, res) => {
             select: 'Price image productName'
         })
 
+
         // Get the cart count
         const cartItemCount = await getCartItemCount(user_id);
 
@@ -426,18 +438,53 @@ const cancelOrder = async (req, res) => {
 
         const productID = req.body.productId
         const orderID = req.body.orderId
-        console.log(orderID);
+        const user_id = req.session.user_id
+        console.log(user_id,"wallet");
 
-        const orderDetails = await Order.findOneAndUpdate(
-            { _id: orderID, 'products.productId': productID },
-            { $set: { 'products.$.ProductOrderStatus': 'Cancelled' } },
-            { new: true } // Return the modified document
-        )
+
+       
+
+
+        const orderData = await Order.findOne({_id: orderID}).populate({
+            path: 'products.productId',
+            select: 'Price image productName quantity'
+        })
+
+console.log(orderData.products.productId.unitPrice,"baahubali");
+
+// wallet
+
+        const orderDetails = null;
+
+        if (orderData.couponAmountDis) {
+
+
+
+             orderDetails = await Order.findOneAndUpdate(
+                { _id: orderID, 'products.productId': productID },
+                { $set: { 'products.$.ProductOrderStatus': 'Cancelled' } },
+                { new: true } // Return the modified document
+            )
+            
+            console.log(orderData.couponAmountDis,"masha");
+    
+            }else {
+
+                 orderDetails = await Order.findOneAndUpdate(
+                    { _id: orderID, 'products.productId': productID },
+                    { $set: { 'products.$.ProductOrderStatus': 'Cancelled' } },
+                    { new: true } // Return the modified document
+                )
+    
+            }
+
+
 
         // stock increase bcz the product is cancelled
         if (orderDetails) {
             const productToCancel = orderDetails.products.find((product) => product.productId == productID);
-            // console.log("kkk" + productToCancel.quantity);
+
+
 
             if (productToCancel) {
 

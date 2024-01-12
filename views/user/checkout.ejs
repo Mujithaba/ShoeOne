@@ -123,17 +123,11 @@
 
         .divCoupon {
             border: 1px solid #ccc;
-            /* Border color */
             padding: 15px;
-            /* Padding inside the box */
             border-radius: 8px;
-            /* Rounded corners */
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            /* Box shadow for a subtle effect */
             background-color: #e1dede;
-            /* Background color */
-            margin: 20px 0;
-            /* Margin around the box */
+            margin: 10px 0;
         }
     </style>
 
@@ -280,443 +274,442 @@
     <!-- Breadcrumb Section End -->
 
 
-    <%= couponData %>
 
-        <!-- Checkout Section Begin -->
-        <section class="checkout spad">
-            <div class="container">
-                <div class="checkout__form">
-                    <div>
-                        <div class="row">
-                            <div class="col-lg-8 col-md-6">
-
-
-                                <!-- added address showing start -->
-
-                                <div class="card-body pb-2">
-                                    <div id="addressContainer" class="body-address">
-                                        <input type="hidden" name="added-address" value="<%= addresses %>">
-                                        <div id="addressDetails">
-                                            <% addresses.forEach(function(address, index) { %>
-                                                <div class="addressItem">
-                                                    <p>
-                                                        <%= address.fullname %>
-                                                    </p>
-                                                    <p>
-                                                        <%= address.mobile %>
-                                                    </p>
-                                                    <p>
-                                                        <%= address.address %>
-                                                    </p>
-                                                    <p>
-                                                        <%= address.pincode %>
-                                                    </p>
-                                                    <p>
-                                                        <%= address.city %>
-                                                    </p>
-                                                    <p>
-                                                        <%= address.state %>
-                                                    </p>
+    <!-- Checkout Section Begin -->
+    <section class="checkout spad">
+        <div class="container">
+            <div class="checkout__form">
+                <div>
+                    <div class="row">
+                        <div class="col-lg-8 col-md-6">
 
 
+                            <!-- added address showing start -->
 
-                                                    <!-- <button id="dlt" 
+                            <div class="card-body pb-2">
+                                <div id="addressContainer" class="body-address">
+                                    <input type="hidden" name="added-address" value="<%= addresses %>">
+                                    <div id="addressDetails">
+                                        <% addresses.forEach(function(address, index) { %>
+                                            <div class="addressItem">
+                                                <p>
+                                                    <%= address.fullname %>
+                                                </p>
+                                                <p>
+                                                    <%= address.mobile %>
+                                                </p>
+                                                <p>
+                                                    <%= address.address %>
+                                                </p>
+                                                <p>
+                                                    <%= address.pincode %>
+                                                </p>
+                                                <p>
+                                                    <%= address.city %>
+                                                </p>
+                                                <p>
+                                                    <%= address.state %>
+                                                </p>
+
+
+
+                                                <!-- <button id="dlt" 
                                                     class="delete-button ">Delete</button><br> -->
 
 
-                                                    <input type="radio" id="address1"
-                                                        data-address-id="<%= address._id %>" class="forAddress"
-                                                        name="select" value="select">
-                                                    <label for="address1">Select Address</label>
-                                                </div>
-                                                <% }); %>
-                                        </div>
+                                                <input type="radio" id="address1" data-address-id="<%= address._id %>"
+                                                    class="forAddress" name="select" value="select">
+                                                <label for="address1">Select Address</label>
+                                            </div>
+                                            <% }); %>
                                     </div>
                                 </div>
+                            </div>
 
 
-                                <!-- added address showing end -->
-                                <!-- 
+                            <!-- added address showing end -->
+                            <!-- 
                             <h6 class="coupon__code"><span class="icon_tag_alt"></span> Have a coupon? <a href="#">Click
                                     here</a> to enter your code</h6> -->
-                                <br>
-                                <h6 class="checkout__title"><u>Address Details:</u></h6>
-                                <!-- add address begin -->
+                            <br>
+                            <h6 class="checkout__title"><u>Address Details:</u></h6>
+                            <!-- add address begin -->
 
-                                <div class="card-body pb-3">
-                                    <form id="addressForm" novalidate>
-                                        <div class="form-group">
-                                            <label class="form-label">Full Name <span class="star">*</span></label>
-                                            <input type="text" class="form-control" name="fullname" id="fullname"
-                                                placeholder="full name" required>
-                                            <div id="fullnameError" class="error"></div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="form-label">Mobile <span class="star">*</span></label>
-                                            <input type="text" class="form-control" name="mobno" id="mobno"
-                                                placeholder=" mobile number" required pattern="[0-9]{10}">
-                                            <div id="mobnoError" class="error"></div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="form-label">Address <span class="star">*</span></label>
-                                            <input type="text" class="form-control" name="address" id="address"
-                                                placeholder="address" required>
-                                            <div id="addressError" class="error"></div>
-                                        </div>
-                                        <div class="form-row">
-                                            <div class="form-group col-md-6">
-                                                <label class="form-label">Pincode <span class="star">*</span></label>
-                                                <input type="text" class="form-control" name="pincode" id="pincode"
-                                                    placeholder="pincode" required pattern="[0-9]{6}">
-                                                <div id="pincodeError" class="error"></div>
-                                            </div>
-                                            <div class="form-group col-md-6">
-                                                <label class="form-label">Town/City <span class="star">*</span></label>
-                                                <input type="text" class="form-control" name="city" id="city"
-                                                    placeholder="your city" required>
-                                                <div id="cityError" class="error"></div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group ">
-                                            <label class="form-label">State <span class="star">*</span></label>
-                                            <input type="text" class="form-control" name="state" id="state"
-                                                placeholder="your state" required>
-                                            <div id="stateError" class="error"></div>
-                                        </div>
-                                        <div class="text-center">
-                                            <button type="button" class="btn btn-success btn-sm mt-3 px-5 py-2"
-                                                onclick="validateForm()" id="addAddress">Save Address</button>
-                                        </div>
-                                    </form>
-                                </div>
-
-                                <!-- add address end -->
-
-                            </div>
-                            <div class="col-lg-4 col-md-6">
-                                <div class="checkout__order">
-                                    <h4 class="order__title">Your order</h4>
-                                    <div class="checkout__order__products"><b>Product</b> <span><b>Total</b></span>
+                            <div class="card-body pb-3">
+                                <form id="addressForm" novalidate>
+                                    <div class="form-group">
+                                        <label class="form-label">Full Name <span class="star">*</span></label>
+                                        <input type="text" class="form-control" name="fullname" id="fullname"
+                                            placeholder="full name" required>
+                                        <div id="fullnameError" class="error"></div>
                                     </div>
-                                    <% cartData.products.forEach(function(cart, index){%>
-                                        <ul class="checkout__total__products">
-                                            <li>
-                                                <%= index+1 %>. <%= cart.productId.productName %> <b>:</b> <span>₹<%=
-                                                                cart.productId.Price * cart.quantity %></span>
-                                            </li>
-
-
-                                        </ul>
-                                        <% }); %>
-
-                                            <hr>
-
-                                            <div class="checkout__input__checkbox coupon">
-                                                <label for="coupon">
-                                                    Apply Coupon
-                                                    <input type="checkbox" id="coupon" class="couponChecking"
-                                                        value="coupon">
-                                                    <span class="checkmark"></span>
-                                                </label>
-                                            </div>
-                                            <input type="hidden" name="coupon"
-                                                value="<%= JSON.stringify(couponData) %>">
-                                            <ul class="checkout__total__all">
-                                                <li id="subtotalLabel">Subtotal <span id="subtotal">
-                                                        <%= cartTotal %>
-                                                    </span></li>
-                                                <li id="couponLabel" style="display: none;">Coupon <span
-                                                        id="couponDiscount">
-
-                                                        0</span></li>
-                                                <li id="totalLabel" style="display: none;">Total <span id="total1">
-
-                                                        0</span></li>
-                                            </ul>
-                                            <div class="checkout__input__checkbox">
-                                                <label for="COD">
-                                                    Cash on delivery
-                                                    <input type="checkbox" id="COD" class="checkingBox" value="COD">
-                                                    <span class="checkmark"></span>
-                                                </label>
-                                            </div>
-
-
-                                            <div class="checkout__input__checkbox">
-                                                <label for="paypal">
-                                                    Online
-                                                    <input type="checkbox" id="paypal" class="checkingBox"
-                                                        value="online">
-                                                    <span class="checkmark"></span>
-                                                </label>
-                                            </div>
-
-                                            <button type="submit" class="site-btn place-order">PLACE ORDER</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- Checkout Section End -->
-
-
-        <!-- Footer Section Begin -->
-        <footer class="footer">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-3 col-md-6 col-sm-6">
-                        <div class="footer__about">
-                            <div class="footer__logo">
-                                <a href="#">
-                                    <h2 class="ShoeOne-foot">ShoeOne</h2>
-                                </a>
-                            </div>
-                            <p>The customer is at the heart of our unique business model, which includes design.</p>
-                            <a href="#"><img src="/img/payment.png" alt=""></a>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
-                        <div class="footer__widget">
-                            <h6>Shopping</h6>
-                            <ul>
-                                <li><a href="#">Clothing Store</a></li>
-                                <li><a href="#">Trending Shoes</a></li>
-                                <li><a href="#">Accessories</a></li>
-                                <li><a href="#">Sale</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-2 col-md-3 col-sm-6">
-                        <div class="footer__widget">
-                            <h6>Shopping</h6>
-                            <ul>
-                                <li><a href="#">Contact Us</a></li>
-                                <li><a href="#">Payment Methods</a></li>
-                                <li><a href="#">Delivary</a></li>
-                                <li><a href="#">Return & Exchanges</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 offset-lg-1 col-md-6 col-sm-6">
-                        <div class="footer__widget">
-                            <h6>NewLetter</h6>
-                            <div class="footer__newslatter">
-                                <p>Be the first to know about new arrivals, look books, sales & promos!</p>
-                                <form action="#">
-                                    <input type="text" placeholder="Your email">
-                                    <button type="submit"><span class="icon_mail_alt"></span></button>
+                                    <div class="form-group">
+                                        <label class="form-label">Mobile <span class="star">*</span></label>
+                                        <input type="text" class="form-control" name="mobno" id="mobno"
+                                            placeholder=" mobile number" required pattern="[0-9]{10}">
+                                        <div id="mobnoError" class="error"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">Address <span class="star">*</span></label>
+                                        <input type="text" class="form-control" name="address" id="address"
+                                            placeholder="address" required>
+                                        <div id="addressError" class="error"></div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6">
+                                            <label class="form-label">Pincode <span class="star">*</span></label>
+                                            <input type="text" class="form-control" name="pincode" id="pincode"
+                                                placeholder="pincode" required pattern="[0-9]{6}">
+                                            <div id="pincodeError" class="error"></div>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <label class="form-label">Town/City <span class="star">*</span></label>
+                                            <input type="text" class="form-control" name="city" id="city"
+                                                placeholder="your city" required>
+                                            <div id="cityError" class="error"></div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group ">
+                                        <label class="form-label">State <span class="star">*</span></label>
+                                        <input type="text" class="form-control" name="state" id="state"
+                                            placeholder="your state" required>
+                                        <div id="stateError" class="error"></div>
+                                    </div>
+                                    <div class="text-center">
+                                        <button type="button" class="btn btn-success btn-sm mt-3 px-5 py-2"
+                                            onclick="validateForm()" id="addAddress">Save Address</button>
+                                    </div>
                                 </form>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 text-center">
-                        <div class="footer__copyright__text">
-                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                            <p>Copyright ©
-                                <script>
-                                    document.write(new Date().getFullYear());
-                                </script>2020
-                                All rights reserved | This template is made with <i class="fa fa-heart-o"
-                                    aria-hidden="true"></i> by <a href="https://colorlib.com"
-                                    target="_blank">Colorlib</a>
-                            </p>
-                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </footer>
-        <!-- Footer Section End -->
 
-        <!-- Search Begin -->
-        <div class="search-model">
-            <div class="h-100 d-flex align-items-center justify-content-center">
-                <div class="search-close-switch">+</div>
-                <form class="search-model-form">
-                    <input type="text" id="search-input" placeholder="Search here.....">
-                </form>
+                            <!-- add address end -->
+
+                        </div>
+                        <div class="col-lg-4 col-md-6">
+                            <div class="checkout__order">
+                                <h4 class="order__title">Your order</h4>
+                                <div class="checkout__order__products"><b>Product</b> <span><b>Total</b></span>
+                                </div>
+                                <% cartData.products.forEach(function(cart, index){%>
+                                    <ul class="checkout__total__products">
+                                        <li>
+                                            <%= index+1 %>. <%= cart.productId.productName %> <b>:</b> <span>₹<%=
+                                                            cart.productId.Price * cart.quantity %></span>
+                                        </li>
+
+
+                                    </ul>
+                                    <% }); %>
+
+                                        <hr>
+
+                                        <div class="checkout__input__checkbox coupon">
+                                            <label for="coupon">
+                                                Apply Coupon
+                                                <input type="checkbox" id="coupon" class="couponChecking"
+                                                    value="coupon">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </div>
+                                        <input type="hidden" name="coupon" value="<%= JSON.stringify(couponData) %>">
+                                        <ul class="checkout__total__all">
+                                            <li id="subtotalLabel">Subtotal <span id="subtotal">
+                                                    <%= cartTotal %>
+                                                </span></li>
+                                            <li id="couponLabel" style="display: none;">Coupon <span
+                                                    id="couponDiscount">
+
+                                                    0</span></li>
+                                            <li id="totalLabel" style="display: none;">Total <span id="total1">
+
+                                                    0</span></li>
+                                        </ul>
+                                        <div class="checkout__input__checkbox">
+                                            <label for="COD">
+                                                Cash on delivery
+                                                <input type="checkbox" id="COD" class="checkingBox" value="COD">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </div>
+
+
+                                        <div class="checkout__input__checkbox">
+                                            <label for="paypal">
+                                                Online
+                                                <input type="checkbox" id="paypal" class="checkingBox" value="online">
+                                                <span class="checkmark"></span>
+                                            </label>
+                                        </div>
+
+                                        <button type="submit" class="site-btn place-order">PLACE ORDER</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <!-- Search End -->
+    </section>
+    <!-- Checkout Section End -->
 
 
-        <!-- Js Plugins -->
-        <script src="/js/jquery-3.3.1.min.js"></script>
-        <script src="/js/bootstrap.min.js"></script>
-        <script src="/js/jquery.nice-select.min.js"></script>
-        <script src="/js/jquery.nicescroll.min.js"></script>
-        <script src="/js/jquery.magnific-popup.min.js"></script>
-        <script src="/js/jquery.countdown.min.js"></script>
-        <script src="/js/jquery.slicknav.js"></script>
-        <script src="/js/mixitup.min.js"></script>
-        <script src="/js/owl.carousel.min.js"></script>
-        <script src="/js/main.js"></script>
+    <!-- Footer Section Begin -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="footer__about">
+                        <div class="footer__logo">
+                            <a href="#">
+                                <h2 class="ShoeOne-foot">ShoeOne</h2>
+                            </a>
+                        </div>
+                        <p>The customer is at the heart of our unique business model, which includes design.</p>
+                        <a href="#"><img src="/img/payment.png" alt=""></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
+                    <div class="footer__widget">
+                        <h6>Shopping</h6>
+                        <ul>
+                            <li><a href="#">Clothing Store</a></li>
+                            <li><a href="#">Trending Shoes</a></li>
+                            <li><a href="#">Accessories</a></li>
+                            <li><a href="#">Sale</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-sm-6">
+                    <div class="footer__widget">
+                        <h6>Shopping</h6>
+                        <ul>
+                            <li><a href="#">Contact Us</a></li>
+                            <li><a href="#">Payment Methods</a></li>
+                            <li><a href="#">Delivary</a></li>
+                            <li><a href="#">Return & Exchanges</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3 offset-lg-1 col-md-6 col-sm-6">
+                    <div class="footer__widget">
+                        <h6>NewLetter</h6>
+                        <div class="footer__newslatter">
+                            <p>Be the first to know about new arrivals, look books, sales & promos!</p>
+                            <form action="#">
+                                <input type="text" placeholder="Your email">
+                                <button type="submit"><span class="icon_mail_alt"></span></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <div class="footer__copyright__text">
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        <p>Copyright ©
+                            <script>
+                                document.write(new Date().getFullYear());
+                            </script>2020
+                            All rights reserved | This template is made with <i class="fa fa-heart-o"
+                                aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                        </p>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer Section End -->
 
-        <!-- razorpay -->
-        <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <!-- Search Begin -->
+    <div class="search-model">
+        <div class="h-100 d-flex align-items-center justify-content-center">
+            <div class="search-close-switch">+</div>
+            <form class="search-model-form">
+                <input type="text" id="search-input" placeholder="Search here.....">
+            </form>
+        </div>
+    </div>
+    <!-- Search End -->
 
-        <script>
-            // *****************************Add address************************************************
-            document.addEventListener('DOMContentLoaded', () => {
-                
+
+    <!-- Js Plugins -->
+    <script src="/js/jquery-3.3.1.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/jquery.nice-select.min.js"></script>
+    <script src="/js/jquery.nicescroll.min.js"></script>
+    <script src="/js/jquery.magnific-popup.min.js"></script>
+    <script src="/js/jquery.countdown.min.js"></script>
+    <script src="/js/jquery.slicknav.js"></script>
+    <script src="/js/mixitup.min.js"></script>
+    <script src="/js/owl.carousel.min.js"></script>
+    <script src="/js/main.js"></script>
+
+    <!-- razorpay -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <script>
+        // *****************************Add address************************************************
+        document.addEventListener('DOMContentLoaded', () => {
 
 
-                const addressBtn = document.getElementById('addAddress');
-                addressBtn.addEventListener('click', addAddress);
+            const addressBtn = document.getElementById('addAddress');
+            addressBtn.addEventListener('click', addAddress);
 
-                async function addAddress() {
-                    event.preventDefault()
-                    const addAddressData = {
-                        fullname: document.getElementById('fullname').value,
-                        mobno: document.getElementById('mobno').value,
-                        address: document.getElementById('address').value,
-                        pincode: document.getElementById('pincode').value,
-                        city: document.getElementById('city').value,
-                        state: document.getElementById('state').value,
-                    };
+            async function addAddress() {
+                event.preventDefault()
+                const addAddressData = {
+                    fullname: document.getElementById('fullname').value,
+                    mobno: document.getElementById('mobno').value,
+                    address: document.getElementById('address').value,
+                    pincode: document.getElementById('pincode').value,
+                    city: document.getElementById('city').value,
+                    state: document.getElementById('state').value,
+                };
 
-                    // Validate form data
-                    const isValid = validateForm(addAddressData);
+                // Validate form data
+                const isValid = validateForm(addAddressData);
 
-                    if (isValid) {
-                        try {
-                            const response = await fetch('/addressAdd', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify({ addAddress: addAddressData })
+                if (isValid) {
+                    try {
+                        const response = await fetch('/addressAdd', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({ addAddress: addAddressData })
+                        });
+
+                        const data = await response.json();
+                        if (data.message) {
+
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'success',
+                                title: data.message,
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                            // Clear form fields after successful submission
+                            setTimeout(function () {
+                                location.reload()
+                            }, 1000);
+                            clearFormFields();
+                        } else {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'info',
+                                title: data.error,
+                                showConfirmButton: false,
+                                timer: 1500
                             });
 
-                            const data = await response.json();
-                            if (data.message) {
-
-                                Swal.fire({
-                                    position: 'center',
-                                    icon: 'success',
-                                    title: data.message,
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                });
-                                // Clear form fields after successful submission
-                                setTimeout(function () {
-                                    location.reload()
-                                }, 1000);
-                                clearFormFields();
-                            } else {
-                                Swal.fire({
-                                    position: 'center',
-                                    icon: 'info',
-                                    title: data.error,
-                                    showConfirmButton: false,
-                                    timer: 1500
-                                });
-
-                            }
-                        } catch (error) {
-                            console.error(error);
                         }
+                    } catch (error) {
+                        console.error(error);
                     }
                 }
+            }
 
-                function validateForm(data) {
-                    clearErrors();
+            function validateForm(data) {
+                clearErrors();
 
-                    // Validate each field
-                    if (!data.fullname || !/^[a-zA-Z]+(?:\s[a-zA-Z]+)*$/.test(data.fullname)) {
-                        showError('fullnameError', 'Please enter your full name with valid format');
-                        return false;
-                    }
-
-
-                    if (!data.mobno || !/^\d{10}$/.test(data.mobno)) {
-                        showError('mobnoError', 'Please enter a valid 10-digit mobile number');
-                        return false;
-                    }
-
-                    if (!data.address || !/^[a-zA-Z]+(?: [a-zA-Z]+)*(?: \([^)]+\))?$/.test(data.address)) {
-                        showError('addressError', 'Please enter a valid address');
-                        return false;
-                    }
-
-
-                    if (!data.pincode || !/^\d{6}$/.test(data.pincode)) {
-                        showError('pincodeError', 'Please enter a valid 6-digit pincode');
-                        return false;
-                    }
-
-                    if (!data.city || !/^[^\s][a-zA-Z\s&'-]*$/.test(data.city)) {
-                        showError('cityError', 'Please enter a valid address');
-                        return false;
-                    }
-
-                    if (!data.state || !/^[a-zA-Z]+$/.test(data.state)) {
-                        showError('stateError', 'Please enter your state');
-                        return false;
-                    }
-
-                    return true;
+                // Validate each field
+                if (!data.fullname || !/^[a-zA-Z]+(?:\s[a-zA-Z]+)*$/.test(data.fullname)) {
+                    showError('fullnameError', 'Please enter your full name with valid format');
+                    return false;
                 }
 
-                function showError(elementId, message) {
-                    const errorElement = document.getElementById(elementId);
-                    if (errorElement) {
-                        errorElement.textContent = message;
-                        errorElement.classList.add('error'); // Add the 'error' class
-                    }
+
+                if (!data.mobno || !/^\d{10}$/.test(data.mobno)) {
+                    showError('mobnoError', 'Please enter a valid 10-digit mobile number');
+                    return false;
                 }
 
-                function clearErrors() {
-                    const errorElements = document.querySelectorAll('.error');
-                    errorElements.forEach((element) => {
-                        element.textContent = '';
-                    });
+                if (!data.address || !/^[a-zA-Z]+(?: [a-zA-Z]+)*(?: \([^)]+\))?$/.test(data.address)) {
+                    showError('addressError', 'Please enter a valid address');
+                    return false;
                 }
 
-                function clearFormFields() {
-                    // Clear each form field
-                    document.getElementById('fullname').value = '';
-                    document.getElementById('mobno').value = '';
-                    document.getElementById('address').value = '';
-                    document.getElementById('pincode').value = '';
-                    document.getElementById('city').value = '';
-                    document.getElementById('state').value = '';
 
-                    // Clear any existing error messages
-                    clearErrors();
+                if (!data.pincode || !/^\d{6}$/.test(data.pincode)) {
+                    showError('pincodeError', 'Please enter a valid 6-digit pincode');
+                    return false;
                 }
-            });
+
+                if (!data.city || !/^[^\s][a-zA-Z\s&'-]*$/.test(data.city)) {
+                    showError('cityError', 'Please enter a valid address');
+                    return false;
+                }
+
+                if (!data.state || !/^[a-zA-Z]+$/.test(data.state)) {
+                    showError('stateError', 'Please enter your state');
+                    return false;
+                }
+
+                return true;
+            }
+
+            function showError(elementId, message) {
+                const errorElement = document.getElementById(elementId);
+                if (errorElement) {
+                    errorElement.textContent = message;
+                    errorElement.classList.add('error'); // Add the 'error' class
+                }
+            }
+
+            function clearErrors() {
+                const errorElements = document.querySelectorAll('.error');
+                errorElements.forEach((element) => {
+                    element.textContent = '';
+                });
+            }
+
+            function clearFormFields() {
+                // Clear each form field
+                document.getElementById('fullname').value = '';
+                document.getElementById('mobno').value = '';
+                document.getElementById('address').value = '';
+                document.getElementById('pincode').value = '';
+                document.getElementById('city').value = '';
+                document.getElementById('state').value = '';
+
+                // Clear any existing error messages
+                clearErrors();
+            }
+        });
 
 
 
 
 
 
-            // ------------------ coupon ------------------------------------//
+        // ------------------ coupon ------------------------------------//
 
-            document.querySelector('.coupon').addEventListener('change', Coupon);
+        document.querySelector('.coupon').addEventListener('change', Coupon);
+        const subtotal = document.getElementById("subtotal");
+        let sub = subtotal.textContent
+        console.log(sub, "jj");
+        async function Coupon() {
+            let checkCouponBox = document.querySelector('.couponChecking');
+            if (checkCouponBox.checked) {
 
-            async function Coupon() {
-                let checkCouponBox = document.querySelector('.couponChecking');
-                if (checkCouponBox.checked) {
-                    Swal.fire({
-                        title: "<u><strong>Available Coupons</strong></u>",
-                        // icon: "info",
 
-                        html: `
+                Swal.fire({
+                    title: "<u><strong>Available Coupons</strong></u>",
+                    // icon: "info",
+
+
+                    html: `
 
                         <% couponData.forEach(coupon => { %>
-
-                                <% if (coupon.minimumCartValue <= cartTotal && coupon.is_listed === 'true') { %>
+                            
+                                <% if (coupon.minimumCartValue <=  cartTotal) { %>
 
                                     <div class="divCoupon"> 
                                         <p> Code:-&nbsp;&nbsp;&nbsp <strong><%= coupon.code %></strong></p>
                                         <p>Discount Amount:&nbsp; <strong><%= coupon.discountAmount %></strong></p>
-                                        <button class="couponbtn"  onclick="applyCoupon('<%= coupon._id %>','<%= coupon.discountAmount %>' )">Apply</button>
+                                        <button id="btndlt" class="couponbtn"  onclick="applyCoupon('<%= coupon._id %>','<%= coupon.discountAmount %>' )">Apply</button>
                                     </div>
 
                                 <% } else  { %>
@@ -724,7 +717,7 @@
                                     <div class="divCoupon"> 
                                         <p> Code:-&nbsp;&nbsp;&nbsp <strong><%= coupon.code %></strong></p>
                                         <p>Discount Amount:&nbsp; <strong><%= coupon.discountAmount %></strong></p>
-                                        <p style="color:red">Add &#8377<%=  coupon.minimumCartValue - cartTotal %> to get this coupon </p>
+                                        <p style="color:red">Add ₹<%= coupon.minimumCartValue - cartTotal %> to get this coupon </p>
                                     </div>
 
                                 <% } %>
@@ -732,335 +725,343 @@
                                 <% }); %>
            
                             `,
-                        showCloseButton: true,
-                        showCancelButton: false,
-                        focusConfirm: false,
-                        confirmButtonText: `
+                    showCloseButton: true,
+                    showCancelButton: false,
+                    focusConfirm: false,
+                    confirmButtonText: `
                                  Done !
                             `,
-                        // confirmButtonAriaLabel: "Thumbs up, great!",
-                        // cancelButtonText: `
-                        //     <i class="fa fa-thumbs-down"></i>
-                        // `,
-                        // cancelButtonAriaLabel: "Thumbs down"
-                    });
-                }
+                    // confirmButtonAriaLabel: "Thumbs up, great!",
+                    // cancelButtonText: `
+                    //     <i class="fa fa-thumbs-down"></i>
+                    // `,
+                    // cancelButtonAriaLabel: "Thumbs down"
+                });
             }
+        }
 
 
-            function applyCoupon(couponId, discountAmount) {
+        function applyCoupon(couponId, discountAmount) {
+
+            // const button = document.getElementById('btndlt');
+            // if (couponId) {
+            //     // Hide the button
+            //     button.style.display = 'none';
+            // } else {
+            //     // Show the button
+            //     button.style.display = 'inline-block'; // or 'block' depending on your layout
+            // }
+            Swal.fire("Apply this coupon!");
+
+            console.log(couponId);
+
+            let amountDiscount = discountAmount
+            console.log(amountDiscount);
+            // Apply coupon logic here, update the displayed values
+            const couponData = JSON.parse(document.querySelector('[name="coupon"]').value);
+            const subtotal = document.getElementById("subtotal");
+
+            const couponLabel = document.getElementById("couponLabel");
+            const totalLabel = document.getElementById("totalLabel");
+            const couponDiscount = document.getElementById("couponDiscount");
+            const total = document.getElementById("total1");
+
+            // Update the displayed values based on the applied coupon
+            couponLabel.style.display = "block";
+            totalLabel.style.display = "block";
+            couponDiscount.textContent = amountDiscount;
+            total.textContent = parseFloat(subtotal.textContent) - parseFloat(amountDiscount);
+        }
 
 
-                console.log(couponId);
-                alert("hiiiii")
 
-                let amountDiscount = discountAmount
-                console.log(amountDiscount);
-                // Apply coupon logic here, update the displayed values
-                const couponData = JSON.parse(document.querySelector('[name="coupon"]').value);
-                const subtotal = document.getElementById("subtotal");
-                console.log(subtotal.textContent, "jj");
-                const couponLabel = document.getElementById("couponLabel");
-                const totalLabel = document.getElementById("totalLabel");
-                const couponDiscount = document.getElementById("couponDiscount");
-                const total = document.getElementById("total1");
+        // -------------------------------coupon script end here-------------------------------------//
 
-                // Update the displayed values based on the applied coupon
-                couponLabel.style.display = "block";
-                totalLabel.style.display = "block";
-                couponDiscount.textContent = amountDiscount;
-                total.textContent = parseFloat(subtotal.textContent) - parseFloat(amountDiscount);
+
+
+
+        // --------------------------------place order checking script-----------------------------------------------
+
+        document.querySelector('.place-order').addEventListener('click', orderPl);
+
+        async function orderPl() {
+
+            let totalProdAmount = document.getElementById('total1').textContent
+            let couponDiscount = document.getElementById('couponDiscount').textContent
+            console.log(totalProdAmount, "oooooo");
+            // select address
+            let addressId = null //address id  taking
+
+            let addressChecked = false
+            let addressInputs = document.querySelectorAll('.forAddress')
+            addressInputs.forEach((input) => {
+                if (input.checked) {
+                    addressChecked = true;
+                    addressId = input.getAttribute('data-address-id')
+                    console.log(addressId);
+                    console.log(input.parentNode);
+                }
+            })
+
+            if (!addressChecked) {
+                Swal.fire("Please select the address for delivery!");
+                // alert("Please select the address for delivery");
+                return false;
             }
+            //End of select address
 
 
-
-            // -------------------------------coupon script end here-------------------------------------//
-
-
-
-
-            // --------------------------------place order checking script-----------------------------------------------
-
-            document.querySelector('.place-order').addEventListener('click', orderPl);
-
-            async function orderPl() {
-
-                let totalProdAmount = document.getElementById('total1').textContent
-                let couponDiscount = document.getElementById('couponDiscount').textContent
-                console.log(totalProdAmount, "oooooo");
-                // select address
-                let addressId = null //address id  taking
-
-                let addressChecked = false
-                let addressInputs = document.querySelectorAll('.forAddress')
-                addressInputs.forEach((input) => {
-                    if (input.checked) {
-                        addressChecked = true;
-                        addressId = input.getAttribute('data-address-id')
-                        console.log(addressId);
-                        console.log(input.parentNode);
-                    }
-                })
-
-                if (!addressChecked) {
-                    Swal.fire("Please select the address for delivery!");
-                    // alert("Please select the address for delivery");
-                    return false;
+            let paymentmethod = null
+            // delivery type checking
+            let deliveryTypeChecked = false;
+            let deliveryType = document.querySelectorAll('.checkingBox')
+            deliveryType.forEach((checkInput) => {
+                if (checkInput.checked) {
+                    deliveryTypeChecked = true
+                    paymentmethod = checkInput.value
+                    console.log(paymentmethod);
+                    console.log(checkInput.parentNode);
                 }
-                //End of select address
+            })
+
+            if (!deliveryTypeChecked) {
+                Swal.fire("Your Delivery  type is not selected, Please select that!");
+                return false;
+            }
+            //End of delivery type checking
+
+            try {
 
 
-                let paymentmethod = null
-                // delivery type checking
-                let deliveryTypeChecked = false;
-                let deliveryType = document.querySelectorAll('.checkingBox')
-                deliveryType.forEach((checkInput) => {
-                    if (checkInput.checked) {
-                        deliveryTypeChecked = true
-                        paymentmethod = checkInput.value
-                        console.log(paymentmethod);
-                        console.log(checkInput.parentNode);
-                    }
-                })
-
-                if (!deliveryTypeChecked) {
-                    Swal.fire("Your Delivery  type is not selected, Please select that!");
-                    return false;
-                }
-                //End of delivery type checking
-
-                try {
-
-
-                    const response = await fetch('/placeOrder', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ addressId, paymentType: paymentmethod, totalProdAmount, couponDiscount })
-                    });
+                const response = await fetch('/placeOrder', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ addressId, paymentType: paymentmethod, totalProdAmount, couponDiscount })
+                });
 
 
 
-                    const data = await response.json();
+                const data = await response.json();
 
-                    if (data.message) {
-                        console.log("Cash on delivery is recoreded");
+                if (data.message) {
+                    console.log("Cash on delivery is recoreded");
 
-                        window.location.href = "/successOrder";
+                    window.location.href = "/successOrder";
 
-                    } else if (data.success) {
+                } else if (data.success) {
 
 
 
 
-                        console.log(data.totalOrderAmount, "murshi");
+                    console.log(data.addedCouponDiscount, "murshi");
 
-                        if (data.totalOrderAmount > 0) {
-                            console.log("daaaaaa");
-                            var options = {
-                                "key": data.Razorpay_key_id,
-                                "amount": data.totalOrderAmount,
-                                "currency": "INR",
-                                "name": "ShoeOne",
-                                "description": "Test Transaction",
-                                "image": "/assets/images/logos/ShoeOne-Logo.png",
-                                "order_id": data.order.id,
-                                "handler": function (response) {
-                                    // alert(response.razorpay_payment_id);
-                                    // alert(response.razorpay_order_id);
-                                    // alert(response.razorpay_signature)
-                                    // let paymentId = response.razorpay_payment_id
-                                    // let orderId = response.razorpay_order_id
-                                    // let signature = response.razorpay_signature
-                                    // console.log(paymentId+"hhh");
+                    if (data.totalOrderAmount > 0) {
+                        console.log("daaaaaa");
+                        var options = {
+                            "key": data.Razorpay_key_id,
+                            "amount": data.totalOrderAmount,
+                            "currency": "INR",
+                            "name": "ShoeOne",
+                            "description": "Test Transaction",
+                            "image": "/assets/images/logos/ShoeOne-Logo.png",
+                            "order_id": data.order.id,
+                            "handler": function (response) {
+                                // alert(response.razorpay_payment_id);
+                                // alert(response.razorpay_order_id);
+                                // alert(response.razorpay_signature)
+                                // let paymentId = response.razorpay_payment_id
+                                // let orderId = response.razorpay_order_id
+                                // let signature = response.razorpay_signature
+                                // console.log(paymentId+"hhh");
 
-                                    console.log("try something");
+                                console.log("try something");
 
-                                    // verify payment function calling
-                                    verifyPayment(response, data.order.id, paymentmethod, addressId, data.totalOrderAmount)
-
-
-                                },
-                                "prefill": {
-                                    "name": data.userData.firstName,
-                                    "email": data.userData.email,
-                                    "contact": data.userData.mobile
-                                },
-                                "notes": {
-                                    "address": "Razorpay Corporate Office"
-                                },
-                                "theme": {
-                                    "color": "#3399cc"
-                                }
-                            };
-                            var rzp1 = new Razorpay(options);
-                            rzp1.on('payment.failed', function (response) {
-                                // alert(response.error.code);
-                                // alert(response.error.description);
-                                // alert(response.error.source);
-                                // alert(response.error.step);
-                                // alert(response.error.reason);
-                                // alert(response.error.metadata.order_id);
-                                // alert(response.error.metadata.payment_id);
-                            });
-                            rzp1.open();
-
-                        } else {
-
-                            var options = {
-                                "key": data.Razorpay_key_id,
-                                "amount": data.cartTotal,
-                                "currency": "INR",
-                                "name": "ShoeOne",
-                                "description": "Test Transaction",
-                                "image": "/assets/images/logos/ShoeOne-Logo.png",
-                                "order_id": data.order.id,
-                                "handler": function (response) {
-                                    // alert(response.razorpay_payment_id);
-                                    // alert(response.razorpay_order_id);
-                                    // alert(response.razorpay_signature)
-                                    // let paymentId = response.razorpay_payment_id
-                                    // let orderId = response.razorpay_order_id
-                                    // let signature = response.razorpay_signature
-                                    // console.log(paymentId+"hhh");
-
-                                    console.log("try something");
-
-                                    // verify payment function calling
-                                    verifyPayment(response, data.order.id, paymentmethod, addressId)
+                                // verify payment function calling
+                                verifyPayment(response, data.order.id, paymentmethod, addressId, data.totalOrderAmount, data.addedCouponDiscount)
 
 
-                                },
-                                "prefill": {
-                                    "name": data.userData.firstName,
-                                    "email": data.userData.email,
-                                    "contact": data.userData.mobile
-                                },
-                                "notes": {
-                                    "address": "Razorpay Corporate Office"
-                                },
-                                "theme": {
-                                    "color": "#3399cc"
-                                }
-                            };
-                            var rzp1 = new Razorpay(options);
-                            rzp1.on('payment.failed', function (response) {
-                                // alert(response.error.code);
-                                // alert(response.error.description);
-                                // alert(response.error.source);
-                                // alert(response.error.step);
-                                // alert(response.error.reason);
-                                // alert(response.error.metadata.order_id);
-                                // alert(response.error.metadata.payment_id);
-                            });
-                            rzp1.open();
-                        }
-
-                        // console.log(data.order.id);
-                        // razorpay finction
-
-
-
+                            },
+                            "prefill": {
+                                "name": data.userData.firstName,
+                                "email": data.userData.email,
+                                "contact": data.userData.mobile
+                            },
+                            "notes": {
+                                "address": "Razorpay Corporate Office"
+                            },
+                            "theme": {
+                                "color": "#3399cc"
+                            }
+                        };
+                        var rzp1 = new Razorpay(options);
+                        rzp1.on('payment.failed', function (response) {
+                            // alert(response.error.code);
+                            // alert(response.error.description);
+                            // alert(response.error.source);
+                            // alert(response.error.step);
+                            // alert(response.error.reason);
+                            // alert(response.error.metadata.order_id);
+                            // alert(response.error.metadata.payment_id);
+                        });
+                        rzp1.open();
 
                     } else {
-                        Swal.fire("Something went wrong online payment or in COD delivery!");
+
+                        var options = {
+                            "key": data.Razorpay_key_id,
+                            "amount": data.cartTotal,
+                            "currency": "INR",
+                            "name": "ShoeOne",
+                            "description": "Test Transaction",
+                            "image": "/assets/images/logos/ShoeOne-Logo.png",
+                            "order_id": data.order.id,
+                            "handler": function (response) {
+                                // alert(response.razorpay_payment_id);
+                                // alert(response.razorpay_order_id);
+                                // alert(response.razorpay_signature)
+                                // let paymentId = response.razorpay_payment_id
+                                // let orderId = response.razorpay_order_id
+                                // let signature = response.razorpay_signature
+                                // console.log(paymentId+"hhh");
+
+                                console.log("try something");
+
+                                // verify payment function calling
+                                verifyPayment(response, data.order.id, paymentmethod, addressId)
+
+
+                            },
+                            "prefill": {
+                                "name": data.userData.firstName,
+                                "email": data.userData.email,
+                                "contact": data.userData.mobile
+                            },
+                            "notes": {
+                                "address": "Razorpay Corporate Office"
+                            },
+                            "theme": {
+                                "color": "#3399cc"
+                            }
+                        };
+                        var rzp1 = new Razorpay(options);
+                        rzp1.on('payment.failed', function (response) {
+                            // alert(response.error.code);
+                            // alert(response.error.description);
+                            // alert(response.error.source);
+                            // alert(response.error.step);
+                            // alert(response.error.reason);
+                            // alert(response.error.metadata.order_id);
+                            // alert(response.error.metadata.payment_id);
+                        });
+                        rzp1.open();
                     }
 
+                    // console.log(data.order.id);
+                    // razorpay finction
 
-                } catch (error) {
 
-                    console.error("Error during fetch:", error);
+
+
+                } else {
+                    Swal.fire("Something went wrong online payment or in COD delivery!");
                 }
+
+
+            } catch (error) {
+
+                console.error("Error during fetch:", error);
+            }
+        }
+
+
+
+
+        // verify payment function
+        async function verifyPayment(payment, order, paymentType, addressId, totalOrderAmount, couponDiscount) {
+            console.log("sooooommmmm" + couponDiscount);
+
+
+            try {
+                const response = await fetch('/verifyOnlinePayment', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ payment, order, paymentType, addressId, totalOrderAmount ,couponDiscount})
+                })
+
+
+                const data = await response.json();
+
+                if (data.status) {
+                    console.log("Online payment order is success full");
+
+                    window.location.href = "/successOrder";
+
+                } else {
+                    Swal.fire({
+                        position: "center",
+                        icon: "info",
+                        title: data.error,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            } catch (error) {
+                // Handle error
+                console.error(error);
             }
 
 
+        }
 
 
-            // verify payment function
-            async function verifyPayment(payment, order, paymentType, addressId, totalOrderAmount) {
-                console.log("sooooommmmm" + totalOrderAmount);
 
+        // *******************delete address from address manager***********************************
 
-                try {
-                    const response = await fetch('/verifyOnlinePayment', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ payment, order, paymentType, addressId, totalOrderAmount })
-                    })
+        document.querySelectorAll('.delete-button').forEach((button) => {
+            button.addEventListener('click', () => {
+                let addressId = button.getAttribute('data-address-id');
+                console.log(addressId);
+                // let url ='/deleteAddress'
+                fetch('/deleteAddress/', {
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ addressId })
+                }).then(response => {
+                    return response.json();
+                }).then(data => {
+                    if (data.message) {
+                        console.log(data.message);
 
-
-                    const data = await response.json();
-
-                    if (data.status) {
-                        console.log("Online payment order is success full");
-
-                        window.location.href = "/successOrder";
+                        Swal.fire({
+                            position: "center",
+                            icon: "success",
+                            title: data.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        button.parentNode.remove()
+                        // location.reload()
 
                     } else {
                         Swal.fire({
                             position: "center",
-                            icon: "info",
+                            icon: "error",
                             title: data.error,
                             showConfirmButton: false,
                             timer: 1500
                         });
                     }
-                } catch (error) {
-                    // Handle error
-                    console.error(error);
-                }
-
-
-            }
-
-
-
-            // *******************delete address from address manager***********************************
-
-            document.querySelectorAll('.delete-button').forEach((button) => {
-                button.addEventListener('click', () => {
-                    let addressId = button.getAttribute('data-address-id');
-                    console.log(addressId);
-                    // let url ='/deleteAddress'
-                    fetch('/deleteAddress/', {
-                        method: 'post',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ addressId })
-                    }).then(response => {
-                        return response.json();
-                    }).then(data => {
-                        if (data.message) {
-                            console.log(data.message);
-
-                            Swal.fire({
-                                position: "center",
-                                icon: "success",
-                                title: data.message,
-                                showConfirmButton: false,
-                                timer: 1500
-                            });
-                            button.parentNode.remove()
-                            // location.reload()
-
-                        } else {
-                            Swal.fire({
-                                position: "center",
-                                icon: "error",
-                                title: data.error,
-                                showConfirmButton: false,
-                                timer: 1500
-                            });
-                        }
-                    }).catch(error => {
-                        console.log(error);
-                    });
+                }).catch(error => {
+                    console.log(error);
                 });
             });
+        });
 
 
 
@@ -1069,7 +1070,7 @@
 
 
 
-        </script>
+    </script>
 
 
 
@@ -1077,4 +1078,4 @@
 
 
 
-        <%- include('../layouts/footer.ejs') %>
+    <%- include('../layouts/footer.ejs') %>

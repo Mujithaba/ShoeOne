@@ -158,10 +158,10 @@ const orderSchema = new mongoose.Schema({
     type: String,
     require: true
   },
-  // coupon:{
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: 'Coupon',
-  // },
+  couponAmountDis:{
+    type:Number,
+    
+  },
   // trackId:{
   //   type: String,
   //   require:true
