@@ -160,6 +160,8 @@ const orderSchema = new mongoose.Schema({
   },
   couponAmountDis:{
     type:Number,
+    required : true,
+    default: 0
     
   },
   // trackId:{

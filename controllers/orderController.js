@@ -183,7 +183,7 @@ const orderPlace = async (req, res) => {
 
                 const order = await orderDetails.save()
                 console.log("orders" + order);
-                
+
                 if (order) {
                     const deleteCart = await Cart.findOneAndDelete({ userId: user_id })
                     await StockAdjusting(cartData.products)
@@ -243,7 +243,7 @@ const verifyPayment = async (req, res) => {
             path: 'products.productId',
             select: 'Price '
         })
- 
+
         // calculating total price for place order
         const cartTotal = cartData.products.reduce((acc, product) => {
             return acc + product.productId.Price * product.quantity;
@@ -391,11 +391,11 @@ const loadMyOrder = async (req, res) => {
             .sort({ orderDate: -1 })
             .exec()
 
-           
+
 
         const orderCount = await Order.find({ userId: user_id }).countDocuments()
 
-       
+
 
         // Get the cart count
         const cartItemCount = await getCartItemCount(user_id);
@@ -432,6 +432,8 @@ const loadViewOrder = async (req, res) => {
 }
 
 
+
+
 // cancel order status fetch
 const cancelOrder = async (req, res) => {
     try {
@@ -439,71 +441,188 @@ const cancelOrder = async (req, res) => {
         const productID = req.body.productId
         const orderID = req.body.orderId
         const user_id = req.session.user_id
-        console.log(user_id,"wallet");
 
 
-       
-
-
-        const orderData = await Order.findOne({_id: orderID}).populate({
+        // order details taling
+        const orderData = await Order.findOne({ _id: orderID }).populate({
             path: 'products.productId',
             select: 'Price image productName quantity'
-        })
+        });
 
-console.log(orderData.products.productId.unitPrice,"baahubali");
+        // Find the product in the products array
+        const product = orderData.products.find(product => product.productId?._id.toString() === productID);
+        // Access the quantity of the found product
+        const productQuantity = product.quantity;
 
-// wallet
+        // taking productPrice
+        const productPrice = await Product.findOne({ _id: productID })
+        const productAmount = productPrice.Price * productQuantity
 
-        const orderDetails = null;
-
-        if (orderData.couponAmountDis) {
-
+        // wallet finding
+        const userWallet = await User.findOne({ _id: user_id })
 
 
-             orderDetails = await Order.findOneAndUpdate(
+        let orderDetails = null;
+        // checking coupon is add in online payment
+        if (orderData.couponAmountDis > 0 && orderData.paymentMethod === 'online') {
+
+            // product Count in a order
+            const productCount = orderData.products.length;
+
+            // taking coupon amount for each product
+            const divideCouponAmount = orderData.couponAmountDis / productCount
+
+            // Each Product offer price and cancel refund amount
+            const refundPrice = productAmount - divideCouponAmount;
+
+            // balance orders amount 
+            const balanceAmount = orderData.totalAmount - refundPrice
+
+            // wallet saving
+            userWallet.wallet.history.push({
+                type: 'Credit',
+                amount: refundPrice,
+                reason: 'order cancel refund'
+            });
+            userWallet.wallet.balance += refundPrice;
+            const walletSave = await userWallet.save();
+
+            // settinf order status and total order amount
+            orderDetails = await Order.findOneAndUpdate(
                 { _id: orderID, 'products.productId': productID },
-                { $set: { 'products.$.ProductOrderStatus': 'Cancelled' } },
-                { new: true } // Return the modified document
+                {
+                    $set: {
+                        'products.$.ProductOrderStatus': 'Cancelled',
+                        totalAmount: balanceAmount
+                    }
+                },
+                { new: true }
             )
-            
-            console.log(orderData.couponAmountDis,"masha");
-    
-            }else {
 
-                 orderDetails = await Order.findOneAndUpdate(
-                    { _id: orderID, 'products.productId': productID },
-                    { $set: { 'products.$.ProductOrderStatus': 'Cancelled' } },
-                    { new: true } // Return the modified document
-                )
-    
-            }
+
+            // stock increase bcz the product is cancelled
+            if (orderDetails) {
+                const productToCancel = orderDetails.products.find((product) => product.productId == productID);
 
 
 
-        // stock increase bcz the product is cancelled
-        if (orderDetails) {
-            const productToCancel = orderDetails.products.find((product) => product.productId == productID);
+                if (productToCancel) {
 
+                    const productData = await Product.findOneAndUpdate({ _id: productID },
+                        { $inc: { 'stock': productToCancel.quantity } },
+                        { new: true })
+                    // console.log(productData);
+                } else {
+                    console.log("productToCancel not found");
+                }
 
-
-            if (productToCancel) {
-
-                const productData = await Product.findOneAndUpdate({ _id: productID },
-                    { $inc: { 'stock': productToCancel.quantity } },
-                    { new: true })
-                // console.log(productData);
             } else {
-                console.log("productToCancel not found");
+                console.log("orderDetails is not found");
             }
+
+            res.json({ message: 'Product cancelled successfully' });
+
+
+
+            // without coupon  in online payment
+        } else if (orderData.paymentMethod === 'online') {
+
+            // refund
+            const refundAmount = productAmount
+
+            // balance orders amount 
+            const balaceAmount = orderData.totalAmount - productAmount
+
+            // wallet saving
+            userWallet.wallet.history.push({
+                type: 'Credit',
+                amount: refundAmount,
+                reason: 'Order cancel refund'
+            });
+            userWallet.wallet.balance += refundAmount;
+            const walletSave = await userWallet.save();
+
+            // settinf order status and total order amount
+            orderDetails = await Order.findOneAndUpdate(
+                { _id: orderID, 'products.productId': productID },
+                {
+                    $set: {
+                        'products.$.ProductOrderStatus': 'Cancelled',
+                        totalAmount: balaceAmount
+                    }
+                },
+                { new: true }
+            )
+
+
+            // stock increase bcz the product is cancelled
+            if (orderDetails) {
+                const productToCancel = orderDetails.products.find((product) => product.productId == productID);
+
+
+
+                if (productToCancel) {
+
+                    const productData = await Product.findOneAndUpdate({ _id: productID },
+                        { $inc: { 'stock': productToCancel.quantity } },
+                        { new: true })
+                    // console.log(productData);
+                } else {
+                    console.log("productToCancel not found");
+                }
+
+            } else {
+                console.log("orderDetails is not found");
+            }
+
+            res.json({ message: 'Product cancelled successfully' });
+
 
         } else {
-            console.log("orderDetails is not found");
+
+            const balanceAmt = orderData.totalAmount - productAmount;
+
+
+            orderDetails = await Order.findOneAndUpdate(
+                { _id: orderID, 'products.productId': productID },
+                {
+                    $set: {
+                        'products.$.ProductOrderStatus': 'Cancelled',
+                        totalAmount: balanceAmt
+                    }
+                },
+                { new: true } // Return the modified document
+            )
+
+
+            // stock increase bcz the product is cancelled
+            if (orderDetails) {
+                const productToCancel = orderDetails.products.find((product) => product.productId == productID);
+
+
+
+                if (productToCancel) {
+
+                    const productData = await Product.findOneAndUpdate({ _id: productID },
+                        { $inc: { 'stock': productToCancel.quantity } },
+                        { new: true })
+                    // console.log(productData);
+                } else {
+                    console.log("productToCancel not found");
+                }
+
+            } else {
+                console.log("orderDetails is not found");
+            }
+
+            res.json({ message: 'Product cancelled successfully' });
+
         }
 
-        res.json({ message: 'Product cancelled successfully' });
 
     } catch (error) {
-        res.status(500).json({ message: 'Internal server error' });
+        console.log(error);
+        res.status(500).json({ error: 'Internal server error' });
 
     }
 }
@@ -517,37 +636,165 @@ const returnOrder = async (req, res) => {
 
         const prodID = req.body.productId
         const order_id = req.body.orderId
-        console.log("return" + order_id);
+        const user_id = req.session.user_id
+        console.log("return userID" + user_id);
 
-        // order return setting
-        const orderReturn = await Order.findOneAndUpdate(
-            { _id: order_id, 'products.productId': prodID },
-            { $set: { 'products.$.ProductOrderStatus': 'Returned' } },
-            { new: true } // Return the modified document
-        )
 
-        // the order returned the stock will increase 
-        if (orderReturn) {
-            console.log("Order products:");
-            const productToReturn = orderReturn.products.find((product) => product.productId == prodID);
 
-            if (productToReturn) {
-                const productData = await Product.findOneAndUpdate({ _id: prodID },
-                    { $inc: { 'stock': productToReturn.quantity } },
-                    { new: true })
+        // order details taling
+        const orderData = await Order.findOne({ _id: order_id }).populate({
+            path: 'products.productId',
+            select: 'Price image productName quantity'
+        });
+
+
+        // Find the product in the products array
+        const product = orderData.products.find(product => product.productId?._id.toString() === prodID);
+        // Access the quantity of the found product
+        const productQuantity = product.quantity;
+        console.log("Product Quant Return", productQuantity);
+        // taking productPrice
+        const productPrice = await Product.findOne({ _id: prodID })
+        console.log(productPrice, "ooooo");
+        const productAmount = productPrice.Price * productQuantity
+        console.log(productAmount, "uuuuu");
+        // product Count in a order
+        const productCount = orderData.products.length;
+        console.log(productCount, "count of product Return");
+
+
+
+
+        // wallet finding
+        const userWallet = await User.findOne({ _id: user_id })
+
+
+        let orderReturn = null;
+        if (orderData.couponAmountDis > 0 && (orderData.paymentMethod === 'online' || orderData.paymentMethod === 'COD' || orderData.paymentMethod === 'wallet')) {
+
+
+
+            // taking coupon amount for each product
+            const couponDis = orderData.couponAmountDis
+            console.log(couponDis);
+            const divideCouponAmount = couponDis / productCount
+            console.log(divideCouponAmount, "divideCouponAmount return");
+            // Each Product offer price and cancel refund amount
+            const refundPrice = productAmount - divideCouponAmount;
+            console.log(refundPrice, "refundPrice return");
+
+            // balance orders amount 
+            const balanceAmount = orderData.totalAmount - refundPrice
+
+
+
+
+            // wallet saving
+            userWallet.wallet.history.push({
+                type: 'Credit',
+                amount: refundPrice,
+                reason: 'order Return refund'
+            });
+            userWallet.wallet.balance += refundPrice;
+            const walletSave = await userWallet.save();
+
+            // order return setting
+            orderReturn = await Order.findOneAndUpdate(
+                { _id: order_id, 'products.productId': prodID },
+                {
+                    $set: {
+                        'products.$.ProductOrderStatus': 'Returned',
+                        totalAmount: balanceAmount
+                    }
+                },
+                { new: true }
+            )
+
+
+            // the order returned the stock will increase 
+            if (orderReturn) {
+                console.log("Order products:");
+                const productToReturn = orderReturn.products.find((product) => product.productId == prodID);
+
+                if (productToReturn) {
+                    const productData = await Product.findOneAndUpdate({ _id: prodID },
+                        { $inc: { 'stock': productToReturn.quantity } },
+                        { new: true })
+                } else {
+                    console.log("productToReturn is  not found");
+                }
+
             } else {
-                console.log("productToReturn is  not found");
+                console.log("orderReturn is not found");
             }
 
-        } else {
-            console.log("orderReturn is not found");
+
+            res.json({ message: 'Product returned successfully' });
+
+
+        }
+        //without coupon payment doing in COD, Online and Wellet
+        else {
+
+            // refund
+            const refundAmount = productAmount
+
+            // balance orders amount 
+            const balaceAmount = orderData.totalAmount - productAmount
+
+
+            // wallet saving
+            userWallet.wallet.history.push({
+                type: 'Credit',
+                amount: refundAmount,
+                reason: 'Order Return refund'
+            });
+            userWallet.wallet.balance += refundAmount;
+            const walletSave = await userWallet.save();
+
+
+
+            // order return setting
+            orderReturn = await Order.findOneAndUpdate(
+                { _id: order_id, 'products.productId': prodID },
+                {
+                    $set: {
+                        'products.$.ProductOrderStatus': 'Returned',
+                        totalAmount: balaceAmount
+                    }
+                },
+                { new: true }
+            )
+
+
+
+            // the order returned the stock will increase 
+            if (orderReturn) {
+                console.log("Order products:");
+                const productToReturn = orderReturn.products.find((product) => product.productId == prodID);
+
+                if (productToReturn) {
+                    const productData = await Product.findOneAndUpdate({ _id: prodID },
+                        { $inc: { 'stock': productToReturn.quantity } },
+                        { new: true })
+                } else {
+                    console.log("productToReturn is  not found");
+                }
+
+            } else {
+                console.log("orderReturn is not found");
+            }
+
+
+            res.json({ message: 'Product returned successfully' });
+
         }
 
 
-        res.json({ message: 'Product returned successfully' });
 
     } catch (error) {
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).json({ error: 'Internal server error' });
+        console.log(error);
 
     }
 }
@@ -560,10 +807,13 @@ const walletLoad = async (req, res) => {
 
         const user_id = req.session.user_id
 
+        const userData = await User.findOne({ _id: user_id })
+        console.log(userData);
+
         // Get the cart count
         const cartItemCount = await getCartItemCount(user_id);
 
-        res.render('user/wallet', { cartItemCount })
+        res.render('user/wallet', { userData, cartItemCount })
 
     } catch (error) {
         console.log(message.error);

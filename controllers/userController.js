@@ -527,6 +527,7 @@ const loadProfile = async (req, res) => {
         const user_id = req.session.user_id
 
         const userData = await User.findById({ _id: user_id })
+        // console.log(userData.wallet,"wallet");
         const addressData = await Address.find({ userId: user_id })
 
         // Get the cart count

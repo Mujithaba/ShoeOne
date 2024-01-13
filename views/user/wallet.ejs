@@ -1,80 +1,75 @@
-
-
-
 <%- include('../layouts/header.ejs') %>
 
-<style>
-  body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f7f7f7;
-      display: inline;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-  }
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
 
-  .wallet-container {
-      background-color: #fff;
-      box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-      padding: 40px;
-      border-radius: 15px;
-      width: 400px;
-      text-align: center;
-      margin-left: 500px;
-      margin-top: 45px;
-      margin-bottom: 45px;
-  }
+        .wallet-container {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
 
-  .balance {
-      font-size: 36px;
-      margin-bottom: 20px;
-      color: #3498db;
-  }
+        .wallet-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-  .transaction-list {
-      list-style: none;
-      padding: 0;
-      text-align: left;
-      margin-bottom: 20px;
-  }
+        .balance {
+            font-size: 36px;
+            font-weight: bold;
+            color: #2fc52f;
+            /* Bootstrap secondary color */
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-  .transaction {
-      margin: 10px 0;
-      padding: 15px;
-      border-radius: 8px;
-      background-color: #ecf0f1;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-  }
+        .transaction-card {
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: #f8f9fa;
+        }
 
-  .transaction span {
-      flex: 1;
-  }
+        .credit {
+            color: #28a745;
+            /* Bootstrap success color */
+            font-weight: bold;
 
-  .transaction .amount {
-      color: #e74c3c;
-      font-weight: bold;
-  }
+        }
 
-  button {
-      background-color: #2ecc71;
-      color: #fff;
-      padding: 12px 25px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 18px;
-      transition: background-color 0.3s ease;
-  }
+        .debit {
+            color: #dc3545;
+            /* Bootstrap danger color */
+            font-weight: bold;
+        }
 
-  button:hover {
-      background-color: #27ae60;
-  }
-</style>
- 
+        .transaction-amount {
+            font-size: 24px;
+            font-weight: bold;
+            margin-left: 100px;
+        }
+
+        .transaction-reason {
+            margin-left: 130px;
+            color: rgb(37, 59, 59);
+        }
+
+        .transaction-buttons {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .btn-transaction {
+            margin-right: 10px;
+        }
+    </style>
+
 
 
     <!-- Page Preloder -->
@@ -95,13 +90,18 @@
         <div class="offcanvas__nav__option">
             <!-- <a href="#" class="search-switch"><img src="/img/icon/search.png" alt=""></a> -->
             <a href="#"><img src="/img/icon/heart.png" alt=""></a>
-            <a  href="./cart"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="18" viewBox="0 0 576 512"><path d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/></svg>
-                <% if (cartItemCount > 0) { %>
-                    <span class="position-absolute top-0 start-100 translate-middle px-1 border border-light rounded-circle" style="background-color: red; font-size: 10px">
+            <a href="./cart"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="18" viewBox="0 0 576 512">
+                    <path
+                        d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z" />
+                </svg>
+                <% if (cartItemCount> 0) { %>
+                    <span
+                        class="position-absolute top-0 start-100 translate-middle px-1 border border-light rounded-circle"
+                        style="background-color: red; font-size: 10px">
                         <%= cartItemCount %>
-                        <span class="visually-hidden">New alerts</span>
+                            <span class="visually-hidden">New alerts</span>
                     </span>
-                <% } %>
+                    <% } %>
             </a>
 
             <a href="/profile"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512">
@@ -164,16 +164,23 @@
                     <div class="header__nav__option">
                         <!-- <a href="#" class="search-switch"><img src="/img/icon/search.png" alt=""></a> -->
                         <a href="#"><img src="/img/icon/heart.png" alt=""></a>
-                        <a  href="./cart"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="18" viewBox="0 0 576 512"><path d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"/></svg>
-                            <% if (cartItemCount > 0) { %>
-                                <span class="position-absolute top-0 start-100 translate-middle px-1 border border-light rounded-circle" style="background-color: red; font-size: 10px">
+                        <a href="./cart"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="18"
+                                viewBox="0 0 576 512">
+                                <path
+                                    d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z" />
+                            </svg>
+                            <% if (cartItemCount> 0) { %>
+                                <span
+                                    class="position-absolute top-0 start-100 translate-middle px-1 border border-light rounded-circle"
+                                    style="background-color: red; font-size: 10px">
                                     <%= cartItemCount %>
-                                    <span class="visually-hidden">New alerts</span>
+                                        <span class="visually-hidden">New alerts</span>
                                 </span>
-                            <% } %>
+                                <% } %>
                         </a>
 
-                        <a href="/profile"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512">
+                        <a href="/profile"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="14"
+                                viewBox="0 0 448 512">
                                 <path
                                     d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z" />
                             </svg></a>
@@ -210,124 +217,148 @@
         </div>
         <% } %>
 
+            <!-- wallet start here -->
 
-        <!-- wallet start here -->
-        <div class="wallet-container">
-          <h1>Your Sleek Wallet</h1>
-          <p class="balance">$800.00</p>
-      
-          <ul class="transaction-list">
-              <li class="transaction">
-                  <span>Payment from Jane Smith</span>
-                  <span class="amount">+$100.00</span>
-              </li>
-              <li class="transaction">
-                  <span>Online Purchase</span>
-                  <span class="amount">-$30.00</span>
-              </li>
-             
-          </ul>
-      
-          <button>Make a Transaction</button>
-      </div>
-
-<!-- end of the wallet -->
-
-
-
-    <!-- Footer Section Begin -->
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-3 col-md-6 col-sm-6">
-                    <div class="footer__about">
-                        <div class="footer__logo">
-                            <a href="#">
-                                <h2 class="ShoeOne-foot">ShoeOne</h2>
-                            </a>
+            <div class="container wallet-container">
+                <div class="wallet-header">
+                    <h1>Your Sleek Wallet</h1>
+                </div>
+                <div class="balance">
+                    ₹ <%= userData.wallet.balance %>/-
+                </div>
+                <% for(let wallet of userData.wallet.history) {%>
+                    <% if (wallet.type==='Credit' ) { %>
+                        <div class="transaction-card">
+                            <span class="credit">
+                                <%= wallet.type %>
+                            </span>
+                            <span class="transaction-reason">
+                                <%= wallet.reason %>
+                            </span>
+                            <span class="transaction-amount">+ ₹<%= wallet.amount %></span>
                         </div>
-                        <p>The customer is at the heart of our unique business model, which includes design.</p>
-                        <a href="#"><img src="/img/payment.png" alt=""></a>
-                    </div>
-                </div>
-                <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
-                    <div class="footer__widget">
-                        <h6>Shopping</h6>
-                        <ul>
-                            <li><a href="#">Clothing Store</a></li>
-                            <li><a href="#">Trending Shoes</a></li>
-                            <li><a href="#">Accessories</a></li>
-                            <li><a href="#">Sale</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-2 col-md-3 col-sm-6">
-                    <div class="footer__widget">
-                        <h6>Shopping</h6>
-                        <ul>
-                            <li><a href="#">Contact Us</a></li>
-                            <li><a href="#">Payment Methods</a></li>
-                            <li><a href="#">Delivary</a></li>
-                            <li><a href="#">Return & Exchanges</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-lg-3 offset-lg-1 col-md-6 col-sm-6">
-                    <div class="footer__widget">
-                        <h6>NewLetter</h6>
-                        <div class="footer__newslatter">
-                            <p>Be the first to know about new arrivals, look books, sales & promos!</p>
-                            <form action="#">
-                                <input type="text" placeholder="Your email">
-                                <button type="submit"><span class="icon_mail_alt"></span></button>
-                            </form>
+                        <% } else { %>
+
+                            <div class="transaction-card">
+                                <span class="debit">
+                                    <%= wallet.type %>
+                                </span>
+                                <span class="transaction-reason">
+                                    <%= wallet.reason %>
+                                </span>
+                                <span class="transaction-amount te">- ₹<%= wallet.amount %></span>
+                            </div>
+                            <%}%>
+                                <%}%>
+            </div>
+
+
+
+
+
+
+
+
+
+            <!-- end of the wallet -->
+
+
+
+            <!-- Footer Section Begin -->
+            <footer class="footer">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6 col-sm-6">
+                            <div class="footer__about">
+                                <div class="footer__logo">
+                                    <a href="#">
+                                        <h2 class="ShoeOne-foot">ShoeOne</h2>
+                                    </a>
+                                </div>
+                                <p>The customer is at the heart of our unique business model, which includes design.
+                                </p>
+                                <a href="#"><img src="/img/payment.png" alt=""></a>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
+                            <div class="footer__widget">
+                                <h6>Shopping</h6>
+                                <ul>
+                                    <li><a href="#">Clothing Store</a></li>
+                                    <li><a href="#">Trending Shoes</a></li>
+                                    <li><a href="#">Accessories</a></li>
+                                    <li><a href="#">Sale</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-md-3 col-sm-6">
+                            <div class="footer__widget">
+                                <h6>Shopping</h6>
+                                <ul>
+                                    <li><a href="#">Contact Us</a></li>
+                                    <li><a href="#">Payment Methods</a></li>
+                                    <li><a href="#">Delivary</a></li>
+                                    <li><a href="#">Return & Exchanges</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 offset-lg-1 col-md-6 col-sm-6">
+                            <div class="footer__widget">
+                                <h6>NewLetter</h6>
+                                <div class="footer__newslatter">
+                                    <p>Be the first to know about new arrivals, look books, sales & promos!</p>
+                                    <form action="#">
+                                        <input type="text" placeholder="Your email">
+                                        <button type="submit"><span class="icon_mail_alt"></span></button>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-lg-12 text-center">
+                            <div class="footer__copyright__text">
+                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                                <p>Copyright ©
+                                    <script>
+                                        document.write(new Date().getFullYear());
+                                    </script>2020
+                                    All rights reserved | This template is made with <i class="fa fa-heart-o"
+                                        aria-hidden="true"></i> by <a href="https://colorlib.com"
+                                        target="_blank">Colorlib</a>
+                                </p>
+                                <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+            <!-- Footer Section End -->
+
+            <!-- Search Begin -->
+            <div class="search-model">
+                <div class="h-100 d-flex align-items-center justify-content-center">
+                    <div class="search-close-switch">+</div>
+                    <form class="search-model-form">
+                        <input type="text" id="search-input" placeholder="Search here.....">
+                    </form>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <div class="footer__copyright__text">
-                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        <p>Copyright ©
-                            <script>
-                                document.write(new Date().getFullYear());
-                            </script>2020
-                            All rights reserved | This template is made with <i class="fa fa-heart-o"
-                                aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                        </p>
-                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
-    <!-- Footer Section End -->
-
-    <!-- Search Begin -->
-    <div class="search-model">
-        <div class="h-100 d-flex align-items-center justify-content-center">
-            <div class="search-close-switch">+</div>
-            <form class="search-model-form">
-                <input type="text" id="search-input" placeholder="Search here.....">
-            </form>
-        </div>
-    </div>
-    <!-- Search End -->
+            <!-- Search End -->
 
 
-    <!-- Js Plugins -->
-    <script src="/js/jquery-3.3.1.min.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/jquery.nice-select.min.js"></script>
-    <script src="/js/jquery.nicescroll.min.js"></script>
-    <script src="/js/jquery.magnific-popup.min.js"></script>
-    <script src="/js/jquery.countdown.min.js"></script>
-    <script src="/js/jquery.slicknav.js"></script>
-    <script src="/js/mixitup.min.js"></script>
-    <script src="/js/owl.carousel.min.js"></script>
-    <script src="/js/main.js"></script>
+            <!-- Js Plugins -->
+            <script src="/js/jquery-3.3.1.min.js"></script>
+            <script src="/js/bootstrap.min.js"></script>
+            <script src="/js/jquery.nice-select.min.js"></script>
+            <script src="/js/jquery.nicescroll.min.js"></script>
+            <script src="/js/jquery.magnific-popup.min.js"></script>
+            <script src="/js/jquery.countdown.min.js"></script>
+            <script src="/js/jquery.slicknav.js"></script>
+            <script src="/js/mixitup.min.js"></script>
+            <script src="/js/owl.carousel.min.js"></script>
+            <script src="/js/main.js"></script>
 
-   
 
-    <%- include('../layouts/footer.ejs') %>
+
+            <%- include('../layouts/footer.ejs') %>
