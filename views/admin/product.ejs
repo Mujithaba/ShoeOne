@@ -41,7 +41,9 @@
         }
 
 
-        #btnPage {
+        /* pagination style */
+
+        #btnPage1 {
             color: rgb(241, 241, 241);
             background-color: rgb(30, 26, 65);
 
@@ -50,9 +52,32 @@
             border: 1px solid black;
         }
 
-        #btnPage:hover {
+        #btnPage1:hover {
             color: rgb(0, 0, 0);
             background-color: rgb(255, 255, 255);
+        }
+
+        /* offer */
+        .offerbtn {
+            padding: 4px 4px;
+            background-color: black;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .offerbtn:hover {
+            background-color: #bea1a1;
+            color: black;
+        }
+
+        .divCoupon {
+            border: 1px solid #ccc;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #e1dede;
+            margin: 10px 0;
         }
     </style>
 
@@ -118,6 +143,25 @@
                                 <span class="hide-menu">Products</span>
                             </a>
                         </li>
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link " href="/admin/couponAdmin" aria-expanded="false">
+                                <span>
+                                    <i class="fa-solid fa-tag"></i>
+                                </span>
+                                <span class="hide-menu">Coupon</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link " href="/admin/offerPage" aria-expanded="false">
+                                <span>
+                                    <i class="fa-solid fa-percent"></i>
+                                </span>
+                                <span class="hide-menu">Offers</span>
+                            </a>
+                        </li>
+
+
                         <li class="sidebar-item">
                             <a class="sidebar-link" href="/admin/user-Orders" aria-expanded="false">
 
@@ -295,26 +339,32 @@
 
                                                 </button>
 
-
                                                 <a href="/admin/edit-product?id= <%= fullProduct[i]._id %>"
                                                     class="btn btn-warning">Edit</a>
+
+
+                                                <br><br> &nbsp;&nbsp;&nbsp;&nbsp;
+                                                <button class="btn btn-dark offers"
+                                                    data-prodId="<%= fullProduct[i]._id %>">Apply Offer</button>
                                             </td>
                                         </tr>
                                         <% } %>
+                                            <input type="hidden" name="coupon" value="<%= JSON.stringify(offerData) %>">
+
                                 </tbody>
-                               
+
                             </table>
 
                             <div class="text-center">
                                 <% for(let j=1 ; j <=totalPage ; j++) {%>
 
-                                    <a class="btn btnPage" href="?page=<%= j %>">
+                                    <a class="btn " id="btnPage1" href="?page=<%= j %>">
                                         <%= j %> &nbsp;&nbsp;
                                     </a>
 
                                     <%}%>
                             </div>
-                            
+
                 </div>
 
 
@@ -407,5 +457,91 @@
         });
 
     </script>
+
+
+
+
+
+
+    <script>
+        // ------------------ offer ------------------------------------//
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const offerButtons = document.querySelectorAll('.offers');
+            offerButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    productID = button.getAttribute('data-prodId');
+                    console.log(productID, "offerProduct");
+
+                    Swal.fire({
+                        title: "<u><strong> Offers</strong></u>",
+                        html: `
+                    
+                    <% offerData.forEach(offer => { %>
+                        <div class="divCoupon"> 
+                            <p> Offer Name:&nbsp;<strong><%= offer.offerName %></strong></p>
+                            <p>Discount Offer:&nbsp; <strong><%= offer.discountOffer %>%</strong></p>
+                            <button class="btn offerbtn" onclick="applyoffer('<%= offer._id %>', '<%= offer.discountOffer %>' )">Apply</button>
+                        </div>
+                    <% }); %> `,
+                        showCloseButton: true,
+                        showCancelButton: false,
+                        focusConfirm: false,
+                        confirmButtonText: `Done !`,
+                    });
+                });
+            });
+        });
+
+        function applyoffer(offerId, discountOffer) {
+            Swal.fire("Added this offer!");
+            console.log(offerId);
+            console.log(discountOffer);
+            console.log(productID);
+
+
+            fetch('/admin/offerAddToProduct', {
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ offerId ,productID })
+                }).then(response => {
+                    return response.json();
+                }).then(data => {
+                    if (data.message) {
+                        // console.log("hellooo");
+                            Swal.fire({
+                                position: "center",
+                                icon: "success",
+                                title: data.message,
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        
+                    }else {
+                           
+                           Swal.fire({
+                               position: "center",
+                               icon: "info",
+                               title: data.error,
+                               showConfirmButton: false,
+                               timer: 1500
+                           });
+                       }
+                }).catch(error => {
+                    console.log(error);
+                });
+
+
+        }
+        
+
+
+        // -------------------------------offer script end here-------------------------------------//
+
+    </script>
+
+
 
     <%- include('../layouts/footer.ejs') %>

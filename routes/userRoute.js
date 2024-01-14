@@ -73,6 +73,6 @@ user_route.post('/cancelOrder',orderController.cancelOrder)
 user_route.post('/returnOrder',orderController.returnOrder)
 
 // wallet
-user_route.get('/your-wallet',auth.isBlocked,orderController.walletLoad)
+user_route.get('/your-wallet',auth.isBlocked,auth.isLogin,orderController.walletLoad)
 
 module.exports= user_route ;

@@ -8,6 +8,7 @@ const Address = require('../models/addressModel')
 const Cart = require('../models/cartModel')
 const Order = require('../models/orderModel')
 const Coupon =  require('../models/couponModel')
+const Offer = require ('../models/offerModel')
 // const { parseISO, isValid, isAfter, isBefore, isToday } = require('date-fns');
 // const PDFDocument = require('pdfkit');
 // const doc = new PDFDocument;
@@ -205,8 +206,9 @@ const userUnblock = async (req, res) => {
 const loadCategory = async (req, res) => {
     try {
         const categoryData = await Category.find();
+        const offerData = await Offer.find()
         if (categoryData) {
-            res.render('admin/category', { category: categoryData });
+            res.render('admin/category', { category: categoryData,offerData });
         } else {
             alert('category not found')
         }
@@ -318,6 +320,7 @@ const productLoad = async (req, res) => {
 
     try {
 
+        const offerData = await Offer.find()
 
         
         let page = 1;
@@ -338,7 +341,7 @@ const productLoad = async (req, res) => {
         .countDocuments()
 
 
-        res.render('admin/product', { fullProduct ,totalPage: Math.ceil(productCount/limit) })
+        res.render('admin/product', { fullProduct,offerData ,totalPage: Math.ceil(productCount/limit) })
         
 
     } catch (error) {
@@ -1024,7 +1027,131 @@ const updatedCoupon = async(req, res)=>{
     }
 }
 
+const offerLoad = async(req, res)=>{
+    try {
 
+
+      const offerData = await Offer.find()
+
+        res.render('admin/Offers',{offerData})
+        
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+// add offer
+const addOfferLoad =async(req, res)=>{
+    try {
+        
+
+        res.render('admin/add-Offer')
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+// upoload offer
+const upolodOffer = async (req, res)=>{
+    try {
+
+        const offer = new Offer({
+            offerName: req.body.offername,
+            validFrom: req.body.validFromDate,
+            expiry: req.body.expiryDate,
+            discountOffer: req.body.discountoffer,
+            is_listed: true
+        })
+
+        const offerData = await offer.save()
+        res.redirect('/admin/offerPage')
+        
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+// Offer List
+const offerList = async (req, res) => {
+    try {
+
+        const offerID = req.params.offerID
+        console.log(offerID,"mmm");
+      
+        const offer = await Offer.findOne({ _id: offerID })
+        if (!offer) {
+            return res.status(404).json({ error: 'offer is not found' });
+        }
+        offer.is_listed = true;
+        await offer.save()
+
+        console.log('offer listed successfully.');
+        res.json({ message: 'offer listed successfully' })
+
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+
+    }
+}
+
+
+// Offer Unlist
+const offerUnlist = async (req, res) => {
+    try {
+
+        const offerID = req.params.offerID
+        const offer = await Offer.findOne({ _id: offerID })
+        if (!offer) {
+            return res.status(404).json({ error: 'offer is not found' });
+        }
+        offer.is_listed = false;
+        await offer.save()
+
+        console.log('offer listed successfully.');
+        res.json({ message: 'offer listed successfully' })
+
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+
+    }
+}
+
+
+// added offer Set to product
+const settingOfferToProduct =async(req,res)=>{
+    try {
+
+        console.log("offer seting controller");
+        const {offerId, productID} = req.body
+        console.log(productID,"offers prodID");
+        console.log(offerId,"offer id ");
+
+        const productData = await Product.findOne({_id: productID})
+        const offerData = await Offer.findOne({_id: offerId})
+
+        productData.offerInfo = []
+        productData.offerInfo.push(offerData);
+        const offerPrice = Math.floor(
+            productData.Price - (productData.Price * (offerData.discountOffer/100))
+        );
+       
+        productData.offerPrice = offerPrice
+
+        await productData.save();
+
+        res.json({message:"Added" + offerData.offerName + "to product" + productData.productName})
+        
+    } catch (error) {
+
+        console.log(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
 
 
 module.exports = {
@@ -1067,7 +1194,15 @@ module.exports = {
     couponList,
     couponUnlist,
     editCoupon,
-    updatedCoupon
+    updatedCoupon,
+
+    // offer
+    offerLoad,
+    addOfferLoad,
+    upolodOffer,
+    offerList,
+    offerUnlist,
+    settingOfferToProduct
 
 
 }

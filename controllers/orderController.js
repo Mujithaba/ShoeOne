@@ -4,6 +4,7 @@ const Product = require('../models/productModel')
 const Address = require('../models/addressModel')
 const Cart = require('../models/cartModel')
 const Order = require('../models/orderModel')
+const Offer = require ('../models/offerModel')
 const Razorpay = require('razorpay')
 
 const { Razorpay_key_id, Razorpay_key_secrete } = process.env
@@ -230,6 +231,7 @@ const verifyPayment = async (req, res) => {
         const addressId = req.body.addressId;
         const payment = req.body.payment
 
+        // if order included coupon
         const totalOrderAmount = req.body.totalOrderAmount
         const couponDiscount = req.body.couponDiscount
         console.log(totalOrderAmount, "bye bye");
@@ -453,10 +455,9 @@ const cancelOrder = async (req, res) => {
         const product = orderData.products.find(product => product.productId?._id.toString() === productID);
         // Access the quantity of the found product
         const productQuantity = product.quantity;
-
-        // taking productPrice
-        const productPrice = await Product.findOne({ _id: productID })
-        const productAmount = productPrice.Price * productQuantity
+        const productUnitPrice = product.unitPrice
+        console.log(productUnitPrice, "unit price");
+        const productAmount = productUnitPrice * productQuantity
 
         // wallet finding
         const userWallet = await User.findOne({ _id: user_id })
@@ -652,11 +653,12 @@ const returnOrder = async (req, res) => {
         const product = orderData.products.find(product => product.productId?._id.toString() === prodID);
         // Access the quantity of the found product
         const productQuantity = product.quantity;
-        console.log("Product Quant Return", productQuantity);
+        const productUnitPrice = product.unitPrice
+        console.log("Product unitPrice Return", productUnitPrice);
         // taking productPrice
         const productPrice = await Product.findOne({ _id: prodID })
         console.log(productPrice, "ooooo");
-        const productAmount = productPrice.Price * productQuantity
+        const productAmount = productUnitPrice * productQuantity
         console.log(productAmount, "uuuuu");
         // product Count in a order
         const productCount = orderData.products.length;

@@ -101,20 +101,47 @@
             background-color: #3b4e3f;
         } */
         .btn-red {
-    background-color: red;
-    color: white; /* You may adjust the text color to make it visible on the red background */
-  }
+            background-color: red;
+            color: white;
+            /* You may adjust the text color to make it visible on the red background */
+        }
 
-  .btn-green {
-    background-color: green;
-    color: white; /* You may adjust the text color to make it visible on the green background */
-  }
-  .btn-green:hover {
-    background-color: rgb(102, 193, 11);
-  }
-  .btn-red:hover {
-    background-color: brown;
-  }
+        .btn-green {
+            background-color: green;
+            color: white;
+            /* You may adjust the text color to make it visible on the green background */
+        }
+
+        .btn-green:hover {
+            background-color: rgb(102, 193, 11);
+        }
+
+        .btn-red:hover {
+            background-color: brown;
+        }
+
+        /* offer */
+        .offerbtn {
+            padding: 4px 4px;
+            background-color: black;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .offerbtn:hover {
+            background-color: #bea1a1;
+            color: black;
+        }
+
+        .divCoupon {
+            border: 1px solid #ccc;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #e1dede;
+            margin: 10px 0;
+        }
     </style>
 
 
@@ -180,6 +207,26 @@
                                 <span class="hide-menu">Products</span>
                             </a>
                         </li>
+
+
+                        <li class="sidebar-item">
+                            <a class="sidebar-link " href="/admin/couponAdmin" aria-expanded="false">
+                                <span>
+                                    <i class="fa-solid fa-tag"></i>
+                                </span>
+                                <span class="hide-menu">Coupon</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-item">
+                            <a class="sidebar-link " href="/admin/offerPage" aria-expanded="false">
+                                <span>
+                                    <i class="fa-solid fa-percent"></i>
+                                </span>
+                                <span class="hide-menu">Offers</span>
+                            </a>
+                        </li>
+
+
                         <li class="sidebar-item">
                             <a class="sidebar-link" href="/admin/user-Orders" aria-expanded="false">
 
@@ -275,29 +322,30 @@
             <div>
                 <h1 style="font-weight: 700; margin-left: 50px;">Category</h1>
             </div>
-<!-- display error message -->
-         
+            <!-- display error message -->
+
 
 
             <div class="category-form">
-                
+
                 <h2>Add New Category</h2>
                 <form id="addCategoryForm">
                     <label for="categoryname">Category Name:</label>
                     <input type="text" id="categoryname" name="categoryName" required>
                     <div id="error-message" style="color: red;"></div>
-                    <button type="submit" id="btn1" onclick="return confirm('Are you want to add the category')">Add Category</button>
+                    <button type="submit" id="btn1" onclick="return confirm('Are you want to add the category')">Add
+                        Category</button>
                 </form>
-                
+
             </div>
             <br>
-           
+
             <table>
                 <thead>
                     <tr>
                         <th class="text-center">Categories Name</th>
                         <th class="text-center">List</th>
-                        <th class="text-center">Edit</th>
+                        <th class="text-center">Action</th>
 
                     </tr>
                 </thead>
@@ -317,15 +365,20 @@
                                     <%= category[i].is_listed ? 'Unlist' : 'List' %>
 
                                 </button>
-                                </td>
+                            </td>
 
-                                <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-                                <td class="text-center">
+                            <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
+                            <td class="text-center">
                                 <a href="/admin/edit-adcategory?id=<%= category[i]._id %>" class="btn"
                                     id="edit-button">Edit</a>
+
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <button class="btn btn-dark offers" data-cateid="<%= category[i]._id %>">Apply Offer</button>
                             </td>
                         </tr>
                         <% } %>
+                            <input type="hidden" name="coupon" value="<%= JSON.stringify(offerData) %>">
+
                 </tbody>
             </table>
 
@@ -365,7 +418,7 @@
                         newtr.innerHTML = `<td class="text-center">${categoryName}</td>
                                 <td class="text-center">
                                     <button type="button" class="btn list-button 
-                                ${data.category.is_listed ?  'btn-red ' : 'btn-green'}"
+                                ${data.category.is_listed ? 'btn-red ' : 'btn-green'}"
                                         data-catid="${data.category._id}"
                                         data-state="${data.category.is_listed ? 'Listed' : 'Unlisted'}">
                                         ${data.category.is_listed ? 'Unlist' : 'List'}
@@ -401,58 +454,6 @@
             }
             return false; // Category does not exist
         }
-
-
-
-        // document.getElementById('addCategoryForm').addEventListener('submit', async function (event) {
-        //     event.preventDefault(); // Prevent the default form submission
-
-        //     const categoryName = document.getElementById('categoryname').value;
-
-        //     try {
-        //         const response = await fetch('/admin/add-category', {
-        //             method: 'POST',
-        //             headers: {
-        //                 'Content-Type': 'application/json',
-        //             },
-        //             body: JSON.stringify({ categoryName }),
-        //         });
-
-        //         const data = await response.json();
-
-        //         if (data) {
-        //             // Create a new table row for the added category
-        //             const tbody = document.querySelector('#body-tbody')
-        //             const newtr = document.createElement('tr');
-        //             newtr.innerHTML = `<td class="text-center"> 
-        //                             ${categoryName}
-        //                         </td>
-        //                         <td class="text-center">
-        //                             <button type="button" class="btn list-button 
-        //                         ${data.category.is_listed ? 'btn-danger' : 'btn-success'}"
-        //                                 data-catid="${data.category._id}"
-        //                                 data-state="${data.category.is_listed ? 'Listed' : 'Unlisted'}">
-        //                                 ${data.category.is_listed ? 'Unlist' : 'List'}
-        //                             </button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        //                             <a href="/admin/edit-adcategory?id=${data.category._id}" class="btn" id="edit-button">Edit</a>
-        //                         </td>`
-        //             tbody.appendChild(newtr)
-        //             location.reload()
-        //             document.getElementById('categoryname').value = '';
-                   
-
-        //         }
-        //         Swal.fire({
-        //                         position: "center",
-        //                         icon: "success",
-        //                         title: "Added the category",
-        //                         showConfirmButton: false,
-        //                         timer: 1500
-        //                     });
-        //     } catch (error) {
-        //         console.error('Error:', error);
-        //     }
-        // });
 
 
 
@@ -513,6 +514,86 @@
             });
         });
     </script>
+
+
+<script>
+    // ------------------ offer ------------------------------------//
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const offerButtons = document.querySelectorAll('.offers');
+        offerButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                categoryID = button.getAttribute('data-cateid');
+                console.log(categoryID, "offercategoryID");
+
+                Swal.fire({
+                    title: "<u><strong> Offers</strong></u>",
+                    html: `
+                
+                <% offerData.forEach(offer => { %>
+                    <div class="divCoupon"> 
+                        <p> Offer Name:&nbsp;<strong><%= offer.offerName %></strong></p>
+                        <p>Discount Offer:&nbsp; <strong><%= offer.discountOffer %>%</strong></p>
+                        <button class="btn offerbtn" onclick="applyoffer('<%= offer._id %>')">Apply</button>
+                    </div>
+                <% }); %> `,
+                    showCloseButton: true,
+                    showCancelButton: false,
+                    focusConfirm: false,
+                    confirmButtonText: `Done !`,
+                });
+            });
+        });
+    });
+
+    function applyoffer(offerId) {
+        Swal.fire("Added this offer!");
+        console.log(offerId);
+       
+        console.log(categoryID);
+
+
+        fetch('/admin/offerAddToCategory', {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ offerId ,categoryID })
+            }).then(response => {
+                return response.json();
+            }).then(data => {
+                if (data.message) {
+                    // console.log("hellooo");
+                        Swal.fire({
+                            position: "center",
+                            icon: "success",
+                            title: data.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    
+                }else {
+                       
+                       Swal.fire({
+                           position: "center",
+                           icon: "info",
+                           title: data.error,
+                           showConfirmButton: false,
+                           timer: 1500
+                       });
+                   }
+            }).catch(error => {
+                console.log(error);
+            });
+
+
+    }
+    
+
+
+    // -------------------------------offer script end here-------------------------------------//
+
+</script>
 
 
 

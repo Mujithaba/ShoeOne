@@ -13,6 +13,38 @@
             color: rgb(146, 102, 102);
             background-color: rgb(255, 255, 255);
         } */
+
+
+        /* offer corner icon */
+        .relative-position {
+    position: relative;
+    display: inline-block;
+}
+
+.product-link {
+    display: block;
+    position: relative;
+}
+
+.product_item_pic{
+    border-radius: 5px;
+}
+
+.label {
+    position: absolute;
+    top: 5px;
+    right: 4px;
+    padding: 5px;
+    z-index: 1;
+}
+
+.discount-label {
+    background-color: #e80303; /* Green background for discount label */
+    color: #fff; /* White text color */
+    border-radius: 5px;
+    /* Additional styles specific to the discount label */
+}
+
     </style>
 
 
@@ -325,13 +357,27 @@
                                 <div class="col-lg-4 col-md-6 col-sm-6 ">
                                     <div class="product__item  ">
                                         <!-- <div class="product_item_pic set-bg"> -->
-                                        <div class="product_item_pic set-bg ">
+
+                                        <!-- <div class="product_item_pic set-bg ">
+                                           
                                             <a href="/productDetail?id=<%=product._id%>">
                                                 <img class="product_item_pic set-bg "
                                                     src="/Image/<%= product.image[0] %>" alt=""
                                                     style="width: 200px; height: 200px; border-radius: 5px;"></a>
-                                            <!-- Rest of your code -->
+                                                    
+                                        </div> -->
+
+                                        <div class="product_item_pic relative-position">
+                                            <a href="/productDetail?id=<%=product._id%>" class="product-link">
+                                                <img class="product-item-pic set-bg"
+                                                    src="/Image/<%= product.image[0] %>" alt=""
+                                                    style="width: 200px; height: 200px; border-radius: 5px;">
+                                                <span class="label discount-label">20%</span>
+                                            </a>
                                         </div>
+                                        
+                                        
+
                                         <div class="product__item__text">
                                             <h6>&nbsp;&nbsp;&nbsp;
                                                 <%= product.productName %>
@@ -354,7 +400,8 @@
                                                                         <i class="fa fa-star-o"></i>
                                                                         <% } %>
                                                         </div><br>
-                                                        <h5>&nbsp;&nbsp;&nbsp; ₹<%= product.Price %>/-
+                                                        <h5>&nbsp;&nbsp;&nbsp; ₹<%= product.Price %>/- 
+                                                            <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: rgb(194, 194, 195);"><del>₹1000/-</del></span> -->
                                                         </h5>
 
                                         </div>

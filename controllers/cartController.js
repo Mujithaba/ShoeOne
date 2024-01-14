@@ -1,14 +1,14 @@
 const User = require('../models/userModel')
 const Category = require('../models/categoryModel')
 const Product = require('../models/productModel')
-    const Cart = require('../models/cartModel')
+const Cart = require('../models/cartModel')
+const Offer = require('../models/offerModel')
 
-
-    // count cart products 
+// count cart products 
 const getCartItemCount = async (userId) => {
     try {
         const cartExist = await Cart.findOne({ userId });
-console.log("hi there",cartExist);
+        console.log("hi there", cartExist);
         if (!cartExist) {
             return 0; // Cart is empty, so the count is 0
         } else {
@@ -35,17 +35,17 @@ const loadCart = async (req, res) => {
         // Get the cart count
         const cartItemCount = await getCartItemCount(user_id);
 
-        if(cartData){// total whole product price in the cart
-        const cartTotal = cartData.products.reduce((acc, product) => {
-            return acc + product.productId.Price * product.quantity;
-        }, 0);
-        
+        if (cartData) {// total whole product price in the cart
+            const cartTotal = cartData.products.reduce((acc, product) => {
+                return acc + product.productId.Price * product.quantity;
+            }, 0);
 
 
-        res.render('user/cart', { cart: cartData, cartTotal ,cartItemCount})
-    }else{
-        res.render('user/cart',{ cartItemCount })
-    }
+
+            res.render('user/cart', { cart: cartData, cartTotal, cartItemCount })
+        } else {
+            res.render('user/cart', { cartItemCount })
+        }
     } catch (error) {
         console.log(error.message);
     }
@@ -116,11 +116,11 @@ const updateQuantity = async (req, res) => {
             { new: true } // Return the modified document
         ).populate({
             path: 'products.productId',
-            select: 'Price stock' 
+            select: 'Price stock'
         });
 
         // Extract the product price from the populated result
-        
+
         const productPrice = result.products.find(product => product.productId._id.toString() === prodID).productId.Price;
         const totalStock = result.products.find(product => product.productId._id.toString() === prodID).productId.stock;
 
@@ -146,7 +146,7 @@ const deleteProduct = async (req, res) => {
     try {
 
         const productId = req.params.productId;
-       
+
         // Implement logic to remove the product from the cart collection
         const result = await Cart.findOneAndUpdate(
             { 'products.productId': productId },
@@ -160,7 +160,7 @@ const deleteProduct = async (req, res) => {
             const cartTotal = result.products.reduce((acc, product) => {
                 return acc + product.productId.Price * product.quantity;
             }, 0);
-             
+
             await result.save()
             // Send the updated cart data in the response
             res.json({ msg: 'Product removed successfully', cartTotal });

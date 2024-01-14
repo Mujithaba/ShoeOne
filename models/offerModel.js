@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 
-const couponSchema = new mongoose.Schema({
+const offerSchema = new mongoose.Schema({
 
-    code: {
+    offerName: {
         type: String,
         required: true
     },
@@ -15,18 +15,17 @@ const couponSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    discountAmount: {
+    discountOffer: {
         type: Number,
-        required: true
+        required: true,
+        min: 0,
+        max: 100, // Assuming your discountOffer is a percentage, so it should be between 0 and 100.
     },
-    minimumCartValue: {
-        type: Number,
-        required: true
-    },
+  
     is_listed: {
         type: Boolean,
         required: true
     }
 });
 
-module.exports = mongoose.model("Coupon", couponSchema)
+module.exports = mongoose.model("Offer", offerSchema)

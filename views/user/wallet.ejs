@@ -55,6 +55,13 @@
             margin-left: 100px;
         }
 
+        .transaction-amount-debit {
+            font-size: 24px;
+            font-weight: bold;
+            margin-left: 105px;
+            color:  #dc3545;   
+        }
+
         .transaction-reason {
             margin-left: 130px;
             color: rgb(37, 59, 59);
@@ -246,7 +253,7 @@
                                 <span class="transaction-reason">
                                     <%= wallet.reason %>
                                 </span>
-                                <span class="transaction-amount te">- ₹<%= wallet.amount %></span>
+                                <span class="transaction-amount-debit te">- ₹<%= wallet.amount %></span>
                             </div>
                             <%}%>
                                 <%}%>

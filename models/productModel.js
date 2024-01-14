@@ -12,7 +12,10 @@ const productSchema = mongoose.Schema({
       type: Number,
       required: true
    },
-
+   offerPrice:{
+      type:Number,
+      default:0
+   },
    productSize: {
       type: String,
       required: true
@@ -49,6 +52,19 @@ const productSchema = mongoose.Schema({
       type: Boolean,
       required: true
    },
+
+   offerInfo:[{
+      offerName :{
+         type:String
+      },
+      discountOffer:{
+         type: Number
+      },
+      expiry:{
+         type:Date,
+        
+      }
+   }],
 },
    { timestamps: true });
 

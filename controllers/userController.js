@@ -13,7 +13,7 @@ const { env } = require('process');
 const randomstring = require('randomstring');
 const productModel = require('../models/productModel');
 const Coupon =  require('../models/couponModel')
-
+const Offer = require ('../models/offerModel')
 
 
 

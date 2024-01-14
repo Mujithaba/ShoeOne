@@ -40,7 +40,7 @@ admin_route.patch('/Unlist-cat/:catID', adminController.categoryUnlist)
 
 // product
 admin_route.get('/product', auth.isLogin,adminController.productLoad)
-admin_route.get('/add-product', adminController.addProductLoad)
+admin_route.get('/add-product',auth.isLogin, adminController.addProductLoad)
 admin_route.post('/uploadProduct', upload.array('Image', 4), adminController.uploadDetails)
 admin_route.get('/edit-product', auth.isLogin, adminController.editProduct)
 admin_route.post('/updateProduct', upload.array('Image', 4), adminController.updateProduct)
@@ -53,12 +53,23 @@ admin_route.get('/order-info',auth.isLogin,adminController.loadOrders)
 admin_route.post('/statusChange',adminController.changeStatus)
 
 // coupon
-admin_route.get('/couponAdmin',adminController.loadCoupon)
-admin_route.get('/add-Coupon',adminController.addCouponLoad)
+admin_route.get('/couponAdmin',auth.isLogin,adminController.loadCoupon)
+admin_route.get('/add-Coupon',auth.isLogin,adminController.addCouponLoad)
 admin_route.post('/uploadAddCoupon',adminController.uploadCoupon)
 admin_route.patch('/list-coupon/:couponID', adminController.couponList)
 admin_route.patch('/Unlist-coupon/:couponID', adminController.couponUnlist)
-admin_route.get('/edit-coupon',adminController.editCoupon)
+admin_route.get('/edit-coupon',auth.isLogin,adminController.editCoupon)
 admin_route.post('/updateEditCoupon',adminController.updatedCoupon)
+
+
+// Offer
+admin_route.get('/offerPage',adminController.offerLoad)
+admin_route.get('/loadAddOffer',adminController.addOfferLoad)
+admin_route.post('/uploadAddOffer',adminController.upolodOffer)
+admin_route.patch('/list-offer/:offerID', adminController.offerList)
+admin_route.patch('/Unlist-offer/:offerID', adminController.offerUnlist)
+admin_route.post('/offerAddToProduct',adminController.settingOfferToProduct)
+
+
 
 module.exports = admin_route;
