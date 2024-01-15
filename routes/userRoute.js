@@ -71,6 +71,8 @@ user_route.get('/my-Order',auth.isBlocked,auth.isLogin,orderController.loadMyOrd
 user_route.get('/views-Order',auth.isBlocked,auth.isLogin,orderController.loadViewOrder)
 user_route.post('/cancelOrder',orderController.cancelOrder)
 user_route.post('/returnOrder',orderController.returnOrder)
+user_route.post('/invoiceDownloading',orderController.downloadInvoice)
+
 
 // wallet
 user_route.get('/your-wallet',auth.isBlocked,auth.isLogin,orderController.walletLoad)

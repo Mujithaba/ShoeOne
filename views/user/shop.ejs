@@ -17,34 +17,35 @@
 
         /* offer corner icon */
         .relative-position {
-    position: relative;
-    display: inline-block;
-}
+            position: relative;
+            display: inline-block;
+        }
 
-.product-link {
-    display: block;
-    position: relative;
-}
+        .product-link {
+            display: block;
+            position: relative;
+        }
 
-.product_item_pic{
-    border-radius: 5px;
-}
+        .product_item_pic {
+            border-radius: 5px;
+        }
 
-.label {
-    position: absolute;
-    top: 5px;
-    right: 4px;
-    padding: 5px;
-    z-index: 1;
-}
+        .label {
+            position: absolute;
+            top: 5px;
+            right: 4px;
+            padding: 5px;
+            z-index: 1;
+        }
 
-.discount-label {
-    background-color: #e80303; /* Green background for discount label */
-    color: #fff; /* White text color */
-    border-radius: 5px;
-    /* Additional styles specific to the discount label */
-}
-
+        .discount-label {
+            background-color: #e80303;
+            /* Green background for discount label */
+            color: #fff;
+            /* White text color */
+            border-radius: 5px;
+            /* Additional styles specific to the discount label */
+        }
     </style>
 
 
@@ -350,64 +351,82 @@
                     <!-- <span class="label">Sale</span> -->
 
                     <hr>
+
                     <div class="row">
                         <% fullProducts.forEach((product, index)=> { %>
                             <% if (product.is_listed===true) { %>
                                 <input type="hidden" name="id" value="<%= fullProducts._id %>">
                                 <div class="col-lg-4 col-md-6 col-sm-6 ">
                                     <div class="product__item  ">
-                                        <!-- <div class="product_item_pic set-bg"> -->
 
-                                        <!-- <div class="product_item_pic set-bg ">
-                                           
-                                            <a href="/productDetail?id=<%=product._id%>">
-                                                <img class="product_item_pic set-bg "
-                                                    src="/Image/<%= product.image[0] %>" alt=""
-                                                    style="width: 200px; height: 200px; border-radius: 5px;"></a>
-                                                    
-                                        </div> -->
 
-                                        <div class="product_item_pic relative-position">
-                                            <a href="/productDetail?id=<%=product._id%>" class="product-link">
-                                                <img class="product-item-pic set-bg"
-                                                    src="/Image/<%= product.image[0] %>" alt=""
-                                                    style="width: 200px; height: 200px; border-radius: 5px;">
-                                                <span class="label discount-label">20%</span>
-                                            </a>
-                                        </div>
-                                        
-                                        
+                                        <% if (product.offerPrice > 0) { %>
+                                            <% for(let offers of product.offerInfo) { %>
 
-                                        <div class="product__item__text">
-                                            <h6>&nbsp;&nbsp;&nbsp;
-                                                <%= product.productName %>
-                                            </h6>
+                                            <div class="product_item_pic set-bg relative-position">
+                                                <a href="/productDetail?id=<%=product._id%>" class="product-link">
+                                                    <img class="product-item-pic set-bg"
+                                                        src="/Image/<%= product.image[0] %>" alt=""
+                                                        style="width: 200px; height: 200px; border-radius: 5px;">
+                                                    <span class="label discount-label"><%= offers.discountOffer %>%</span>
+                                                </a>
+                                            </div>
+                                            <% } %>
 
-                                            <% if(typeof product.stock !=="undefined" && product.stock>0) {%>
-                                                <a type="button" class="btn add-cart"
-                                                    data-prod-id="<%= product._id %>">+
-                                                    Add To Cart</a>
-                                                <% } else { %>
-                                                    <a class=" add-cart">
-                                                        &nbsp;&nbsp; &nbsp;&nbsp; No stock </a>
-                                                    <% } %>
 
-                                                        <div class="rating">
-                                                            <% for (let i=0; i < product.ratings.star; i++) { %>
-                                                                <i class="fa fa-star"></i>
+
+                                            <% } else{%>
+                                                <div class="product_item_pic set-bg ">
+                                                    <a href="/productDetail?id=<%=product._id%>">
+                                                        <img class="product_item_pic set-bg "
+                                                            src="/Image/<%= product.image[0] %>" alt=""
+                                                            style="width: 200px; height: 200px; border-radius: 5px;"></a>
+                                                </div>
+
+
+                                                <% } %>
+
+
+                                                    <div class="product__item__text">
+                                                        <h6>&nbsp;&nbsp;&nbsp;
+                                                            <%= product.productName %>
+                                                        </h6>
+
+                                                        <% if(typeof product.stock !=="undefined" && product.stock>0)
+                                                            {%>
+                                                            <a type="button" class="btn add-cart"
+                                                                data-prod-id="<%= product._id %>">+
+                                                                Add To Cart</a>
+                                                            <% } else { %>
+                                                                <a class=" add-cart">
+                                                                    &nbsp;&nbsp; &nbsp;&nbsp; No stock </a>
                                                                 <% } %>
-                                                                    <% for (let i=product.ratings.star; i < 5; i++) { %>
-                                                                        <i class="fa fa-star-o"></i>
-                                                                        <% } %>
-                                                        </div><br>
-                                                        <h5>&nbsp;&nbsp;&nbsp; ₹<%= product.Price %>/- 
-                                                            <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color: rgb(194, 194, 195);"><del>₹1000/-</del></span> -->
-                                                        </h5>
 
-                                        </div>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href=""><img
-                                                src="/img/icon/heart.png" alt=""></a>
-                                        <!-- <div><a href=""> <i class="fa-regular fa-heart"></i></a></div> -->
+                                                                    <div class="rating">
+                                                                        <% for (let i=0; i < product.ratings.star; i++)
+                                                                            { %>
+                                                                            <i class="fa fa-star"></i>
+                                                                            <% } %>
+                                                                                <% for (let i=product.ratings.star; i <
+                                                                                    5; i++) { %>
+                                                                                    <i class="fa fa-star-o"></i>
+                                                                                    <% } %>
+                                                                    </div><br>
+
+                                                                    <% if (product.offerPrice > 0) { %>
+                                                                        <h5>&nbsp;&nbsp;&nbsp; ₹<%= product.offerPrice %>/-
+                                                                            <span style="color: rgb(220, 3, 3); margin-left: 80px;"><del>₹<%= product.Price %>/-</del></span>
+                                                                    </h5>
+                                                                        <% } else{%>
+                                                                            <h5>&nbsp;&nbsp;&nbsp; ₹<%= product.Price %>/-
+                                                                        </h5>
+                                                                        <% } %>
+                                                                   
+
+                                                    </div>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href=""><img
+                                                            src="/img/icon/heart.png" alt=""></a>
+                                                    <!-- <div><a href=""> <i class="fa-regular fa-heart"></i></a></div> -->
                                     </div>
 
                                 </div>
@@ -421,13 +440,14 @@
 
 
                     <div class="text-center">
-                        <% for (let j = 1; j <= totalPage; j++) { %>
-                            <a class="btn" id="btnPage" href="?id=<%= id %>&page=<%= j %>&sortOption=<%= sortOption %>&search=<%= searchQuery %>">
+                        <% for (let j=1; j <=totalPage; j++) { %>
+                            <a class="btn" id="btnPage"
+                                href="?id=<%= id %>&page=<%= j %>&sortOption=<%= sortOption %>&search=<%= searchQuery %>">
                                 <%= j %> &nbsp;&nbsp;
                             </a>
-                        <% } %>
+                            <% } %>
                     </div>
-                    
+
 
                     <!-- pagination -->
 

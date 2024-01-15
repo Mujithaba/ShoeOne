@@ -15,6 +15,9 @@ const offerSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    typeOfOffer :{
+        type:String
+    },
     discountOffer: {
         type: Number,
         required: true,

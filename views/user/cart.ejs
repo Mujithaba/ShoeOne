@@ -198,10 +198,24 @@
                                                     <img src="/Image/<%= product.productId.image[0] %>"
                                                         style="height: 100px; width: 95px;" alt="">
                                                 </div>
-                                                <div class="product__cart__item__text">
-                                                    <h6><%= product.productId.productName %></h6>
-                                                    <h5>₹<%= product.productId.Price %>/-</h5>
-                                                </div>
+                                                <% if(product.productId.offerPrice > 0) {%>
+
+                                                    <div class="product__cart__item__text">
+                                                        <h6><%= product.productId.productName %></h6>
+                                                        <h5>₹<%= product.productId.offerPrice %>/-</h5>
+                                                        <span style="color: rgb(220, 3, 3); "><del>₹<%= product.productId.Price %>/-</del></span>
+
+                                                    </div>
+
+                                                  <%} else  {%>
+
+                                                    <div class="product__cart__item__text">
+                                                        <h6><%= product.productId.productName %></h6>
+                                                        <h5>₹<%= product.productId.Price %>/-</h5>
+                                                    </div>
+
+                                                    <%}%>
+                                                
                                             </td>
                                             <td class="quantity__item">
                                                 <div class="quantity">
@@ -217,8 +231,17 @@
                                                         data-stock="<%= product.productId.stock %>">+</button>
                                                 </div>
                                             </td>
-                                            <td class="cart__price" id="totalPriceQty_<%= product.productId._id %>">₹<%=
-                                                product.productId.Price * product.quantity %></td>
+                                            <% if(product.productId.offerPrice > 0) {%>
+                                                <td class="cart__price" id="totalPriceQty_<%= product.productId._id %>">
+                                                    ₹<%= product.productId.offerPrice * product.quantity %></td>
+
+                                                <%} else  {%>
+
+                                                    <td class="cart__price" id="totalPriceQty_<%= product.productId._id %>">₹<%=
+                                                        product.productId.Price * product.quantity %></td>
+
+                                                    <%}%>
+                                            
                                             <td class="cart__close"><i class="fa fa-close" data-product-id="<%= product.productId._id %>"
                                                     style="cursor: pointer;"></i></td>
                                         </tr>
@@ -418,7 +441,7 @@
 
 
             function updateQuantity(productId, newQuantity) {
-                const url = '/updateQuantity'; // Update this URL according to your server route
+                const url = '/updateQuantity'; // Update this URL according to  server route
                 fetch(url, {
                     method: 'POST',
                     headers: {

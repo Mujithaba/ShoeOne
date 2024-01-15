@@ -29,23 +29,28 @@ const loadCart = async (req, res) => {
         const user_id = req.session.user_id
         const cartData = await Cart.findOne({ userId: user_id }).populate({
             path: 'products.productId',
-            select: 'Price image stock productName' // Add any other fields , separated by space
+            select: 'Price image stock productName offerPrice' // Include 'offerPrice' in the select
         });
-
+        
         // Get the cart count
         const cartItemCount = await getCartItemCount(user_id);
+        
+        console.log("///////");
 
-        if (cartData) {// total whole product price in the cart
-            const cartTotal = cartData.products.reduce((acc, product) => {
-                return acc + product.productId.Price * product.quantity;
-            }, 0);
+       // total whole product price in the cart
+       let cartTotal = 0; 
 
+       cartData.products.forEach(product => {
+           if (product.productId.offerPrice > 0) {
+               cartTotal += product.productId.offerPrice * product.quantity;
+           } else {
+               cartTotal += product.productId.Price * product.quantity;
+           }
+       });
 
+       res.render('user/cart', { cart: cartData, cartTotal, cartItemCount });
 
-            res.render('user/cart', { cart: cartData, cartTotal, cartItemCount })
-        } else {
-            res.render('user/cart', { cartItemCount })
-        }
+    
     } catch (error) {
         console.log(error.message);
     }
@@ -116,18 +121,42 @@ const updateQuantity = async (req, res) => {
             { new: true } // Return the modified document
         ).populate({
             path: 'products.productId',
-            select: 'Price stock'
+            select: 'Price stock offerPrice'
         });
 
-        // Extract the product price from the populated result
+        let productPrice = 0;
 
-        const productPrice = result.products.find(product => product.productId._id.toString() === prodID).productId.Price;
+        const targetProduct = result.products.find(product => product.productId._id.toString() === prodID);
+        
+        if (targetProduct) {
+            // Check if offerPrice is greater than 0
+            if (targetProduct.productId.offerPrice > 0) {
+                productPrice = targetProduct.productId.offerPrice 
+            } else {
+                productPrice = targetProduct.productId.Price 
+            }
+        } else {
+            
+            console.log('Product not found.');
+        }
+
+        // const productPrice = result.products.find(product => product.productId._id.toString() === prodID).productId.Price;
         const totalStock = result.products.find(product => product.productId._id.toString() === prodID).productId.stock;
 
-        //calculating the whole product iprice in the cart 
-        const cartTotal = result.products.reduce((acc, product) => {
-            return acc + product.productId.Price * product.quantity;
-        }, 0);
+        //calculating the whole product price in the cart 
+
+        // const cartTotal = result.products.reduce((acc, product) => {
+        //     return acc + product.productId.Price * product.quantity;
+        // }, 0);
+
+        let cartTotal = 0; 
+        result.products.forEach(product => {
+            if (product.productId.offerPrice > 0) {
+                cartTotal += product.productId.offerPrice * product.quantity;
+            } else {
+                cartTotal += product.productId.Price * product.quantity;
+            }
+        });
 
 
         const quantityData = await result.save();
@@ -157,9 +186,22 @@ const deleteProduct = async (req, res) => {
 
         if (result) {
             // Calculate the updated cart total
-            const cartTotal = result.products.reduce((acc, product) => {
-                return acc + product.productId.Price * product.quantity;
-            }, 0);
+
+            // const cartTotal = result.products.reduce((acc, product) => {
+            //     return acc + product.productId.Price * product.quantity;
+            // }, 0);
+
+            let cartTotal = 0;  
+
+             result.products.forEach(product => {
+                if (product.productId.offerPrice > 0) {
+                    cartTotal += product.productId.offerPrice * product.quantity;
+                } else {
+                    cartTotal += product.productId.Price * product.quantity;
+                }
+            });
+
+
 
             await result.save()
             // Send the updated cart data in the response

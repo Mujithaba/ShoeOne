@@ -255,7 +255,9 @@
                             On:</strong>&nbsp;<%=orderData.orderDate.toLocaleString('en-AU',{year:"numeric",month:"2-digit",day:"2-digit"})%>
                             <br>
                             <strong>Payment Method:</strong>&nbsp;<%= orderData.paymentMethod %> <br>
-                            <strong>Total Amount:</strong>&nbsp;&nbsp; ₹<%= orderData.totalAmount %> /-
+                                <strong>Total Amount:</strong>&nbsp;&nbsp; ₹<%= orderData.totalAmount %> /-
+                                    <button class="btn btn-success " style="margin-left: 980px;"
+                                        onclick="invoiceDownload('<%= orderData._id %>')">INVOICE</button>
                 </p>
             </div>
 
@@ -479,7 +481,7 @@
                 }
             });
 
-           
+
 
         }
 
@@ -583,6 +585,107 @@
             // }).catch(error => {
             //     console.log(error);
             // });
+
+        }
+
+    </script>
+
+    <!-- invoice script -->
+    <script src="https://unpkg.com/easyinvoice/dist/easyinvoice.min.js"></script>
+
+    <script>
+
+        function invoiceDownload(orderId) {
+            console.log(orderId);
+            alert("heloo")
+
+            fetch('/invoiceDownloading', {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ orderId })
+            }).then(response => {
+                return response.json();
+            }).then(data => {
+                if (data.message) {
+                    const order = data.orderDetails
+                    // console.log("hellooo");
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: data.message,
+                        showConfirmButton: false,
+                        timer: 2200
+                    });
+
+
+
+
+                    var invoiceData = {
+                        "customize": {
+                            // "template": fs.readFileSync('template.html', 'base64') // Must be base64 encoded html
+                        },
+                        "images": {
+                            "logo": "https://public.budgetinvoice.com/img/logo_en_original.png",
+                            "background": "https://public.budgetinvoice.com/img/watermark-draft.jpg"
+                        },
+                        "sender": {
+                            "company": "ShoeOne Pvt Ltd",
+                            "address": "Kanzaar",
+                            "zip": "177200 LA",
+                            "city": "Kanzaar",
+                            "country": "Delhi"
+                        },
+                        "client": {
+                            "company": order.shippingAddress.fullname,
+                            "address": order.shippingAddress.address,
+                            "zip": order.shippingAddress.pincode,
+                            "city": order.shippingAddress.city,
+                            "State": order.shippingAddress.state
+                        },
+                        "information": {
+                            "number": order._id,
+                            "date": order.orderDate,
+                        },
+                        "products": [], // Initialize the products array here
+                        // "bottom-notice": "Kindly pay your invoice within 15 days.",
+                        // "settings": {
+                        //     "currency": "USD",
+                        // },
+                        "translate": {},
+                    };
+
+                    // Add products to the "products" array
+                    order.products.forEach(product => {
+                        invoiceData.products.push({
+                            "quantity": product.quantity,
+                            "description": product.productName,
+                            "tax-rate": 0, // Adjust tax rate as needed
+                            "price": product.productId.offerPrice > 0 ? product.productId.offerPrice : product.productId.Price
+                        });
+                    });
+
+                    // Create your invoice
+                    easyinvoice.createInvoice(invoiceData, function (result) {
+                        // The response will contain a base64 encoded PDF file
+                        // You can use the result.pdf data here
+                        // console.log('PDF base64 string: ', result.pdf);
+                        easyinvoice.download("invoice.pdf")
+                    });
+
+                } else {
+                    Swal.fire({
+                        position: "center",
+                        icon: "info",
+                        title: data.error,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            }).catch(error => {
+                console.log(error);
+            });
 
         }
 

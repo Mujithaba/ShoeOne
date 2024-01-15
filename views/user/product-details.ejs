@@ -234,17 +234,29 @@
                                     <b>Stock:</b>  <%= findProduct.stock %>
                                   </h6>
                                   <h5><span>Categories:</span><b>&nbsp;&nbsp;<%= findProduct.category.categoryName %></b></h5>
-                                <div class="rating">
+                                <!-- <div class="rating">
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star-o"></i>
                                     <span> - 5 Reviews</span>
-                                </div>
-                                
-                                <h3> ₹<%= findProduct.Price %>/-
+                                </div> -->
+
+
+                                <% if (findProduct.offerPrice > 0) { %>
+                                    <h3>&nbsp;&nbsp;&nbsp; ₹<%= findProduct.offerPrice %>/-
+                                        <span style="color: rgb(220, 3, 3); margin-left: 50px;"><del>₹<%= findProduct.Price %>/-</del></span>
                                 </h3>
+                                    <% } else{%>
+                                        <h3 >&nbsp;&nbsp;&nbsp; ₹<%= findProduct.Price %>/-
+                                    </h3>
+                                    <% } %>
+
+
+
+                                
+                                
                                 
                                 <!-- <p>Coat with quilted lining and an adjustable hood. Featuring long sleeves with
                                     adjustable

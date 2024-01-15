@@ -464,7 +464,7 @@ const loadShop = async (req, res) => {
             productsQuery.productName = { $regex: new RegExp(searchQuery, 'i') };
         }
 
-        const limit = 3;
+        const limit = 6;
 
         const fullProducts = await Product.find(productsQuery)
             .sort({ [sortField]: sortOrder })
@@ -683,56 +683,111 @@ const editSaveAddress = async (req, res) => {
 // loadCheckout
 const loadCheckout = async (req, res) => {
     try {
-
-        const user_id = req.session.user_id
-        // const userData = await User.findById({ _id: user_id })
+        const user_id = req.session.user_id;
         // Get the cart count
         const cartItemCount = await getCartItemCount(user_id);
 
-
-        const addressData = await Address.find({ userId: user_id })
+        const addressData = await Address.find({ userId: user_id });
         const cartData = await Cart.findOne({ userId: user_id }).populate({
             path: 'products.productId',
-            select: 'Price productName stock'
-        })
-
-
+            select: 'Price productName stock offerPrice',
+        });
 
         // calculating total price for place order
-        const cartTotal = cartData.products.reduce((acc, product) => {
-            return acc + product.productId.Price * product.quantity;
-        }, 0)
-
+        let cartTotal = 0;
+        cartData.products.forEach((product) => {
+            if (product.productId.offerPrice > 0) {
+                cartTotal += product.productId.offerPrice * product.quantity;
+            } else {
+                cartTotal += product.productId.Price * product.quantity;
+            }
+        });
 
         // Coupon
-        const couponData = await Coupon.find({is_listed: true})
-
+        const couponData = await Coupon.find({ is_listed: true });
 
         // stock checking loop
         for (let productData of cartData.products) {
-
             const productid = productData.productId;
-            const product = await Product.findOne({ _id: productid })
+            const product = await Product.findOne({ _id: productid });
 
             // stock checking
-            if (product.stock >= productData.quantity) {
-
-                res.render('user/checkout', { addresses: addressData, cartData, cartTotal, cartItemCount, couponData })
-
-
-            } else {
-                res.redirect('/cart')
+            if (product.stock < productData.quantity) {
+                res.redirect('/cart');
                 // alert('stock is less')
-                console.log("stock is less");
+                console.log('stock is less');
+                return; // Break out of the loop and prevent sending multiple responses
             }
-
         }
-       
 
+        // If you reach here, the stock is sufficient for all products
+        res.render('user/checkout', { addresses: addressData, cartData, cartTotal, cartItemCount, couponData });
     } catch (error) {
         console.log(error.message);
     }
-}
+};
+
+
+
+// const loadCheckout = async (req, res) => {
+//     try {
+
+//         const user_id = req.session.user_id
+//         // Get the cart count
+//         const cartItemCount = await getCartItemCount(user_id);
+
+
+//         const addressData = await Address.find({ userId: user_id })
+//         const cartData = await Cart.findOne({ userId: user_id }).populate({
+//             path: 'products.productId',
+//             select: 'Price productName stock offerPrice'
+//         })
+
+
+
+//         // calculating total price for place order
+//         let cartTotal = 0; 
+//         cartData.products.forEach(product => {
+//             if (product.productId.offerPrice > 0) {
+//                 cartTotal += product.productId.offerPrice * product.quantity;
+//             } else {
+//                 cartTotal += product.productId.Price * product.quantity;
+//             }
+//         });
+//         // const cartTotal = cartData.products.reduce((acc, product) => {
+//         //     return acc + product.productId.Price * product.quantity;
+//         // }, 0)
+
+
+//         // Coupon
+//         const couponData = await Coupon.find({is_listed: true})
+
+
+//         // stock checking loop
+//         for (let productData of cartData.products) {
+
+//             const productid = productData.productId;
+//             const product = await Product.findOne({ _id: productid })
+
+//             // stock checking
+//             if (product.stock >= productData.quantity) {
+
+//                 res.render('user/checkout', { addresses: addressData, cartData, cartTotal, cartItemCount, couponData })
+
+
+//             } else {
+//                 res.redirect('/cart')
+//                 // alert('stock is less')
+//                 console.log("stock is less");
+//             }
+
+//         }
+       
+
+//     } catch (error) {
+//         console.log(error.message);
+//     }
+// }
 
 
 

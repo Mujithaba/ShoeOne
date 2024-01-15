@@ -4,8 +4,10 @@ const Product = require('../models/productModel')
 const Address = require('../models/addressModel')
 const Cart = require('../models/cartModel')
 const Order = require('../models/orderModel')
-const Offer = require ('../models/offerModel')
+const Offer = require('../models/offerModel')
 const Razorpay = require('razorpay')
+const easyinvoice = require('easyinvoice')
+
 
 const { Razorpay_key_id, Razorpay_key_secrete } = process.env
 
@@ -76,13 +78,22 @@ const orderPlace = async (req, res) => {
         // taking product details from the cart based
         const cartData = await Cart.findOne({ userId: user_id }).populate({
             path: 'products.productId',
-            select: 'Price '
+            select: 'Price offerPrice'
         })
 
         // calculating total price for place order
-        const cartTotal = cartData.products.reduce((acc, product) => {
-            return acc + product.productId.Price * product.quantity;
-        }, 0)
+        let cartTotal = 0;
+        cartData.products.forEach((product) => {
+            if (product.productId.offerPrice > 0) {
+                cartTotal += product.productId.offerPrice * product.quantity;
+            } else {
+                cartTotal += product.productId.Price * product.quantity;
+            }
+        });
+
+        // const cartTotal = cartData.products.reduce((acc, product) => {
+        //     return acc + product.productId.Price * product.quantity;
+        // }, 0)
 
 
 
@@ -109,7 +120,7 @@ const orderPlace = async (req, res) => {
                         return {
                             productId: product.productId,
                             quantity: product.quantity,
-                            unitPrice: product.productId.Price,
+                            unitPrice: product.productId.offerPrice > 0 ? product.productId.offerPrice : product.productId.Price,
                             ProductOrderStatus: 'pending'
                         }
                     }),
@@ -171,7 +182,7 @@ const orderPlace = async (req, res) => {
                         return {
                             productId: product.productId,
                             quantity: product.quantity,
-                            unitPrice: product.productId.Price,
+                            unitPrice: product.productId.offerPrice > 0 ? product.productId.offerPrice : product.productId.Price,
                             ProductOrderStatus: 'pending'
                         }
                     }),
@@ -243,13 +254,24 @@ const verifyPayment = async (req, res) => {
         // taking product details from the cart based
         const cartData = await Cart.findOne({ userId: user_id }).populate({
             path: 'products.productId',
-            select: 'Price '
+            select: 'Price offerPrice'
         })
 
         // calculating total price for place order
-        const cartTotal = cartData.products.reduce((acc, product) => {
-            return acc + product.productId.Price * product.quantity;
-        }, 0)
+
+        let cartTotal = 0;
+        cartData.products.forEach((product) => {
+            if (product.productId.offerPrice > 0) {
+                cartTotal += product.productId.offerPrice * product.quantity;
+            } else {
+                cartTotal += product.productId.Price * product.quantity;
+            }
+        });
+
+
+        // const cartTotal = cartData.products.reduce((acc, product) => {
+        //     return acc + product.productId.Price * product.quantity;
+        // }, 0)
 
 
         // crypto 
@@ -279,7 +301,7 @@ const verifyPayment = async (req, res) => {
                         return {
                             productId: product.productId,
                             quantity: product.quantity,
-                            unitPrice: product.productId.Price,
+                            unitPrice: product.productId.offerPrice > 0 ? product.productId.offerPrice : product.productId.Price,
                             ProductOrderStatus: 'pending'
                         }
                     }),
@@ -317,7 +339,7 @@ const verifyPayment = async (req, res) => {
                         return {
                             productId: product.productId,
                             quantity: product.quantity,
-                            unitPrice: product.productId.Price,
+                            unitPrice: product.productId.offerPrice > 0 ? product.productId.offerPrice : product.productId.Price,
                             ProductOrderStatus: 'pending'
                         }
                     }),
@@ -457,7 +479,7 @@ const cancelOrder = async (req, res) => {
         const productQuantity = product.quantity;
         const productUnitPrice = product.unitPrice
         console.log(productUnitPrice, "unit price");
-        const productAmount = productUnitPrice * productQuantity
+        const productAmount =productUnitPrice * productQuantity
 
         // wallet finding
         const userWallet = await User.findOne({ _id: user_id })
@@ -465,21 +487,24 @@ const cancelOrder = async (req, res) => {
 
         let orderDetails = null;
         // checking coupon is add in online payment
-        if (orderData.couponAmountDis > 0 && orderData.paymentMethod === 'online') {
+        if (orderData.couponAmountDis > 0 && orderData.paymentMethod === 'online' ) {
+
 
             // product Count in a order
             const productCount = orderData.products.length;
 
             // taking coupon amount for each product
-            const divideCouponAmount = orderData.couponAmountDis / productCount
+            const divideCouponAmount =Math.ceil( orderData.couponAmountDis / productCount)
 
             // Each Product offer price and cancel refund amount
-            const refundPrice = productAmount - divideCouponAmount;
+            const refundPrice =productAmount - divideCouponAmount;
 
             // balance orders amount 
-            const balanceAmount = orderData.totalAmount - refundPrice
+            const balanceAmount =orderData.totalAmount - refundPrice
 
-            // wallet saving
+      
+
+                  // wallet saving
             userWallet.wallet.history.push({
                 type: 'Credit',
                 amount: refundPrice,
@@ -498,6 +523,63 @@ const cancelOrder = async (req, res) => {
                     }
                 },
                 { new: true }
+            )
+
+                
+            
+          
+
+            // stock increase bcz the product is cancelled
+            if (orderDetails) {
+                const productToCancel = orderDetails.products.find((product) => product.productId == productID);
+
+
+
+                if (productToCancel) {
+
+                    const productData = await Product.findOneAndUpdate({ _id: productID },
+                        { $inc: { 'stock': productToCancel.quantity } },
+                        { new: true })
+                    // console.log(productData);
+                } else {
+                    console.log("productToCancel not found");
+                }
+
+            } else {
+                console.log("orderDetails is not found");
+            }
+
+            res.json({ message: 'Product cancelled successfully' });
+
+
+
+        //    with coupon cod
+        } 
+        else if (orderData.couponAmountDis > 0 && orderData.paymentMethod === 'COD' ) {
+
+             // product Count in a order
+             const productCount = orderData.products.length;
+
+             // taking coupon amount for each product
+             const divideCouponAmount =Math.ceil (orderData.couponAmountDis / productCount)
+            console.log(divideCouponAmount,"ttrrr");
+             // Each Product offer price and cancel refund amount
+             const refundPrice =productAmount - divideCouponAmount;
+             console.log(refundPrice,"refundPrice");
+             // balance orders amount 
+             const balanceAmount =orderData.totalAmount - refundPrice
+console.log(balanceAmount,"balanceAmount");
+
+
+            orderDetails = await Order.findOneAndUpdate(
+                { _id: orderID, 'products.productId': productID },
+                {
+                    $set: {
+                        'products.$.ProductOrderStatus': 'Cancelled',
+                        totalAmount: balanceAmount
+                    }
+                },
+                { new: true } // Return the modified document
             )
 
 
@@ -524,15 +606,16 @@ const cancelOrder = async (req, res) => {
             res.json({ message: 'Product cancelled successfully' });
 
 
-
-            // without coupon  in online payment
-        } else if (orderData.paymentMethod === 'online') {
+            
+        }
+         // without coupon  in online payment
+         else if (orderData.paymentMethod === 'online') {
 
             // refund
             const refundAmount = productAmount
 
             // balance orders amount 
-            const balaceAmount = orderData.totalAmount - productAmount
+            const balaceAmount =orderData.totalAmount - productAmount
 
             // wallet saving
             userWallet.wallet.history.push({
@@ -579,7 +662,9 @@ const cancelOrder = async (req, res) => {
             res.json({ message: 'Product cancelled successfully' });
 
 
-        } else {
+        } 
+        // without coupon cod
+        else {
 
             const balanceAmt = orderData.totalAmount - productAmount;
 
@@ -679,7 +764,7 @@ const returnOrder = async (req, res) => {
             // taking coupon amount for each product
             const couponDis = orderData.couponAmountDis
             console.log(couponDis);
-            const divideCouponAmount = couponDis / productCount
+            const divideCouponAmount =Math.ceil(couponDis / productCount)
             console.log(divideCouponAmount, "divideCouponAmount return");
             // Each Product offer price and cancel refund amount
             const refundPrice = productAmount - divideCouponAmount;
@@ -802,6 +887,25 @@ const returnOrder = async (req, res) => {
 }
 
 
+// invoice downloading
+const downloadInvoice = async(req, res) => {
+    try {
+        const {orderId} = req.body
+        console.log(orderId, "invoice");
+
+      const orderDetails = await Order.findById({_id: orderId}).populate('products.productId')
+      console.log(orderDetails);
+
+        res.json({ message: "Downloading invoice" ,orderDetails});
+        
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+}
+
+
+
 
 
 const walletLoad = async (req, res) => {
@@ -831,6 +935,7 @@ module.exports = {
     loadViewOrder,
     cancelOrder,
     returnOrder,
+    downloadInvoice,
     walletLoad
 
 }

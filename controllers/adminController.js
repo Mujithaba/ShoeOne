@@ -7,8 +7,8 @@ const upload = require('../multer')
 const Address = require('../models/addressModel')
 const Cart = require('../models/cartModel')
 const Order = require('../models/orderModel')
-const Coupon =  require('../models/couponModel')
-const Offer = require ('../models/offerModel')
+const Coupon = require('../models/couponModel')
+const Offer = require('../models/offerModel')
 // const { parseISO, isValid, isAfter, isBefore, isToday } = require('date-fns');
 // const PDFDocument = require('pdfkit');
 // const doc = new PDFDocument;
@@ -125,7 +125,7 @@ const LoadUserDetails = async (req, res) => {
             .limit(limit * 1)
             .skip((page - 1) * limit)
             .exec()
-            
+
 
 
         const userCount = await User.find({
@@ -143,7 +143,7 @@ const LoadUserDetails = async (req, res) => {
 
         res.render('admin/customersList', {
             users: userData,
-            totalPage:Math.ceil(userCount / limit),
+            totalPage: Math.ceil(userCount / limit),
             currentPage: page
         })
 
@@ -207,8 +207,9 @@ const loadCategory = async (req, res) => {
     try {
         const categoryData = await Category.find();
         const offerData = await Offer.find()
+        const productData =  await Product.find()
         if (categoryData) {
-            res.render('admin/category', { category: categoryData,offerData });
+            res.render('admin/category', { category: categoryData, offerData ,productData});
         } else {
             alert('category not found')
         }
@@ -322,7 +323,7 @@ const productLoad = async (req, res) => {
 
         const offerData = await Offer.find()
 
-        
+
         let page = 1;
         if (req.query.page) {
             page = req.query.page
@@ -332,17 +333,17 @@ const productLoad = async (req, res) => {
 
 
         const fullProduct = await Product.find().populate('category')
-        .limit(limit * 1)
-        .skip((page - 1) * limit)
-        .exec()
+            .limit(limit * 1)
+            .skip((page - 1) * limit)
+            .exec()
         //   console.log(fullProduct);
 
         const productCount = await Product.find()
-        .countDocuments()
+            .countDocuments()
 
 
-        res.render('admin/product', { fullProduct,offerData ,totalPage: Math.ceil(productCount/limit) })
-        
+        res.render('admin/product', { fullProduct, offerData, totalPage: Math.ceil(productCount / limit) })
+
 
     } catch (error) {
         console.log(error.message);
@@ -510,7 +511,7 @@ const productUnlist = async (req, res) => {
 const loadUserorders = async (req, res) => {
     try {
 
-             
+
         let page = 1;
         if (req.query.page) {
             page = req.query.page
@@ -523,16 +524,16 @@ const loadUserorders = async (req, res) => {
             path: 'products.productId',
             select: 'Price image productName quantity'
         })
-        .limit(limit * 1)
-        .skip((page - 1) * limit)
-        .sort({ orderDate: -1 })
-        .exec()
+            .limit(limit * 1)
+            .skip((page - 1) * limit)
+            .sort({ orderDate: -1 })
+            .exec()
 
         const orderCount = await Order.findOne().countDocuments();
 
 
 
-        res.render('admin/userOrders', { orderData ,totalPage: Math.ceil(orderCount/limit) })
+        res.render('admin/userOrders', { orderData, totalPage: Math.ceil(orderCount / limit) })
 
     } catch (error) {
         console.log(error.message);
@@ -551,7 +552,7 @@ const loadOrders = async (req, res) => {
             path: 'products.productId',
             select: 'Price image productName'
         })
-        
+
 
 
         res.render('admin/order-info', { orderData })
@@ -607,28 +608,28 @@ const salesReportCollect = async (req, res) => {
         let { startDate, endDate } = req.body;
 
 
-         // Validate date format (you can use a library like moment.js for more sophisticated date parsing)
-         const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
-         if (!dateRegex.test(startDate) || !dateRegex.test(endDate)) {
-             return res.status(400).json({ message: 'Invalid date format. Use DD/MM/YYYY.' });
-         }
- 
-         startDate = startDate.split('/');
-         endDate = endDate.split('/');
- 
-         // Parse the dates
-         const fromDate = new Date(`${startDate[2]}/${startDate[1]}/${startDate[0]}`);
-         const toDate = new Date(`${endDate[2]}/${endDate[1]}/${endDate[0]}`);
- 
-         // Validate date range
-         if (isNaN(fromDate.getTime()) || isNaN(toDate.getTime()) || fromDate > toDate) {
-             return res.status(400).json({ error: 'Invalid date range. End date should be equal to or later than the start date.' });
-         }
- 
+        // Validate date format (you can use a library like moment.js for more sophisticated date parsing)
+        const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
+        if (!dateRegex.test(startDate) || !dateRegex.test(endDate)) {
+            return res.status(400).json({ message: 'Invalid date format. Use DD/MM/YYYY.' });
+        }
+
+        startDate = startDate.split('/');
+        endDate = endDate.split('/');
+
+        // Parse the dates
+        const fromDate = new Date(`${startDate[2]}/${startDate[1]}/${startDate[0]}`);
+        const toDate = new Date(`${endDate[2]}/${endDate[1]}/${endDate[0]}`);
+
+        // Validate date range
+        if (isNaN(fromDate.getTime()) || isNaN(toDate.getTime()) || fromDate > toDate) {
+            return res.status(400).json({ error: 'Invalid date range. End date should be equal to or later than the start date.' });
+        }
+
 
         // startDate = startDate.split('/')
         // endDate = endDate.split('/')
-      
+
 
         // const fromDate = new Date(`${startDate[2]}/${startDate[1]}/${startDate[0]}`);
         // const toDate = new Date(`${endDate[2]}/${endDate[1]}/${endDate[0]}`);
@@ -893,13 +894,13 @@ const sendDashboardData = async (req, res) => {
 
 
 // load coupon
-const loadCoupon = async(req, res)=>{
+const loadCoupon = async (req, res) => {
     try {
 
         const couponData = await Coupon.find()
-// console.log(couponData);
-        res.render('admin/coupon',{couponData})
-        
+        // console.log(couponData);
+        res.render('admin/coupon', { couponData })
+
     } catch (error) {
         console.log(error);
     }
@@ -908,9 +909,9 @@ const loadCoupon = async(req, res)=>{
 
 
 // add coupon
-const addCouponLoad =async(req, res)=>{
+const addCouponLoad = async (req, res) => {
     try {
-        
+
 
         res.render('admin/addCoupon')
 
@@ -919,7 +920,7 @@ const addCouponLoad =async(req, res)=>{
     }
 }
 
-const uploadCoupon = async (req, res)=>{
+const uploadCoupon = async (req, res) => {
     try {
 
         const coupon = new Coupon({
@@ -933,7 +934,7 @@ const uploadCoupon = async (req, res)=>{
 
         const couponData = await coupon.save()
         res.redirect('/admin/couponAdmin')
-        
+
     } catch (error) {
         console.log(error);
     }
@@ -945,7 +946,7 @@ const couponList = async (req, res) => {
     try {
 
         const couponID = req.params.couponID
-      
+
         const coupon = await Coupon.findOne({ _id: couponID })
         if (!coupon) {
             return res.status(404).json({ error: 'coupon is not found' });
@@ -987,14 +988,14 @@ const couponUnlist = async (req, res) => {
 }
 
 // edit Coupon
-const editCoupon = async(req, res)=>{
+const editCoupon = async (req, res) => {
     try {
 
         const couponId = req.query.id.trim();
 
-        const couponData = await Coupon.findById({_id: couponId})
+        const couponData = await Coupon.findById({ _id: couponId })
 
-        res.render('admin/editCoupon',{couponData})
+        res.render('admin/editCoupon', { couponData })
     } catch (error) {
         console.log(error);
     }
@@ -1002,39 +1003,39 @@ const editCoupon = async(req, res)=>{
 
 
 // updated Coupon
-const updatedCoupon = async(req, res)=>{
+const updatedCoupon = async (req, res) => {
     try {
 
         const couponId = req.body.couponId;
 
-        const updateCoupon = await Coupon.findByIdAndUpdate({_id: couponId},
-            
-                {
-                    $set: {
-                        code: req.body.couponCode,
-                        validFrom: req.body.validFromDate,
-                        expiry: req.body.expiryDate,
-                        discountAmount: req.body.discountAmount,
-                        minimumCartValue: req.body.minCartValue,
-                        is_listed: true
-                    }
-                })
+        const updateCoupon = await Coupon.findByIdAndUpdate({ _id: couponId },
 
-                res.redirect('/admin/couponAdmin');
-        
+            {
+                $set: {
+                    code: req.body.couponCode,
+                    validFrom: req.body.validFromDate,
+                    expiry: req.body.expiryDate,
+                    discountAmount: req.body.discountAmount,
+                    minimumCartValue: req.body.minCartValue,
+                    is_listed: true
+                }
+            })
+
+        res.redirect('/admin/couponAdmin');
+
     } catch (error) {
         console.log(error);
     }
 }
 
-const offerLoad = async(req, res)=>{
+const offerLoad = async (req, res) => {
     try {
 
 
-      const offerData = await Offer.find()
+        const offerData = await Offer.find()
 
-        res.render('admin/Offers',{offerData})
-        
+        res.render('admin/Offers', { offerData })
+
     } catch (error) {
         console.log(error);
     }
@@ -1042,9 +1043,9 @@ const offerLoad = async(req, res)=>{
 
 
 // add offer
-const addOfferLoad =async(req, res)=>{
+const addOfferLoad = async (req, res) => {
     try {
-        
+
 
         res.render('admin/add-Offer')
 
@@ -1054,7 +1055,7 @@ const addOfferLoad =async(req, res)=>{
 }
 
 // upoload offer
-const upolodOffer = async (req, res)=>{
+const upolodOffer = async (req, res) => {
     try {
 
         const offer = new Offer({
@@ -1067,7 +1068,7 @@ const upolodOffer = async (req, res)=>{
 
         const offerData = await offer.save()
         res.redirect('/admin/offerPage')
-        
+
     } catch (error) {
         console.log(error);
     }
@@ -1079,8 +1080,8 @@ const offerList = async (req, res) => {
     try {
 
         const offerID = req.params.offerID
-        console.log(offerID,"mmm");
-      
+        console.log(offerID, "mmm");
+
         const offer = await Offer.findOne({ _id: offerID })
         if (!offer) {
             return res.status(404).json({ error: 'offer is not found' });
@@ -1123,29 +1124,27 @@ const offerUnlist = async (req, res) => {
 
 
 // added offer Set to product
-const settingOfferToProduct =async(req,res)=>{
+const settingOfferToProduct = async (req, res) => {
     try {
 
-        console.log("offer seting controller");
-        const {offerId, productID} = req.body
-        console.log(productID,"offers prodID");
-        console.log(offerId,"offer id ");
+        const { offerId, productID } = req.body
 
-        const productData = await Product.findOne({_id: productID})
-        const offerData = await Offer.findOne({_id: offerId})
+
+        const productData = await Product.findOne({ _id: productID })
+        const offerData = await Offer.findOne({ _id: offerId })
 
         productData.offerInfo = []
         productData.offerInfo.push(offerData);
         const offerPrice = Math.floor(
-            productData.Price - (productData.Price * (offerData.discountOffer/100))
+            productData.Price - (productData.Price * (offerData.discountOffer / 100))
         );
-       
+
         productData.offerPrice = offerPrice
 
         await productData.save();
 
-        res.json({message:"Added" + offerData.offerName + "to product" + productData.productName})
-        
+        res.json({ message: "Added" + offerData.offerName + "to product" + productData.productName })
+
     } catch (error) {
 
         console.log(error);
@@ -1153,6 +1152,69 @@ const settingOfferToProduct =async(req,res)=>{
     }
 }
 
+
+// Removing offer from product
+const offerRemovedFromProduct = async (req, res) => {
+    try {
+
+        const productId = req.body.prodID
+
+
+        const productData = await Product.findOneAndUpdate(
+            { _id: productId },
+            { $set: { offerInfo: [], offerPrice: 0 } },
+            { new: true } // This ensures that you get the updated document back
+        );
+
+
+        res.json({ message: "Removed Offer from " + productData.productName })
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Internal Server Error' })
+    }
+}
+
+// Adding offer To  Category
+
+const settingOfferToCategory = async (req, res) => {
+    try {
+
+        const { offerId, categoryID } = req.body
+        console.log(offerId, categoryID, "oooooiii");
+
+        const offerData = await Offer.findOne({ _id: offerId })
+
+        const categoryProductsData = await Product.find({ category: categoryID })
+        console.log(categoryProductsData, "got it");
+
+
+
+        const updatePromises = [];
+
+        for (const product of categoryProductsData) {
+            product.offerInfo = [];
+            product.offerInfo.push(offerData);
+            const offerPrice = Math.floor(
+                product.Price - (product.Price * (offerData.discountOffer / 100))
+            );
+
+            product.offerPrice = offerPrice;
+
+            updatePromises.push(product.save());
+        }
+
+        await Promise.all(updatePromises);
+
+        res.json({
+            message: `Added ${offerData.offerName} to products in category`,
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Internal Server Error ' })
+    }
+}
 
 module.exports = {
     loadlogin,
@@ -1202,7 +1264,9 @@ module.exports = {
     upolodOffer,
     offerList,
     offerUnlist,
-    settingOfferToProduct
+    settingOfferToProduct,
+    offerRemovedFromProduct,
+    settingOfferToCategory
 
 
 }

@@ -339,53 +339,83 @@
 
             </div>
             <br>
+         
 
-            <table>
-                <thead>
-                    <tr>
-                        <th class="text-center">Categories Name</th>
-                        <th class="text-center">List</th>
-                        <th class="text-center">Action</th>
-
-                    </tr>
-                </thead>
-                <tbody class="category-list" id="body-tbody">
-
-                    <% for (let i=0; i < category.length; i++) { %>
+                <table>
+                    <thead>
                         <tr>
-                            <td class="text-center">
-                                <%= category[i].categoryName %>
-                            </td>
-                            <td class="text-center">
+                            <th class="text-center">Categories Name</th>
+                            <th class="text-center">List</th>
+                            <th class="text-center">Action</th>
 
-                                <button type="button" class="btn list-button 
-                                    <%= category[i].is_listed==true ?  'btn-red ' : 'btn-green'%>"
-                                    data-catid="<%= category[i]._id %>"
-                                    data-state="<%= category[i].is_listed ? 'Listed' : 'Unlisted' %>">
-                                    <%= category[i].is_listed ? 'Unlist' : 'List' %>
-
-                                </button>
-                            </td>
-
-                            <!-- &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; -->
-                            <td class="text-center">
-                                <a href="/admin/edit-adcategory?id=<%= category[i]._id %>" class="btn"
-                                    id="edit-button">Edit</a>
-
-                                &nbsp;&nbsp;&nbsp;&nbsp;
-                                <button class="btn btn-dark offers" data-cateid="<%= category[i]._id %>">Apply Offer</button>
-                            </td>
                         </tr>
+                    </thead>
+                    <tbody class="category-list" id="body-tbody">
+                        <% for (let i = 0; i < category.length; i++) { %>
+                            <% const categoryProducts = productData.filter(product => product.category === category[i]._id && product.offerPrice > 0); %>
+                    
+                            <% if (categoryProducts.length > 0) { %>
+                                <% for (let product of categoryProducts) { %>
+                                    <tr>
+                                        <td class="text-center">
+                                            <%= category[i].categoryName %>
+                    
+                                            <% for (let productOff of product.offerInfo) { %>
+                                                <span>
+                                                    <%= productOff.offerName %>
+                                                </span>
+                                            <% } %>
+                                    <% } %>
+                                            <button class="btn btn-danger deleteOffer" data-catId="<%= category[i]._id %>">Remove</button>
+                                        </td>
+                    
+                                        <td class="text-center">
+                                            <button type="button" class="btn list-button <%= category[i].is_listed ? 'btn-red' : 'btn-green'%>"
+                                                data-catid="<%= category[i]._id %>"
+                                                data-state="<%= category[i].is_listed ? 'Listed' : 'Unlisted' %>">
+                                                <%= category[i].is_listed ? 'Unlist' : 'List' %>
+                                            </button>
+                                        </td>
+                    
+                                        <td class="text-center">
+                                            <a href="/admin/edit-adcategory?id=<%= category[i]._id %>" class="btn" id="edit-button">Edit</a>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;
+                                            <button class="btn btn-dark offers" data-cateid="<%= category[i]._id %>">Apply Offer</button>
+                                        </td>
+                                    </tr>
+                                
+                            <% } else { %>
+                                <tr>
+                                    <td class="text-center">
+                                        <%= category[i].categoryName %>
+                                        <button>hddd</button>
+                                    </td>
+                    
+                                    <td class="text-center">
+                                        <button type="button" class="btn list-button <%= category[i].is_listed ? 'btn-red' : 'btn-green'%>"
+                                            data-catid="<%= category[i]._id %>"
+                                            data-state="<%= category[i].is_listed ? 'Listed' : 'Unlisted' %>">
+                                            <%= category[i].is_listed ? 'Unlist' : 'List' %>
+                                        </button>
+                                    </td>
+                    
+                                    <td class="text-center">
+                                        <a href="/admin/edit-adcategory?id=<%= category[i]._id %>" class="btn" id="edit-button">Edit</a>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;
+                                        <button class="btn btn-dark offers" data-cateid="<%= category[i]._id %>">Apply Offer</button>
+                                    </td>
+                                </tr>
+                            <% } %>
                         <% } %>
-                            <input type="hidden" name="coupon" value="<%= JSON.stringify(offerData) %>">
-
-                </tbody>
-            </table>
-
-
+                        <input type="hidden" name="coupon" value="<%= JSON.stringify(offerData) %>">
+                    </tbody>
+                    
+                </table>
 
 
-            <!-- 
+
+
+                <!-- 
             </div> -->
         </div>
     </div>
@@ -516,19 +546,20 @@
     </script>
 
 
-<script>
-    // ------------------ offer ------------------------------------//
+    <script>
+        // ------------------ offer ------------------------------------//
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const offerButtons = document.querySelectorAll('.offers');
-        offerButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                categoryID = button.getAttribute('data-cateid');
-                console.log(categoryID, "offercategoryID");
+        document.addEventListener('DOMContentLoaded', () => {
+            const offerButtons = document.querySelectorAll('.offers');
 
-                Swal.fire({
-                    title: "<u><strong> Offers</strong></u>",
-                    html: `
+            offerButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    categoryID = button.getAttribute('data-cateid');
+                    console.log(categoryID, "offercategoryID");
+
+                    Swal.fire({
+                        title: "<u><strong> Offers</strong></u>",
+                        html: `
                 
                 <% offerData.forEach(offer => { %>
                     <div class="divCoupon"> 
@@ -537,63 +568,63 @@
                         <button class="btn offerbtn" onclick="applyoffer('<%= offer._id %>')">Apply</button>
                     </div>
                 <% }); %> `,
-                    showCloseButton: true,
-                    showCancelButton: false,
-                    focusConfirm: false,
-                    confirmButtonText: `Done !`,
+                        showCloseButton: true,
+                        showCancelButton: false,
+                        focusConfirm: false,
+                        confirmButtonText: `Done !`,
+                    });
                 });
             });
         });
-    });
 
-    function applyoffer(offerId) {
-        Swal.fire("Added this offer!");
-        console.log(offerId);
-       
-        console.log(categoryID);
+        function applyoffer(offerId) {
+            Swal.fire("Added this offer!");
+            console.log(offerId);
+
+            console.log(categoryID);
 
 
-        fetch('/admin/offerAddToCategory', {
+            fetch('/admin/offerAddToCategory', {
                 method: 'post',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ offerId ,categoryID })
+                body: JSON.stringify({ offerId, categoryID })
             }).then(response => {
                 return response.json();
             }).then(data => {
                 if (data.message) {
                     // console.log("hellooo");
-                        Swal.fire({
-                            position: "center",
-                            icon: "success",
-                            title: data.message,
-                            showConfirmButton: false,
-                            timer: 1500
-                        });
-                    
-                }else {
-                       
-                       Swal.fire({
-                           position: "center",
-                           icon: "info",
-                           title: data.error,
-                           showConfirmButton: false,
-                           timer: 1500
-                       });
-                   }
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: data.message,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+
+                } else {
+
+                    Swal.fire({
+                        position: "center",
+                        icon: "info",
+                        title: data.error,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
             }).catch(error => {
                 console.log(error);
             });
 
 
-    }
-    
+        }
 
 
-    // -------------------------------offer script end here-------------------------------------//
 
-</script>
+        // -------------------------------offer script end here-------------------------------------//
+
+    </script>
 
 
 

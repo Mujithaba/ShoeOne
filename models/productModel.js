@@ -60,6 +60,9 @@ const productSchema = mongoose.Schema({
       discountOffer:{
          type: Number
       },
+      typeOfOffer :{
+         type:String
+     },
       expiry:{
          type:Date,
         

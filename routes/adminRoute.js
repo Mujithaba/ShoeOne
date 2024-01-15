@@ -69,6 +69,8 @@ admin_route.post('/uploadAddOffer',adminController.upolodOffer)
 admin_route.patch('/list-offer/:offerID', adminController.offerList)
 admin_route.patch('/Unlist-offer/:offerID', adminController.offerUnlist)
 admin_route.post('/offerAddToProduct',adminController.settingOfferToProduct)
+admin_route.post('/deleteOfferFromProduct',adminController.offerRemovedFromProduct)
+admin_route.post('/offerAddToCategory',adminController.settingOfferToCategory)
 
 
 

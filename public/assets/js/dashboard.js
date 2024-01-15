@@ -13,7 +13,7 @@ $(function () {
       if (data.status === "success") {
         const { customers, payment,  sales,salesDetails } = data;
         
-        document.getElementById('AmountTotal').innerHTML = 12000
+        document.getElementById('AmountTotal').innerHTML = sales.totalAmount
         // document.getElementById('amountTotal').innerHTML = sales.totalAmount
 
         console.log(customers)

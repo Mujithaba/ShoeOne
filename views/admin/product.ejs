@@ -255,6 +255,8 @@
 
                 <div class="container">
 
+
+
                     <% if(typeof message !=='undefined' ) { %>
                         <div class="alert alert-warning text-center mb-4">
                             <%= message %>
@@ -310,12 +312,40 @@
                                                         alt="Product Image <%= j + 1 %>" width="40px" height="40px">
                                                     <% } %>
                                             </td>
+                                            <td>
+                                            <% if (fullProduct[i].offerPrice > 0) { %>
 
-                                            <td>
-                                                <%= fullProduct[i].productName %>
+                                                <%= fullProduct[i].productName %><br><br>
+                                                
+                                                <% for(let offers of fullProduct[i].offerInfo) { %>
+                                                    <span style="padding: 4px 4px; color: rgb(255, 255, 255); background-color: rgb(0, 48, 7); border-radius: 3px;"><%= offers.offerName %></span>
+                                                    <% } %> <br><br>
+
+                                                    <button class=" btn-danger deleteOffer" data-prodId="<%= fullProduct[i]._id %>" style="padding: 2px 2px; border-radius: 3px; margin-left: 8px; ">Remove</button>
+
+                                                <% } else{%>
+
+                                                    <%= fullProduct[i].productName %>
+
+                                             <% } %>
+
+                                            
+                                                
                                             </td>
-                                            <td>
-                                                <%= fullProduct[i].Price %>
+                                            <td> <% if (fullProduct[i].offerPrice > 0) { %>
+                                                <b>₹<%= fullProduct[i].offerPrice %>/-</b>
+                                                 
+                                                   <br><br><br> <span style="color: rgb(220, 3, 3);"><del>₹<%= fullProduct[i].Price %>/-</del></span>
+                                            
+                                                <% } else{%>
+                                                    <b>₹<%= fullProduct[i].Price %>/-</b>
+                                                
+                                                <% } %>
+
+
+
+
+                                             
                                             </td>
                                             <td>
                                                 <%= fullProduct[i].productSize %>
@@ -431,6 +461,59 @@
             });
         });
 
+
+
+
+
+        // ------------------------------Delete offer from the product Start here--------------------------------//
+
+        document.querySelectorAll('.deleteOffer').forEach((button) => {
+            button.addEventListener('click', () => {
+                const prodID = button.getAttribute('data-prodId');
+                console.log(prodID);
+              
+                fetch('/admin/deleteOfferFromProduct', {
+                    method: 'post',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ prodID })
+                }).then(response => {
+                    return response.json();
+                }).then(data => {
+                    if (data.message) {
+                        // console.log("hellooo");
+                            Swal.fire({
+                                position: "center",
+                                icon: "success",
+                                title: data.message,
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                            setTimeout(function () {
+                                location.reload()
+                            }, 1500);
+
+                        
+                    }else {
+                            
+                            Swal.fire({
+                                position: "center",
+                                icon: "info",
+                                title: data.error,
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                        }
+                }).catch(error => {
+                    console.log(error);
+                });
+            });
+        });
+
+  // ------------------------------Delete offer from the product End here--------------------------------//
+
+
     </script>
 
 
@@ -489,7 +572,9 @@
                         focusConfirm: false,
                         confirmButtonText: `Done !`,
                     });
+                    
                 });
+               
             });
         });
 
@@ -517,7 +602,10 @@
                                 title: data.message,
                                 showConfirmButton: false,
                                 timer: 1500
-                            });
+                            }); setTimeout(function () {
+                                location.reload()
+                            }, 1400);
+
                         
                     }else {
                            
@@ -535,8 +623,6 @@
 
 
         }
-        
-
 
         // -------------------------------offer script end here-------------------------------------//
 
