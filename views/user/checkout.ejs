@@ -413,7 +413,7 @@
                                         </div>
                                         <input type="hidden" name="coupon" value="<%= JSON.stringify(couponData) %>">
                                         <ul class="checkout__total__all">
-                                            
+
                                             <li id="subtotalLabel">Subtotal <span id="subtotal">
                                                     <%= cartTotal %>
                                                 </span></li>
@@ -440,6 +440,15 @@
                                                 Online
                                                 <input type="checkbox" id="paypal" class="checkingBox" value="online">
                                                 <span class="checkmark"></span>
+                                            </label>
+                                        </div>
+
+                                        <div class="checkout__input__checkbox">
+                                            <label for="wallet">
+                                                Wallet
+                                                <input type="checkbox" id="wallet" class="checkingBox" value="wallet">
+                                                <span class="checkmark"></span>&nbsp;&nbsp;&nbsp;
+                                                <span style="color: #4caf50;">(Wallet balance: <%= wallet %>)</span>
                                             </label>
                                         </div>
 
@@ -691,7 +700,7 @@
         document.querySelector('.coupon').addEventListener('change', Coupon);
         const subtotal = document.getElementById("subtotal");
         let sub = subtotal.textContent
-        console.log(sub, "jj");
+        // console.log(sub, "jj");
         async function Coupon() {
             let checkCouponBox = document.querySelector('.couponChecking');
             if (checkCouponBox.checked) {
@@ -787,6 +796,8 @@
         document.querySelector('.place-order').addEventListener('click', orderPl);
 
         async function orderPl() {
+            let subTotal = document.getElementById('subtotal').textContent
+            console.log(subTotal, "sub");
 
             let totalProdAmount = document.getElementById('total1').textContent
             let couponDiscount = document.getElementById('couponDiscount').textContent
@@ -830,6 +841,8 @@
                 Swal.fire("Your Delivery  type is not selected, Please select that!");
                 return false;
             }
+
+
             //End of delivery type checking
 
             try {
@@ -840,7 +853,7 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ addressId, paymentType: paymentmethod, totalProdAmount, couponDiscount })
+                    body: JSON.stringify({ addressId, paymentType: paymentmethod, totalProdAmount, couponDiscount, subTotal })
                 });
 
 
@@ -852,7 +865,9 @@
 
                     window.location.href = "/successOrder";
 
-                } else if (data.success) {
+                }
+
+                else if (data.success) {
 
 
 
@@ -966,7 +981,22 @@
 
 
 
-                } else {
+                } else if (data.wallet) {
+                    console.log("wallet is recoreded");
+
+                    window.location.href = "/successOrder";
+                }else if (data.walletfail) {
+
+                    Swal.fire({
+                            position: "center",
+                            icon: "error",
+                            title: data.walletfail,
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+
+                    
+                }else {
                     Swal.fire("Something went wrong online payment or in COD delivery!");
                 }
 
@@ -991,7 +1021,7 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ payment, order, paymentType, addressId, totalOrderAmount ,couponDiscount})
+                    body: JSON.stringify({ payment, order, paymentType, addressId, totalOrderAmount, couponDiscount })
                 })
 
 

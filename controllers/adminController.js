@@ -207,9 +207,9 @@ const loadCategory = async (req, res) => {
     try {
         const categoryData = await Category.find();
         const offerData = await Offer.find()
-        const productData =  await Product.find()
+        const productData = await Product.find()
         if (categoryData) {
-            res.render('admin/category', { category: categoryData, offerData ,productData});
+            res.render('admin/category', { category: categoryData, offerData, productData });
         } else {
             alert('category not found')
         }
@@ -854,6 +854,7 @@ const sendDashboardData = async (req, res) => {
 
             online: paymentMethods.find(({ _id }) => _id === "online")?.orderCount ?? 0,
             cod: paymentMethods.find(({ _id }) => _id === "COD")?.orderCount ?? 0,
+            wallet: paymentMethods.find(({ _id }) => _id === "wallet")?.orderCount ?? 0,
         };
 
 
@@ -1185,9 +1186,22 @@ const settingOfferToCategory = async (req, res) => {
 
         const offerData = await Offer.findOne({ _id: offerId })
 
+        const categoryData = await Category.findById({ _id: categoryID })
+        console.log(categoryData, "yyyy");
         const categoryProductsData = await Product.find({ category: categoryID })
-        console.log(categoryProductsData, "got it");
 
+
+        if (categoryData) {
+
+            categoryData.offers = []
+            categoryData.offers.push(offerData);
+
+
+        } else {
+            console.log("category is not found");
+        }
+
+        await categoryData.save()
 
 
         const updatePromises = [];
@@ -1210,6 +1224,38 @@ const settingOfferToCategory = async (req, res) => {
             message: `Added ${offerData.offerName} to products in category`,
         });
 
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Internal Server Error ' })
+    }
+}
+
+
+// deleting offer from category
+const offerRemovedFromCategory = async(req, res)=>{
+    try {
+
+        const categoryID = req.body.categoryId
+
+        
+
+
+        const categoryData = await Category.findOneAndUpdate(
+            { _id: categoryID },
+            { $set: { offers: [] } },
+            { new: true } 
+        );
+
+        const categoryProductsData = await Product.updateMany(
+            { category: categoryID },
+            { $set: { offerInfo: [], offerPrice: 0 } },
+            { new: true }
+        );
+
+
+
+        res.json({ message: "Removed Offer from " + categoryData.categoryName })
+        
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: 'Internal Server Error ' })
@@ -1266,7 +1312,8 @@ module.exports = {
     offerUnlist,
     settingOfferToProduct,
     offerRemovedFromProduct,
-    settingOfferToCategory
+    settingOfferToCategory,
+    offerRemovedFromCategory
 
 
 }

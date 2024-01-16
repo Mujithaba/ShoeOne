@@ -254,8 +254,8 @@
                         <strong>Ordered
                             On:</strong>&nbsp;<%=orderData.orderDate.toLocaleString('en-AU',{year:"numeric",month:"2-digit",day:"2-digit"})%>
                             <br>
-                            <strong>Payment Method:</strong>&nbsp;<%= orderData.paymentMethod %> <br>
-                                <strong>Total Amount:</strong>&nbsp;&nbsp; ₹<%= orderData.totalAmount %> /-
+                            <strong>Payment Method:</strong>&nbsp;<%= orderData.paymentMethod %> 
+                               <!-- <br> <strong>Total Amount:</strong>&nbsp;&nbsp; ₹<%= orderData.totalAmount %> /- -->
                                     <button class="btn btn-success " style="margin-left: 980px;"
                                         onclick="invoiceDownload('<%= orderData._id %>')">INVOICE</button>
                 </p>
@@ -597,7 +597,7 @@
 
         function invoiceDownload(orderId) {
             console.log(orderId);
-            alert("heloo")
+            // alert("heloo")
 
             fetch('/invoiceDownloading', {
                 method: 'post',

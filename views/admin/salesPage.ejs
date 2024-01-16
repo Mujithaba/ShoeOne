@@ -256,7 +256,8 @@
                                         <tbody id="reportBody"></tbody>
                                     </table>
                                     <!-- Add Download PDF button -->
-                                    <button class="btn  btn-dark btn1" id="downloadPDFButton">Download PDF</button>
+                                    <button class="btn btn-dark" onclick="downloadCSV()">Download CSV</button>
+
 
                                    
                                     
@@ -366,6 +367,8 @@
                             cellShippingAddress.innerHTML = `${sales.shippingAddress.fullname},<br> ${sales.shippingAddress.mobile},<br> ${sales.shippingAddress.address},<br> ${sales.shippingAddress.pincode},<br> ${sales.shippingAddress.city}, ${sales.shippingAddress.state}`;
                         }
 
+                        
+
                     } else {
                         console.log('No salesOrders data available.');
                     }
@@ -390,7 +393,80 @@
 
 
 
+<script>
+    function downloadCSV() {
+        fetch('/invoiceDownloading', {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ orderId })
+            }).then(response => {
+                return response.json();
+            }).then(data => {
+                if (data.message) {
+                    const order = data.orderDetails
+                    // console.log("hellooo");
+                    Swal.fire({
+                        position: "center",
+                        icon: "success",
+                        title: data.message,
+                        showConfirmButton: false,
+                        timer: 2200
+                    });
 
+
+                    
+                } else {
+                    Swal.fire({
+                        position: "center",
+                        icon: "info",
+                        title: data.error,
+                        showConfirmButton: false,
+                        timer: 1500
+                    });
+                }
+            }).catch(error => {
+                console.log(error);
+            });
+
+
+
+
+        if (data.salesOrders) {
+            // Create a CSV string
+            const csvContent = 'data:text/csv;charset=utf-8,'
+                + 'Ordered On,Order ID,Total Amount,Payment Method,Shipping Address\n'
+                + data.salesOrders.map(sales =>
+                    `${new Date(sales.orderDate).toLocaleString('en-AU', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit'
+                    })},${sales._id},${sales.totalAmount},"${sales.paymentMethod}",`
+                    + `"${sales.shippingAddress.fullname}, ${sales.shippingAddress.mobile}, `
+                    + `${sales.shippingAddress.address}, ${sales.shippingAddress.pincode}, `
+                    + `${sales.shippingAddress.city}, ${sales.shippingAddress.state}"`)
+                    .join('\n');
+
+            // Create a Blob and set it as the href of an anchor tag
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'sales_data.csv'; // Specify the filename
+            document.body.appendChild(a);
+
+            // Trigger a click on the anchor tag to start the download
+            a.click();
+
+            // Remove the anchor tag from the DOM
+            document.body.removeChild(a);
+        } else {
+            console.log('No salesOrders data available.');
+        }
+    }
+</script>
 
 
     <%- include('../layouts/footer.ejs') %>

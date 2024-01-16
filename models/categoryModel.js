@@ -6,6 +6,21 @@ const categorySchema = mongoose.Schema({
         type: String,
         required: true
     },
+    offers:[{
+        offerName :{
+           type:String
+        },
+        discountOffer:{
+           type: Number
+        },
+        typeOfOffer :{
+           type:String
+       },
+        expiry:{
+           type:Date,
+          
+        }
+     }],
     is_listed: {
         type: Boolean,
         default:true

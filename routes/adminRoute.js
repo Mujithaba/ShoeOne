@@ -71,7 +71,7 @@ admin_route.patch('/Unlist-offer/:offerID', adminController.offerUnlist)
 admin_route.post('/offerAddToProduct',adminController.settingOfferToProduct)
 admin_route.post('/deleteOfferFromProduct',adminController.offerRemovedFromProduct)
 admin_route.post('/offerAddToCategory',adminController.settingOfferToCategory)
-
+admin_route.post('/deleteOfferFromCategory',adminController.offerRemovedFromCategory)
 
 
 module.exports = admin_route;
