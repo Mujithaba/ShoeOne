@@ -376,17 +376,25 @@
 
 
         <div class="row">
+            <button id="refCodeCopyBtn" class="text-white letter-spc m-4 primary-btn "
+                style="background-color: rgb(47, 48, 48);"
+                data-link="http://localhost:3000/register?refCode=<%= userData.refCode %>">Copy Referral Link <i
+                    class="fa-solid fa-copy"></i></button>
+
             <div class="col-lg-6 col-md-6 col-sm-6c">
                 <div class="continue__btn">
                     <a id="btnHover" href="/my-Order"><i class="fas fa-shopping-cart"></i>My Orders</a>
                 </div>
             </div>
 
+
             <div class="col-lg-6 col-md-6 col-sm-6c ml-auto">
-                <div class="continue__btn">
+                <div class="continue__btn" style="margin-left: 340px; ">
                     <a id="btnHover" href="/your-wallet"><i class="fas fa-wallet"></i> My Wallet</a>
                 </div>
             </div>
+
+
         </div>
 
 
@@ -1033,7 +1041,7 @@
                         document.getElementById('CurrentPassword').value = '';
                         document.getElementById('NewPassword').value = '';
                         document.getElementById('RepeatPassword').value = '';
-                    } else {
+                    } else if (data.msg) {
                         Swal.fire({
                             position: 'center',
                             icon: 'info',
@@ -1042,6 +1050,17 @@
                             timer: 1500
                         });
                         document.getElementById('CurrentPassword').value = '';
+                    } else {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'info',
+                            title: data.error,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        document.getElementById('CurrentPassword').value = '';
+                        document.getElementById('NewPassword').value = '';
+                        document.getElementById('RepeatPassword').value = '';
                     }
                 } catch (error) {
                     console.error(error);
@@ -1063,7 +1082,43 @@
 
 
 
+        //for copying referral code
+        const refCodeCopyBtn = document.getElementById('refCodeCopyBtn')
+        refCodeCopyBtn.addEventListener('click', copyRefCode)
 
+        async function copyRefCode() {
+
+            contentToCopy = this.dataset.link
+            const tempInput = document.createElement('input');
+            tempInput.value = contentToCopy;
+
+            // adding the input element to  docmnt
+            document.body.appendChild(tempInput);
+
+            tempInput.select();
+            tempInput.setSelectionRange(0, 99999);
+
+            //copy command
+            document.execCommand('copy');
+
+            document.body.removeChild(tempInput);
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "center",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                }
+            });
+            Toast.fire({
+                icon: "success",
+                title: "Copied successfully"
+            });
+        }
 
 
     </script>

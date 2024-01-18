@@ -1,0 +1,474 @@
+<%- include('../layouts/header.ejs') %>
+<style>
+    /* body {
+        background-color: #f8f9fa;
+    } */
+
+   
+    .wishlist-container {
+        margin-top: 40px;
+        margin-bottom: 70px;
+    }
+
+    .wishlist-header {
+        background-color: #343a40;
+        color: #ffffff;
+        padding: 15px;
+        border-radius: 5px 5px 0 0;
+        margin-bottom: 20px;
+    }
+
+    .table-responsive {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .wishlist-table {
+        border-collapse: collapse; 
+        border-spacing: 0 15px;
+        width: 100%;
+    }
+
+    .wishlist-table th,
+    .wishlist-table td {
+        background-color: #ffffff;
+        padding: 15px;
+        text-align: center;
+        /* border-bottom: 1px solid #e9ecef; */
+    }
+
+    /* .wishlist-table td {
+        border-bottom: 1px solid #aac4e4 ;
+    } */
+
+    .wishlist-action-btn {
+        width: 70%;
+        background-color: rgb(198, 1, 1);
+    }
+
+    #add-cart {
+        background-color: #e9ecef;
+        padding: 5px;
+        border-radius: 5px;
+    }
+
+    #add-cart:hover{
+        color: rgb(0, 0, 0);
+    }
+
+    @media (max-width: 576px) {
+        .wishlist-table th,
+        .wishlist-table td {
+            text-align: center;
+        }
+    }
+
+    .product-image {
+        max-width: 100px;
+        max-height: 100px;
+    }
+</style>
+
+
+
+    <!-- Page Preloder -->
+    <!-- <div id="preloder">
+        <div class="loader"></div>
+    </div> -->
+
+    <!-- Offcanvas Menu Begin -->
+    <div class="offcanvas-menu-overlay"></div>
+    <div class="offcanvas-menu-wrapper">
+        <div class="offcanvas__option">
+            <div class="offcanvas__links">
+                <a href="#">Sign in</a>
+                <!-- <a href="#">FAQs</a> -->
+            </div>
+
+        </div>
+        <div class="offcanvas__nav__option">
+            <a href="/wishlist"><img src="/img/icon/heart.png" alt="wishlist"></a>
+            <a href="./cart"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="18" viewBox="0 0 576 512">
+                    <path
+                        d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z" />
+                </svg>
+                <% if (typeof cartItemCount !=='undefined' && cartItemCount> 0) { %>
+                    <span
+                        class="position-absolute top-0 start-100 translate-middle px-1 border border-light rounded-circle"
+                        style="background-color: red; font-size: 10px">
+                        <%= cartItemCount %>
+                            <span class="visually-hidden">New alerts</span>
+                    </span>
+                    <% } %>
+            </a>
+
+            <a href="/profile"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512">
+                    <path
+                        d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z" />
+                </svg></a>
+
+        </div>
+        <div id="mobile-menu-wrap"></div>
+        <div class="offcanvas__text">
+            <p>Enjoy your shopping with us...</p>
+        </div>
+    </div>
+    <!-- Offcanvas Menu End -->
+
+    <!-- Header Section Begin -->
+    <header class="header">
+        <div class="header__top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 col-md-7">
+                        <div class="header__top__left">
+                            <p>Enjoy your each shopping with us...</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-5">
+                        <div class="header__top__right">
+                            <div class="header__top__links">
+                                <a href="#">Sign in</a>
+                                <!-- <a href="#">FAQs</a> -->
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-3">
+                    <div class="header__logo">
+                        <a href="./home">
+                            <h2 class="ShoeOne-head">ShoeOne</h2>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-6">
+                    <nav class="header__menu mobile-menu">
+                        <ul>
+                            <li><a href="./home">Home</a></li>
+                            <li><a href="./shop">Shop</a></li>
+                            <li><a href="./about">About Us</a></li>
+
+
+                            <li><a href="./contact">Contacts</a></li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-lg-3 col-md-3">
+                    <div class="header__nav__option">
+                        <a href="/wishlist"><img src="/img/icon/heart.png" alt="wishlist"></a>
+                        <a href="./cart"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="18"
+                                viewBox="0 0 576 512">
+                                <path
+                                    d="M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.7-58.5L77.4 54.5c-.7-3.8-4-6.5-7.9-6.5H24C10.7 48 0 37.3 0 24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z" />
+                            </svg>
+                            <% if (cartItemCount> 0) { %>
+                                <span
+                                    class="position-absolute top-0 start-100 translate-middle px-1 border border-light rounded-circle"
+                                    style="background-color: red; font-size: 10px">
+                                    <%= cartItemCount %>
+                                        <span class="visually-hidden">New alerts</span>
+                                </span>
+                                <% } %>
+                        </a>
+
+                        <a href="/profile"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="14"
+                                viewBox="0 0 448 512">
+                                <path
+                                    d="M304 128a80 80 0 1 0 -160 0 80 80 0 1 0 160 0zM96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM49.3 464H398.7c-8.9-63.3-63.3-112-129-112H178.3c-65.7 0-120.1 48.7-129 112zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3z" />
+                            </svg></a>
+                    </div>
+                </div>
+            </div>
+            <div class="canvas__open"><i class="fa fa-bars"></i></div>
+        </div>
+    </header>
+    <!-- Header Section End -->
+
+    <!-- Breadcrumb Section Begin -->
+    <section class="breadcrumb-option">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb__text">
+                        <h4>Wishlist</h4>
+                        <div class="breadcrumb__links">
+                            <a href="./home">Home</a>
+                            <a href="./shop">Shop</a>
+                            <span>Shopping Wishlist</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Breadcrumb Section End -->
+
+
+       
+
+                <!-- Shopping Cart Section Begin -->
+                <div class="container wishlist-container">
+                    
+                    <% if (typeof wishlistData !== 'undefined' && wishlistData?.products && wishlistData?.products?.length > 0) { %>
+
+                    <div class="table-responsive">
+                        <table class="table wishlist-table">
+                            <thead>
+                            <tr>
+                                
+                                <th scope="col"><b>Product </b></th>
+                                <th scope="col"><b>Product Name</b></th>
+                                <th scope="col"><b>Price</b></th>
+                                <!-- <th scope="col">Description</th> -->
+                                <th scope="col"   id="action"  ><b>Action</b></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <% wishlistData.products.forEach((product)=> {%>
+
+                                <tr id="td1_<%= product.productId._id %>">
+                                
+                                    <td> <img src="/Image/<%= product.productId.image[0] %>"
+                                        style="height: 110px; width: 100px;" alt=""></td>
+                                    <td> <h6><b><%= product.productId.productName %></b></h6></td>
+                                    <td>
+                                        <% if(product.productId.offerPrice > 0) {%>
+
+                                            <div class="product__cart__item__text">
+                                           
+                                                <h5><b>₹<%= product.productId.offerPrice %>/-</b></h5>
+                                                <span style="color: rgb(220, 3, 3); "><del>₹<%= product.productId.Price %>/-</del></span>
+
+                                            </div>
+
+                                          <%} else  {%>
+
+                                            <div class="product__cart__item__text">
+                                                <h5><b>₹<%= product.productId.Price %>/-</b></h5>
+                                            </div>
+
+                                            <%}%>
+                                    </td>
+                                    <!-- <td>Lorem ipsum dolor sit amet.</td> -->
+                                    <td>
+                                        <a type="button" class="add-to-cart" id="add-cart" style="margin-bottom: 25px;" data-prod-id="<%= product.productId._id %>"><b>+Add To Cart</b></a><br>
+                                        <button class="btn btn-danger wishlist-action-btn removewish" data-product-id="<%= product.productId._id %>" >Remove</button>
+                              
+                                    </td>
+                                </tr>
+
+
+                                <%}) %>
+                            
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                    <% } else { %>
+                        <!-- Show a message when the cart is empty -->
+                        <p style="font-weight: 800; text-align: center; background-color: #e9ecef; padding: 10px; color: red;">Your wishlist is empty now....?</p>
+                        
+                        <div class="col-lg-6 col-md-6 col-sm-6c text-end">
+                            <div class="continue__btn ">
+                                <a href="/shop">Continue Shopping</a>
+                            </div>
+                        </div>
+                    <% } %>
+                </div>
+                <!-- Shopping Cart Section End -->
+
+
+                <!-- Footer Section Begin -->
+                <footer class="footer">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-6 col-sm-6">
+                                <div class="footer__about">
+                                    <div class="footer__logo">
+                                        <a href="#">
+                                            <h2 class="ShoeOne-foot">ShoeOne</h2>
+                                        </a>
+                                    </div>
+                                    <p>The customer is at the heart of our unique business model, which includes design.
+                                    </p>
+                                    <a href="#"><img src="/img/payment.png" alt=""></a>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 offset-lg-1 col-md-3 col-sm-6">
+                                <div class="footer__widget">
+                                    <h6>Shopping</h6>
+                                    <ul>
+                                        <li><a href="#">Clothing Store</a></li>
+                                        <li><a href="#">Trending Shoes</a></li>
+                                        <li><a href="#">Accessories</a></li>
+                                        <li><a href="#">Sale</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-2 col-md-3 col-sm-6">
+                                <div class="footer__widget">
+                                    <h6>Shopping</h6>
+                                    <ul>
+                                        <li><a href="#">Contact Us</a></li>
+                                        <li><a href="#">Payment Methods</a></li>
+                                        <li><a href="#">Delivary</a></li>
+                                        <li><a href="#">Return & Exchanges</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 offset-lg-1 col-md-6 col-sm-6">
+                                <div class="footer__widget">
+                                    <h6>NewLetter</h6>
+                                    <div class="footer__newslatter">
+                                        <p>Be the first to know about new arrivals, look books, sales & promos!</p>
+                                        <form action="#">
+                                            <input type="text" placeholder="Your email">
+                                            <button type="submit"><span class="icon_mail_alt"></span></button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 text-center">
+                                <div class="footer__copyright__text">
+                                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                                    <p>Copyright ©
+                                        <script>
+                                            document.write(new Date().getFullYear());
+                                        </script>2020
+                                        All rights reserved | This template is made with <i class="fa fa-heart-o"
+                                            aria-hidden="true"></i> by <a href="https://colorlib.com"
+                                            target="_blank">Colorlib</a>
+                                    </p>
+                                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+                <!-- Footer Section End -->
+
+
+
+
+                <!-- Js Plugins -->
+                <script src="/js/jquery-3.3.1.min.js"></script>
+                <script src="/js/bootstrap.min.js"></script>
+                <script src="/js/jquery.nice-select.min.js"></script>
+                <script src="/js/jquery.nicescroll.min.js"></script>
+                <script src="/js/jquery.magnific-popup.min.js"></script>
+                <script src="/js/jquery.countdown.min.js"></script>
+                <script src="/js/jquery.slicknav.js"></script>
+                <script src="/js/mixitup.min.js"></script>
+                <script src="/js/owl.carousel.min.js"></script>
+                <script src="/js/main.js"></script>
+
+                <script>
+                    // let stockQty
+                    document.addEventListener('DOMContentLoaded', () => {
+
+                        // delete product from cart
+                        document.querySelectorAll('.removewish').forEach((closeIcon) => {
+                            closeIcon.addEventListener('click', async (event) => {
+                                const productId = event.target.getAttribute('data-product-id');
+
+                                // Call a function to remove the product
+                                await removeProduct(productId);
+                            });
+                        });
+
+                        // Function to remove a product
+                        const removeProduct = async (productId) => {
+                            try {
+                                // Implement logic to remove the product from the server using an appropriate API endpoint
+                                const response = await fetch(`/removeProductFromWishlist/${productId}`, {
+                                    method: 'DELETE',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    },
+                                });
+
+                                if (response.ok) {
+                                    // Remove the product row from the UI
+                                    const productRow = document.getElementById(`td1_${productId}`);
+                                    if (productRow) {
+                                        productRow.remove();
+                                        // Reload the page to reflect the changes instantly
+                                        location.reload();
+                                    } else {
+                                        console.error('Product row not found in the DOM');
+                                    }
+                                } else {
+                                    console.error('Failed to remove product from the server');
+                                }
+                            } catch (error) {
+                                console.error('Error removing product:', error);
+                            }
+                        };
+                    });
+
+
+// --------------------------------------add to cart-----------------------
+document.querySelectorAll('.add-to-cart').forEach((btn) => {
+            btn.addEventListener('click', addToCartFn);
+
+            async function addToCartFn() {
+                let prodID = btn.getAttribute('data-prod-id');
+
+                try {
+                    const response = await fetch('/addToCart', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ prodID })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.message) {
+                        // Handle success
+                        console.log("Product added to cart");
+                        // alert(data.message)
+                        Swal.fire({
+                            position: "center",
+                            icon: "success",
+                            title: data.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        setTimeout(function () {
+                            location.reload()
+                        }, 800);
+
+                    } else {
+                        Swal.fire({
+                            position: "center",
+                            icon: "info",
+                            title: data.msg,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                } catch (error) {
+                    // Handle error
+                    console.error(error);
+                }
+            }
+        });
+
+
+
+
+
+                </script>
+
+
+
+
+                <%- include('../layouts/footer.ejs') %>

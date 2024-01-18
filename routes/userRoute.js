@@ -7,6 +7,7 @@ const user_route=express();
 const userController = require('../controllers/userController')
 const cartController = require('../controllers/cartController')
 const orderController = require('../controllers/orderController')
+const wishlistController = require('../controllers/wishlistController')
 const auth=require('../middleware/auth')
 
 // user_route.set('views', '/views')
@@ -59,11 +60,12 @@ user_route.post('/deleteAddress',userController.addressDelete)
 user_route.get('/editAddress',auth.isBlocked,userController.loadEditAddress)
 user_route.post('/updateAddress',userController.editSaveAddress)
 
+user_route.get('/your-wallet',auth.isBlocked,auth.isLogin,orderController.walletLoad) // wallet
+
 // checkout page
 user_route.get('/checkout',auth.isBlocked,auth.isLogin,userController.loadCheckout)
 user_route.post('/placeOrder',auth.isLogin,orderController.orderPlace)
 user_route.post('/verifyOnlinePayment',orderController.verifyPayment)
-
 user_route.get('/successOrder',auth.isBlocked,auth.isLogin,orderController.loadSuccessPlace)
 
 // myorder
@@ -73,8 +75,10 @@ user_route.post('/cancelOrder',orderController.cancelOrder)
 user_route.post('/returnOrder',orderController.returnOrder)
 user_route.post('/invoiceDownloading',orderController.downloadInvoice)
 
+// wishlist
+user_route.get('/wishlist',auth.isLogin,wishlistController.loadWishlist)
+user_route.post('/addwishlist',wishlistController.createWishlist)
+user_route.delete('/removeProductFromWishlist/:productId',wishlistController.deleteProductFromWishlist)
 
-// wallet
-user_route.get('/your-wallet',auth.isBlocked,auth.isLogin,orderController.walletLoad)
 
 module.exports= user_route ;

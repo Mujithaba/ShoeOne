@@ -5,6 +5,7 @@ const Address = require('../models/addressModel')
 const Cart = require('../models/cartModel')
 const Order = require('../models/orderModel')
 const Offer = require('../models/offerModel')
+const Wishlist = require('../models/wishlistModel')
 const Razorpay = require('razorpay')
 const easyinvoice = require('easyinvoice')
 
@@ -1043,8 +1044,7 @@ const downloadInvoice = async (req, res) => {
 
 
 
-
-
+// wallet
 const walletLoad = async (req, res) => {
     try {
 
@@ -1063,6 +1063,9 @@ const walletLoad = async (req, res) => {
     }
 }
 
+
+
+
 module.exports = {
 
     orderPlace,
@@ -1073,6 +1076,7 @@ module.exports = {
     cancelOrder,
     returnOrder,
     downloadInvoice,
-    walletLoad
+    walletLoad, //wallet load
+    
 
 }

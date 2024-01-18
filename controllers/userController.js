@@ -12,8 +12,8 @@ const sendMailForgot = require('../services/reset-password')
 const { env } = require('process');
 const randomstring = require('randomstring');
 const productModel = require('../models/productModel');
-const Coupon =  require('../models/couponModel')
-const Offer = require ('../models/offerModel')
+const Coupon = require('../models/couponModel')
+const Offer = require('../models/offerModel')
 
 
 
@@ -41,14 +41,29 @@ const securePassword = async (password) => {
 }
 
 
+//for generating referral Code
+function generateReferralCode(length = 8) {
+    const characters = 'abcdefghijklmnopqrstuvwxyz0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let referralCode = '';
+
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length);
+        referralCode += characters.charAt(randomIndex);
+    }
+    return referralCode;
+}
+
 
 // user registeration 
 const loadRegister = async (req, res) => {
 
     try {
 
+        const refcodeQuery = req.query.refCode
+        console.log(refcodeQuery, "Liiii");
 
-        res.render('user/register')
+    res.render('user/register')
+        
 
     } catch (error) {
         console.log(error.message);
@@ -59,6 +74,9 @@ const loadRegister = async (req, res) => {
 const insertUser = async (req, res) => {
 
     try {
+
+
+
         const spassword = await securePassword(req.body.password)
 
         const emailExist = await User.findOne({ email: req.body.email })
@@ -67,6 +85,8 @@ const insertUser = async (req, res) => {
             res.render('user/register', { message: "Email already exist ,Try another email..." })
         } else {
 
+            const referralCode = await generateReferralCode()
+
             const user = new User({
 
                 firstName: req.body.Firstname,
@@ -74,6 +94,7 @@ const insertUser = async (req, res) => {
                 email: req.body.email,
                 mobile: req.body.mobile,
                 password: spassword,
+                refCode: referralCode,
                 is_verified: 0,
                 is_admin: 0,
                 is_blocked: 0
@@ -85,8 +106,9 @@ const insertUser = async (req, res) => {
 
             if (userData) {
                 const otp = generateOTP();
-
+                req.session.refCode = userData.refCode
                 console.log(otp);
+                console.log(req.session.refCode, "ref");
 
                 req.session.otp = otp;
                 req.session.email = req.body.email;
@@ -125,13 +147,38 @@ const verifyOTP = async (req, res) => {
 
         const storedOTP = req.session.otp;
 
+        const refcodeQuery = req.session.refCode
+        console.log(refcodeQuery, "insert");
+        const userRefer = await User.findOne({ refCode: refcodeQuery })
+        console.log(userRefer, "...............safe");
+
         if (storedOTP && enteredOTP === storedOTP) {
 
             const user = await User.findOne({ email: req.session.email });
             //  console.log(user);
             user.is_verified = 1;
+            user.refPersonEmail = userRefer.email;
 
+            // the referal used registered user update
+            user.wallet.balance += 100
+            const walHistory = {
+
+                type: 'Credit',
+                amount: 100,
+                reason: ' Referral Bonus got'
+            }
+            user.wallet.history.push(walHistory)
             await user.save();
+
+            // refered person wallet update
+            userRefer.wallet.balance += 200;
+            const walitemHistory = {
+                type: 'Credit',
+                amount: 200,
+                reason: ' Referral Bonus got'
+            }
+            userRefer.wallet.history.push(walitemHistory)
+            await userRefer.save()
 
             delete req.session.otp;
 
@@ -534,6 +581,8 @@ const loadProfile = async (req, res) => {
         const cartItemCount = await getCartItemCount(user_id);
 
 
+
+
         res.render('user/profile', { userData, addresses: addressData, cartItemCount })
 
     } catch (error) {
@@ -569,7 +618,7 @@ const changepassword = async (req, res) => {
 
     } catch (error) {
         console.log(error.message);
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).json({ error: 'Internal server error' });
     }
 };
 
@@ -687,7 +736,7 @@ const loadCheckout = async (req, res) => {
         // Get the cart count
         const cartItemCount = await getCartItemCount(user_id);
 
-        const userWallet = await User.findById({_id: user_id})
+        const userWallet = await User.findById({ _id: user_id })
         const wallet = userWallet.wallet.balance
 
         const addressData = await Address.find({ userId: user_id });
@@ -724,15 +773,11 @@ const loadCheckout = async (req, res) => {
         }
 
         // If you reach here, the stock is sufficient for all products
-        res.render('user/checkout', { addresses: addressData, cartData, cartTotal, cartItemCount, couponData,wallet });
+        res.render('user/checkout', { addresses: addressData, cartData, cartTotal, cartItemCount, couponData, wallet });
     } catch (error) {
         console.log(error.message);
     }
 };
-
-
-
-
 
 
 
@@ -745,7 +790,7 @@ module.exports = {
     logout,
     loadIsBlocked,
     resend,
-    // forgot password
+    //-------- forgot password
     forgetLoad,
     emailverify,
     verifyOTPForgot,
@@ -759,18 +804,13 @@ module.exports = {
     verifyOTP,
     loadShop,
     productDetailed,
-    // profile
+    //---------- profile -------------
     loadProfile,
     changepassword,
     addAddressLoad,
     addressDelete,
-    // edit address
     loadEditAddress,
     editSaveAddress,
-
-    loadCheckout
-
-
-
+    loadCheckout,
 
 }

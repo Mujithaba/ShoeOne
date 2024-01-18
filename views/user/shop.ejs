@@ -354,79 +354,90 @@
 
                     <div class="row">
                         <% fullProducts.forEach((product, index)=> { %>
-                            <% if (product.is_listed===true) { %>
+                            <% if (product.is_listed===true ) { %>
                                 <input type="hidden" name="id" value="<%= fullProducts._id %>">
                                 <div class="col-lg-4 col-md-6 col-sm-6 ">
                                     <div class="product__item  ">
 
 
-                                        <% if (product.offerPrice > 0) { %>
+                                        <% if (product.offerPrice> 0) { %>
                                             <% for(let offers of product.offerInfo) { %>
 
-                                            <div class="product_item_pic set-bg relative-position">
-                                                <a href="/productDetail?id=<%=product._id%>" class="product-link">
-                                                    <img class="product-item-pic set-bg"
-                                                        src="/Image/<%= product.image[0] %>" alt=""
-                                                        style="width: 200px; height: 200px; border-radius: 5px;">
-                                                    <span class="label discount-label"><%= offers.discountOffer %>%</span>
-                                                </a>
-                                            </div>
-                                            <% } %>
-
-
-
-                                            <% } else{%>
-                                                <div class="product_item_pic set-bg ">
-                                                    <a href="/productDetail?id=<%=product._id%>">
-                                                        <img class="product_item_pic set-bg "
+                                                <div class="product_item_pic set-bg relative-position">
+                                                    <a href="/productDetail?id=<%=product._id%>" class="product-link">
+                                                        <img class="product-item-pic set-bg"
                                                             src="/Image/<%= product.image[0] %>" alt=""
-                                                            style="width: 200px; height: 200px; border-radius: 5px;"></a>
+                                                            style="width: 200px; height: 200px; border-radius: 5px;">
+                                                        <span class="label discount-label">
+                                                            <%= offers.discountOffer %>%
+                                                        </span>
+                                                    </a>
                                                 </div>
-
-
                                                 <% } %>
 
 
-                                                    <div class="product__item__text">
-                                                        <h6>&nbsp;&nbsp;&nbsp;
-                                                            <%= product.productName %>
-                                                        </h6>
 
-                                                        <% if(typeof product.stock !=="undefined" && product.stock>0)
-                                                            {%>
-                                                            <a type="button" class="btn add-cart"
-                                                                data-prod-id="<%= product._id %>">+
-                                                                Add To Cart</a>
-                                                            <% } else { %>
-                                                                <a class=" add-cart">
-                                                                    &nbsp;&nbsp; &nbsp;&nbsp; No stock </a>
-                                                                <% } %>
+                                                    <% } else{%>
+                                                        <div class="product_item_pic set-bg ">
+                                                            <a href="/productDetail?id=<%=product._id%>">
+                                                                <img class="product_item_pic set-bg "
+                                                                    src="/Image/<%= product.image[0] %>" alt=""
+                                                                    style="width: 200px; height: 200px; border-radius: 5px;"></a>
+                                                        </div>
 
-                                                                    <div class="rating">
-                                                                        <% for (let i=0; i < product.ratings.star; i++)
-                                                                            { %>
-                                                                            <i class="fa fa-star"></i>
-                                                                            <% } %>
-                                                                                <% for (let i=product.ratings.star; i <
-                                                                                    5; i++) { %>
-                                                                                    <i class="fa fa-star-o"></i>
-                                                                                    <% } %>
-                                                                    </div><br>
 
-                                                                    <% if (product.offerPrice > 0) { %>
-                                                                        <h5>&nbsp;&nbsp;&nbsp; ₹<%= product.offerPrice %>/-
-                                                                            <span style="color: rgb(220, 3, 3); margin-left: 80px;"><del>₹<%= product.Price %>/-</del></span>
-                                                                    </h5>
-                                                                        <% } else{%>
-                                                                            <h5>&nbsp;&nbsp;&nbsp; ₹<%= product.Price %>/-
-                                                                        </h5>
+                                                        <% } %>
+
+
+                                                            <div class="product__item__text">
+                                                                <h6>&nbsp;&nbsp;&nbsp;
+                                                                    <%= product.productName %>
+                                                                </h6>
+
+                                                                <% if(typeof product.stock !=="undefined" &&
+                                                                    product.stock>0)
+                                                                    {%>
+                                                                    <a type="button" class="btn add-cart"
+                                                                        data-prod-id="<%= product._id %>">+
+                                                                        Add To Cart</a>
+                                                                    <% } else { %>
+                                                                        <a class=" add-cart">
+                                                                            &nbsp;&nbsp; &nbsp;&nbsp; No stock </a>
                                                                         <% } %>
-                                                                   
 
-                                                    </div>
-                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href=""><img
-                                                            src="/img/icon/heart.png" alt=""></a>
-                                                    <!-- <div><a href=""> <i class="fa-regular fa-heart"></i></a></div> -->
+                                                                            <div class="rating">
+                                                                                <% for (let i=0; i <
+                                                                                    product.ratings.star; i++) { %>
+                                                                                    <i class="fa fa-star"></i>
+                                                                                    <% } %>
+                                                                                        <% for (let
+                                                                                            i=product.ratings.star; i <
+                                                                                            5; i++) { %>
+                                                                                            <i class="fa fa-star-o"></i>
+                                                                                            <% } %>
+                                                                            </div><br>
+
+                                                                            <% if (product.offerPrice> 0) { %>
+                                                                                <h5>&nbsp;&nbsp;&nbsp; ₹<%=
+                                                                                        product.offerPrice %>/-
+                                                                                        <span
+                                                                                            style="color: rgb(220, 3, 3); margin-left: 80px;"><del>₹
+                                                                                                <%= product.Price %>
+                                                                                                    /-</del></span>
+                                                                                </h5>
+                                                                                <% } else{%>
+                                                                                    <h5>&nbsp;&nbsp;&nbsp; ₹<%=
+                                                                                            product.Price %>/-
+                                                                                    </h5>
+                                                                                    <% } %>
+
+
+                                                            </div>
+                                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a
+                                                                type="button" class=" add-wishlist"
+                                                                data-prod-id="<%= product._id %>"><img
+                                                                    src="/img/icon/heart.png" alt=""></a>
+                                                            <!-- <div><a href=""> <i class="fa-regular fa-heart"></i></a></div> -->
                                     </div>
 
                                 </div>
@@ -586,6 +597,59 @@
                     if (data.message) {
                         // Handle success
                         console.log("Product added to cart");
+                        // alert(data.message)
+                        Swal.fire({
+                            position: "center",
+                            icon: "success",
+                            title: data.message,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                        setTimeout(function () {
+                            location.reload()
+                        }, 800);
+
+                    } else {
+                        Swal.fire({
+                            position: "center",
+                            icon: "info",
+                            title: data.msg,
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    }
+                } catch (error) {
+                    // Handle error
+                    console.error(error);
+                }
+            }
+        });
+
+
+
+
+        // ----------------wishlist-------------------------
+
+        document.querySelectorAll('.add-wishlist').forEach((btn) => {
+            btn.addEventListener('click', addToCartFn);
+
+            async function addToCartFn() {
+                let prodID = btn.getAttribute('data-prod-id');
+
+                try {
+                    const response = await fetch('/addwishlist', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ prodID })
+                    });
+
+                    const data = await response.json();
+
+                    if (data.message) {
+                        // Handle success
+                        console.log("Product added to wishlist");
                         // alert(data.message)
                         Swal.fire({
                             position: "center",

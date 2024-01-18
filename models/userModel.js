@@ -50,6 +50,13 @@ const userSchema = mongoose.Schema({
             }
         ],
     },
+    refCode: {
+        type: String,
+        required: true
+    },
+    refPersonEmail: {
+        type: String
+    },
 
     is_admin: {
         type: Number,
