@@ -148,12 +148,12 @@
                 <div class="col-lg-6 col-md-6">
                     <nav class="header__menu mobile-menu">
                         <ul>
-                            <li><a href="./home">Home</a></li>
-                            <li><a href="./shop">Shop</a></li>
-                            <li><a href="./about">About Us</a></li>
+                            <li><a href="/home">Home</a></li>
+                            <li><a href="/shop">Shop</a></li>
+                            <li><a href="/about">About Us</a></li>
 
 
-                            <li><a href="./contact">Contacts</a></li>
+                            <li><a href="/contact">Contacts</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -234,13 +234,13 @@
                                 
                                     <td> <img src="/Image/<%= product.productId.image[0] %>"
                                         style="height: 110px; width: 100px;" alt=""></td>
-                                    <td> <h6><b><%= product.productId.productName %></b></h6></td>
+                                    <td > <h6 style="margin-top: 55px;"><b><%= product.productId.productName %></b></h6></td>
                                     <td>
                                         <% if(product.productId.offerPrice > 0) {%>
 
                                             <div class="product__cart__item__text">
                                            
-                                                <h5><b>₹<%= product.productId.offerPrice %>/-</b></h5>
+                                                <h5 style="margin-top: 55px;"><b>₹<%= product.productId.offerPrice %>/-</b></h5>
                                                 <span style="color: rgb(220, 3, 3); "><del>₹<%= product.productId.Price %>/-</del></span>
 
                                             </div>
@@ -248,7 +248,7 @@
                                           <%} else  {%>
 
                                             <div class="product__cart__item__text">
-                                                <h5><b>₹<%= product.productId.Price %>/-</b></h5>
+                                                <h5 style="margin-top: 55px;"><b>₹<%= product.productId.Price %>/-</b></h5>
                                             </div>
 
                                             <%}%>

@@ -8,6 +8,7 @@ const userController = require('../controllers/userController')
 const cartController = require('../controllers/cartController')
 const orderController = require('../controllers/orderController')
 const wishlistController = require('../controllers/wishlistController')
+const infoPageController = require('../controllers/infoPageContoller')
 const auth=require('../middleware/auth')
 
 // user_route.set('views', '/views')
@@ -79,6 +80,10 @@ user_route.post('/invoiceDownloading',orderController.downloadInvoice)
 user_route.get('/wishlist',auth.isLogin,wishlistController.loadWishlist)
 user_route.post('/addwishlist',wishlistController.createWishlist)
 user_route.delete('/removeProductFromWishlist/:productId',wishlistController.deleteProductFromWishlist)
+
+// contact and about info
+user_route.get('/about',auth.isBlocked,auth.isLogin,infoPageController.about)
+user_route.get('/contact',auth.isBlocked,auth.isLogin,infoPageController.contact)
 
 
 module.exports= user_route ;

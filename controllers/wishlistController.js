@@ -88,7 +88,7 @@ const createWishlist = async(req, res)=>{
         }
         
     } catch (error) {
-        console.log(message.error);
+        console.log(error);
     }
 }
 

@@ -61,6 +61,11 @@ const loadRegister = async (req, res) => {
 
         const refcodeQuery = req.query.refCode
         console.log(refcodeQuery, "Liiii");
+        
+        if(refcodeQuery){
+            req.session.refCode = refcodeQuery
+            console.log(refcodeQuery, "Liiii2222222");
+        }
 
     res.render('user/register')
         
@@ -75,8 +80,7 @@ const insertUser = async (req, res) => {
 
     try {
 
-
-
+        
         const spassword = await securePassword(req.body.password)
 
         const emailExist = await User.findOne({ email: req.body.email })
@@ -85,6 +89,7 @@ const insertUser = async (req, res) => {
             res.render('user/register', { message: "Email already exist ,Try another email..." })
         } else {
 
+            
             const referralCode = await generateReferralCode()
 
             const user = new User({
@@ -106,9 +111,7 @@ const insertUser = async (req, res) => {
 
             if (userData) {
                 const otp = generateOTP();
-                req.session.refCode = userData.refCode
                 console.log(otp);
-                console.log(req.session.refCode, "ref");
 
                 req.session.otp = otp;
                 req.session.email = req.body.email;
@@ -147,29 +150,32 @@ const verifyOTP = async (req, res) => {
 
         const storedOTP = req.session.otp;
 
+        let userRefer =null
+        if (req.session.refCode) {
+              // find the refered user info
         const refcodeQuery = req.session.refCode
         console.log(refcodeQuery, "insert");
-        const userRefer = await User.findOne({ refCode: refcodeQuery })
-        console.log(userRefer, "...............safe");
+         userRefer = await User.findOne({ refCode: refcodeQuery })
+        console.log(userRefer, "...............find safe");
+        }
+      
 
         if (storedOTP && enteredOTP === storedOTP) {
 
             const user = await User.findOne({ email: req.session.email });
             //  console.log(user);
             user.is_verified = 1;
-            user.refPersonEmail = userRefer.email;
+           
 
-            // the referal used registered user update
+            if (userRefer) {
+                // the referal used registered user update
             user.wallet.balance += 100
             const walHistory = {
-
                 type: 'Credit',
                 amount: 100,
                 reason: ' Referral Bonus got'
             }
             user.wallet.history.push(walHistory)
-            await user.save();
-
             // refered person wallet update
             userRefer.wallet.balance += 200;
             const walitemHistory = {
@@ -180,7 +186,13 @@ const verifyOTP = async (req, res) => {
             userRefer.wallet.history.push(walitemHistory)
             await userRefer.save()
 
+            delete req.session.refCode;
+            }
+            
+            await user.save();
             delete req.session.otp;
+           
+
 
             res.render('user/login', { message: "Signup is successfull." });
         } else {
