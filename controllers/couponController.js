@@ -2,8 +2,8 @@
 const Coupon = require('../models/couponModel')
 
 
-
-// load coupon
+  
+// load coupon 
 const loadCoupon = async (req, res) => {
     try {
 
