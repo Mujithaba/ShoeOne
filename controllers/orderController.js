@@ -133,7 +133,9 @@ const orderPlace = async (req, res) => {
                 const order = await orderDetails.save()
                 console.log("orders" + order);
                 if (order) {
-                    const deleteCart = await Cart.findOneAndDelete({ userId: user_id })
+                    const result = await Cart.updateOne({ userId: user_id }, { $set: { products: [] } });
+
+                    // const deleteCart = await Cart.findOneAndDelete({ userId: user_id })
                     await StockAdjusting(cartData.products)
                 } else {
                     console.log("Not deleted the product");
@@ -193,7 +195,8 @@ const orderPlace = async (req, res) => {
 
                     console.log("orders" + order);
                     if (order) {
-                        const deleteCart = await Cart.findOneAndDelete({ userId: user_id })
+                        // const deleteCart = await Cart.findOneAndDelete({ userId: user_id })
+                        const result = await Cart.updateOne({ userId: user_id }, { $set: { products: [] } });
                         
                         await StockAdjusting(cartData.products)
 
@@ -267,7 +270,8 @@ const orderPlace = async (req, res) => {
                 console.log("orders" + order);
 
                 if (order) {
-                    const deleteCart = await Cart.findOneAndDelete({ userId: user_id })
+                    // const deleteCart = await Cart.findOneAndDelete({ userId: user_id })
+                    const result = await Cart.updateOne({ userId: user_id }, { $set: { products: [] } });
                     await StockAdjusting(cartData.products)
                 } else {
                     console.log("Not deleted the product");
@@ -326,7 +330,8 @@ const orderPlace = async (req, res) => {
 
 
                     if (order) {
-                        const deleteCart = await Cart.findOneAndDelete({ userId: user_id })
+                        // const deleteCart = await Cart.findOneAndDelete({ userId: user_id })
+                        const result = await Cart.updateOne({ userId: user_id }, { $set: { products: [] } });
                         await StockAdjusting(cartData.products)
 
 
@@ -453,7 +458,8 @@ const verifyPayment = async (req, res) => {
 
                 const order = await orderDetails.save()
                 if (order) {
-                    const deleteCart = await Cart.findOneAndDelete({ userId: user_id })
+                    // const deleteCart = await Cart.findOneAndDelete({ userId: user_id })
+                    const result = await Cart.updateOne({ userId: user_id }, { $set: { products: [] } });
                     await StockAdjusting(cartData.products)
                 } else {
                     console.log("Not deleted the product");
@@ -490,7 +496,8 @@ const verifyPayment = async (req, res) => {
 
                 const order = await orderDetails.save()
                 if (order) {
-                    const deleteCart = await Cart.findOneAndDelete({ userId: user_id })
+                    // const deleteCart = await Cart.findOneAndDelete({ userId: user_id })
+                    const result = await Cart.updateOne({ userId: user_id }, { $set: { products: [] } });
                     await StockAdjusting(cartData.products)
                 } else {
                     console.log("Not deleted the product");
