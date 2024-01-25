@@ -458,8 +458,8 @@ const sendDashboardData = async (req, res) => {
 
         if (time === "month") {
             timeFrame = new Date(new Date().getFullYear(), 0, 1);
-
-            const pipeline = [
+        
+            pipeline = [
                 {
                     $match: {
                         orderDate: {
@@ -497,7 +497,6 @@ const sendDashboardData = async (req, res) => {
                     $sort: { _id: 1 },
                 },
             ];
-    
         }
 
 
