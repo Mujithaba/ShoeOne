@@ -458,7 +458,7 @@ const sendDashboardData = async (req, res) => {
 
         if (time === "month") {
             timeFrame = new Date(new Date().getFullYear(), 0, 1);
-        
+
             pipeline = [
                 {
                     $match: {
@@ -488,7 +488,7 @@ const sendDashboardData = async (req, res) => {
                                     },
                                 },
                             },
-                        }, // Format month name
+                        },
                         totalAmount: 1,
                         orderCount: 1,
                     },
