@@ -309,12 +309,6 @@
                                                     <%= address.state %>
                                                 </p>
 
-
-
-                                                <!-- <button id="dlt" 
-                                                    class="delete-button ">Delete</button><br> -->
-
-
                                                 <input type="radio" id="address1" data-address-id="<%= address._id %>"
                                                     class="forAddress" name="select" value="select">
                                                 <label for="address1">Select Address</label>
@@ -325,10 +319,7 @@
                             </div>
 
 
-                            <!-- added address showing end -->
-                            <!-- 
-                            <h6 class="coupon__code"><span class="icon_tag_alt"></span> Have a coupon? <a href="#">Click
-                                    here</a> to enter your code</h6> -->
+
                             <br>
                             <h6 class="checkout__title"><u>Address Details:</u></h6>
                             <!-- add address begin -->
@@ -983,18 +974,18 @@
                     console.log("wallet is recoreded");
 
                     window.location.href = "/successOrder";
-                }else if (data.walletfail) {
+                } else if (data.walletfail) {
 
                     Swal.fire({
-                            position: "center",
-                            icon: "error",
-                            title: data.walletfail,
-                            showConfirmButton: false,
-                            timer: 2000
-                        });
+                        position: "center",
+                        icon: "error",
+                        title: data.walletfail,
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
 
-                    
-                }else {
+
+                } else {
                     Swal.fire("Something went wrong online payment or in COD delivery!");
                 }
 

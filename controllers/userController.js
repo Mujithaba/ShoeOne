@@ -452,8 +452,15 @@ const getCartItemCount = async (userId) => {
 const openingHome = async (req, res) => {
 
     try {
+        let productsQuery = { is_listed: true };
 
-        res.render('user/home')
+      
+
+        const fullProducts = await Product.find(productsQuery)
+      
+       
+
+        res.render('user/home',{fullProducts})
 
     } catch (error) {
         console.log(error.message);
@@ -466,15 +473,19 @@ const loadHome = async (req, res) => {
     try {
         let userData = null;
         const user_id = req.session.user_id;
+        let productsQuery = { is_listed: true };
 
+        
         if (user_id) {
             userData = await User.findById({ _id: user_id });
+
         }
+        const fullProducts = await Product.find(productsQuery)
 
         // Get the cart count
         const cartItemCount = await getCartItemCount(user_id);
 
-        res.render('user/home', { userData, cartItemCount });
+        res.render('user/home', { userData, cartItemCount ,fullProducts});
 
     } catch (error) {
         console.log(error.message);

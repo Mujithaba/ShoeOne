@@ -48,7 +48,7 @@ const loadCart = async (req, res) => {
            }
        });
 
-       res.render('user/cart', { cart: cartData, cartTotal, cartItemCount });
+       res.render('user/cart', { cart: cartData, cartTotal, cartItemCount,userid:user_id });
 
     
     } catch (error) {

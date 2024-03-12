@@ -414,12 +414,7 @@
                         <a class="list-group-item list-group-item-action" data-toggle="list" href="#add-address">
                             <i class="fas fa-map-marker-alt"></i> Add Address
                         </a>
-                        <!-- <a class="list-group-item list-group-item-action" data-toggle="list" href="#manage-address">
-                            <i class="fas fa-address-book"></i> Manage Address
-                        </a> -->
-                        <!-- <a class="list-group-item list-group-item-action" data-toggle="list" href="/my-Order">
-                            <i class="fas fa-shopping-cart"></i> Order
-                        </a> -->
+                       
                         <a class="list-group-item list-group-item-action logout" href="/logout">
                             <i class="fas fa-sign-out-alt"></i> Logout
                         </a>
@@ -573,44 +568,6 @@
                         </div>
                         <!-- add address end -->
 
-                        <!-- <div class="tab-pane fade" id="manage-address">
-                            <div class="card-body pb-2">
-                                <div id="addressContainer" class="body-address">
-                                    <h3 style="text-align: center; color: #333;">Address Details</h3>
-                                    <div id="addressDetails">
-                                        <% addresses.forEach(function(address, index) { %>
-                                            <div class="addressItem">
-                                                <h5><u>Address <%= index + 1 %></u></h5>
-                                                <p>
-                                                    <%= address.fullname %>
-                                                </p>
-                                                <p>
-                                                    <%= address.mobile %>
-                                                </p>
-                                                <p>
-                                                    <%= address.address %>
-                                                </p>
-                                                <p>
-                                                    <%= address.pincode %>
-                                                </p>
-                                                <p>
-                                                    <%= address.city %>
-                                                </p>
-                                                <p>
-                                                    <%= address.state %>
-                                                </p>
-                                                
-                                                <a href="/edit-address" class="btn btn-info edit-addrs" data-toggle="modal"
-                                                    data-target="#orderDetailsModal" data-addrs-id=" <%= address._id %>">Edit</a>
-
-                                                <button type="button" data-address-id="<%= address._id %>"
-                                                    class="delete-button">Delete</button>
-                                            </div>
-                                            <% }); %>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
 
 
                     </div>
