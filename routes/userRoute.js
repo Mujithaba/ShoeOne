@@ -44,7 +44,8 @@ user_route.get('/',userController.openingHome)
 user_route.get('/home',auth.isBlocked,auth.isLogin,userController.loadHome);  
 
 // route shop
-user_route.get('/shop',auth.isBlocked,auth.isLogin,userController.loadShop)
+// user_route.get('/shop',auth.isBlocked,auth.isLogin,userController.loadShop)
+user_route.get('/shop',userController.loadShop)
 user_route.get('/productDetail',auth.isBlocked,auth.isLogin,userController.productDetailed)
 
 // cart
@@ -54,7 +55,9 @@ user_route.post('/updateQuantity',cartController.updateQuantity)
 user_route.delete('/removeProduct/:productId',cartController.deleteProduct)
 
 // user profile
-user_route.get('/profile',auth.isBlocked,auth.isLogin,userController.loadProfile)
+// user_route.get('/profile',auth.isBlocked,auth.isLogin,userController.loadProfile)
+user_route.get('/profile',auth.isLogin,userController.loadProfile)
+
 user_route.post('/passwordChange',userController.changepassword)
 user_route.post('/addressAdd',userController.addAddressLoad)
 user_route.post('/deleteAddress',userController.addressDelete)
