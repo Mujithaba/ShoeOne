@@ -1,7 +1,7 @@
 <%- include('../layouts/header.ejs') %>
 
 
-<style>
+<!-- <style>
 
     
 
@@ -60,11 +60,168 @@
         border: none;
         cursor: pointer;
     }
-    </style>
+    </style> -->
 
 
 
-
+    <style>
+        #prodCorou {
+            margin: 60px auto;
+            max-width: 1200px;
+            padding: 0 20px;
+        }
+        
+        .product-carousel {
+            position: relative;
+            padding: 20px 0;
+        }
+        
+        .product__item {
+            position: relative;
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin: 10px;
+        }
+        
+        .product__item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .product_item_pic {
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 15px;
+        }
+        
+        .product_item_pic img {
+            transition: transform 0.3s ease;
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+        
+        .product_item_pic:hover img {
+            transform: scale(1.05);
+        }
+        
+        .product__item__text {
+            text-align: center;
+        }
+        
+        .product__item__text h6 {
+            font-size: 16px;
+            margin: 10px 0;
+            color: #333;
+            font-weight: 600;
+        }
+        
+        .carousel-icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .owl-prev, .owl-next {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #333;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+        
+        .owl-prev:hover, .owl-next:hover {
+            background: #000;
+        }
+        
+        .rating {
+            color: #ffd700;
+            margin: 10px 0;
+        }
+        
+        .discount-label {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #e80303;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            z-index: 1;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+        
+        .add-cart {
+            display: inline-block;
+            padding: 8px 20px;
+            background: #333;
+            color: white;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: background 0.3s ease;
+            margin: 10px 0;
+        }
+        
+        .add-cart:hover {
+            background: #000;
+        }
+        
+        .add-wishlist {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: white;
+            padding: 8px;
+            border-radius: 50%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .add-wishlist:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            #prodCorou {
+                margin: 30px auto;
+                padding: 0 10px;
+            }
+            
+            .product__item {
+                margin: 5px;
+            }
+            
+            .product_item_pic img {
+                height: 200px;
+            }
+        }
+        </style>
 
     <!-- Page Preloder -->
     <!-- <div id="preloder">
@@ -461,7 +618,7 @@
 
 
 
- <script>
+ <!-- <script>
     // Your Owl Carousel initialization script here
     $(document).ready(function(){
         $(".product-carousel").owlCarousel({
@@ -490,8 +647,44 @@
             $(".product-carousel").trigger('next.owl.carousel');
         });
     });
-</script>
-
+</script> -->
+<script>
+    $(document).ready(function(){
+        $(".product-carousel").owlCarousel({
+            items: 3,
+            loop: true,
+            margin: 20,
+            nav: false,
+            dots: false,
+            autoplay: true,
+            autoplayTimeout: 5000,
+            autoplayHoverPause: true,
+            responsive: {
+                0: {
+                    items: 1
+                },
+                600: {
+                    items: 2
+                },
+                1000: {
+                    items: 3
+                }
+            },
+            onInitialized: function() {
+                // Add smooth scrolling effect
+                $(".owl-stage").css("transition", "all 0.5s ease");
+            }
+        });
+    
+        $(".owl-prev").click(function(){
+            $(".product-carousel").trigger('prev.owl.carousel');
+        });
+        
+        $(".owl-next").click(function(){
+            $(".product-carousel").trigger('next.owl.carousel');
+        });
+    });
+    </script>
 <script>
     document.querySelectorAll('.add-cart').forEach((btn) => {
         btn.addEventListener('click', addToCartFn);
