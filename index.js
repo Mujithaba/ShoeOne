@@ -10,6 +10,7 @@ const app = express();
 
 // nocache
 const nocache = require("nocache");
+const PORT = process.env.PORT;
 app.use(nocache());
 
 // Set up MongoDB connection first
@@ -54,7 +55,7 @@ app.get('*', function (req, res) {
     res.render('./user/error');
 });
 
-app.listen(port, () => {
+app.listen(PORT, () => {
     console.log(`Server running at \x1b[35mhttp://localhost:3000/\x1b[0m`);
 });
 
