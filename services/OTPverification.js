@@ -1,32 +1,26 @@
 const nodemailer = require('nodemailer');
-
 const UserEmail = process.env.USER_EMAIL;
 const EmailPassword = process.env.PASSWORD_EMAIL;
 
 async function sendMail(otp, useremail, name) {
-    // Create transporter with more specific Gmail configuration
     const transporter = nodemailer.createTransport({
-        host: 'gmail',
+        host: 'smtp.gmail.com',  // Changed from 'gmail' to 'smtp.gmail.com'
         port: 465,
-        secure: true, // use SSL
+        secure: true,
         auth: {
-            user: process.env.USER_EMAIL,
-            pass: process.env.PASSWORD_EMAIL// This should be an App Password, not regular password
+            user: UserEmail,
+            pass: EmailPassword
         }
     });
 
-    // Email content with HTML formatting for better presentation
     const mailOption = {
-        from: `"ShoeOne" <${process.env.PASSWORD_EMAIL}>`,
+        from: `"ShoeOne" <${UserEmail}>`,  // Changed from PASSWORD_EMAIL to UserEmail
         to: useremail,
         subject: "Account Verification for ShoeOne",
         text: `Dear ${name},
-
         To verify your ShoeOne account, use OTP: ${otp}
-
         Thank you,
         ShoeOne Team`,
-        // Adding HTML version for better formatting
         html: `
             <div style="font-family: Arial, sans-serif; padding: 20px;">
                 <h2>Account Verification</h2>
@@ -48,12 +42,70 @@ async function sendMail(otp, useremail, name) {
         return true;
     } catch (error) {
         console.error("Email sending failed:", error.message);
-        throw error; // Re-throw to handle in the calling function
+        throw error;
     }
 }
 
 module.exports = sendMail;
 
+
+
+
+
+
+
+// const nodemailer = require('nodemailer');
+
+// const UserEmail = process.env.USER_EMAIL;
+// const EmailPassword = process.env.PASSWORD_EMAIL;
+
+// async function sendMail(otp, useremail, name) {
+//     // Create transporter with more specific Gmail configuration
+//     const transporter = nodemailer.createTransport({
+//         host: 'smtp.gmail.com',
+//         port: 465,
+//         secure: true, // use SSL
+//         auth: {
+//             user: process.env.USER_EMAIL,
+//             pass: process.env.PASSWORD_EMAIL
+//         }
+//     });
+
+//  // Verify connection configuration
+//  try {
+//     await transporter.verify();
+//     console.log('SMTP connection verified');
+// } catch (error) {
+//     console.error('SMTP verification failed:', error);
+//     throw error;
+// }
+
+// const mailOption = {
+//     from: `"ShoeOne" <${process.env.USER_EMAIL}>`,
+//     to: useremail,
+//     subject: "Account Verification for ShoeOne",
+//     html: `
+//         <div style="font-family: Arial, sans-serif; padding: 20px;">
+//             <h2>Account Verification</h2>
+//             <p>Dear ${name},</p>
+//             <p>Your OTP for ShoeOne account verification is:</p>
+//             <h3 style="background: #f4f4f4; padding: 10px; text-align: center;">${otp}</h3>
+//             <p>Thank you,<br>ShoeOne Team</p>
+//         </div>
+//     `
+// };
+
+// try {
+//     const info = await transporter.sendMail(mailOption);
+//     console.log("Email sent successfully:", info.messageId);
+//     return true;
+// } catch (error) {
+//     console.error("Email sending failed:", error);
+//     throw error;
+// }
+// }
+
+// module.exports = sendMail;
 
 
 
