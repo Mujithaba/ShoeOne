@@ -6,7 +6,7 @@ const EmailPassword = process.env.PASSWORD_EMAIL;
 async function sendMail(otp, useremail, name) {
     // Create transporter with more specific Gmail configuration
     const transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
+        host: 'gmail',
         port: 465,
         secure: true, // use SSL
         auth: {
