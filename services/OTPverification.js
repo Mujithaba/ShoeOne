@@ -10,14 +10,14 @@ async function sendMail(otp, useremail, name) {
         port: 465,
         secure: true, // use SSL
         auth: {
-            user: UserEmail,
-            pass: EmailPassword // This should be an App Password, not regular password
+            user: process.env.USER_EMAIL,
+            pass: process.env.PASSWORD_EMAIL// This should be an App Password, not regular password
         }
     });
 
     // Email content with HTML formatting for better presentation
     const mailOption = {
-        from: `"ShoeOne" <${UserEmail}>`,
+        from: `"ShoeOne" <${process.env.PASSWORD_EMAIL}>`,
         to: useremail,
         subject: "Account Verification for ShoeOne",
         text: `Dear ${name},
