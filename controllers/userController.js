@@ -111,7 +111,7 @@ const insertUser = async (req, res) => {
 
             if (userData) {
                 const otp = generateOTP();
-                console.log(otp);
+                console.log(otp,"mail otp");
 
                 req.session.otp = otp;
                 req.session.email = req.body.email;

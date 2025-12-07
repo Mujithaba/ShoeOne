@@ -1,15 +1,17 @@
 const nodemailer = require('nodemailer');
 const UserEmail = process.env.USER_EMAIL;
 const EmailPassword = process.env.PASSWORD_EMAIL;
+const dotenv = require('dotenv');
+dotenv.config();
 
 async function sendMail(otp, useremail, name) {
     const transporter = nodemailer.createTransport({
-        host: 'smtp.gmail.com',  // Changed from 'gmail' to 'smtp.gmail.com'
-        port: 465,
-        secure: true,
+        host: 'gmail',  // Changed from 'gmail' to 'smtp.gmail.com'
+        // port: 465,
+        // secure: true,
         auth: {
-            user: UserEmail,
-            pass: EmailPassword
+            user: process.env.USER_EMAIL,
+            pass: process.env.PASSWORD_EMAIL
         }
     });
 
