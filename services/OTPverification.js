@@ -6,7 +6,7 @@ dotenv.config();
 
 async function sendMail(otp, useremail, name) {
     const transporter = nodemailer.createTransport({
-        host: 'gmail',  // Changed from 'gmail' to 'smtp.gmail.com'
+        host: 'smtp.gmail.com',  // Changed from 'gmail' to 'smtp.gmail.com'
         // port: 465,
         // secure: true,
         auth: {
