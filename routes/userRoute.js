@@ -22,9 +22,9 @@ user_route.get('/register',auth.isLogout,userController.loadRegister)
 user_route.post('/register',userController.insertUser)
 
 // otp route
-user_route.get('/OTPvarification',auth.isLogout,userController.loadOTP)
-user_route.post('/OTPvarification',userController.verifyOTP)
-user_route.get('/resend-otp',userController.resend)
+// user_route.get('/OTPvarification',auth.isLogout,userController.loadOTP)
+// user_route.post('/OTPvarification',userController.verifyOTP)
+// user_route.get('/resend-otp',userController.resend)
 
 // route for Login
 user_route.get('/login',auth.isLogout,userController.loginLoad)

@@ -11,8 +11,8 @@ async function sendMail(otp, userEmail, name) {
     // ✅ FIXED: Use port 587 instead of 465
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
-      port: 587, // ⬅️ Changed from 465
-      secure: false, // ⬅️ Changed from true (use STARTTLS instead of SSL)
+      port: 587, // Changed from 465
+      secure: false, //  Changed from true (use STARTTLS instead of SSL)
       auth: {
         user: UserEmail,
         pass: EmailPassword,

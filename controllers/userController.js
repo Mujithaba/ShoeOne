@@ -79,12 +79,11 @@ const insertUser = async (req, res) => {
         mobile: req.body.mobile,
         password: spassword,
         refCode: referralCode,
-        is_verified: 0,
+        is_verified: 1,
         is_admin: 0,
         is_blocked: 0,
       });
 
-      userData.is_verified = 1;
       const userData = await user.save();
 
       if (userData) {
@@ -758,7 +757,7 @@ module.exports = {
   verifyLogin,
   logout,
   loadIsBlocked,
-  resend,
+//   resend,
   //-------- forgot password
   forgetLoad,
   emailverify,
@@ -769,8 +768,8 @@ module.exports = {
 
   openingHome,
   loadHome,
-  loadOTP,
-  verifyOTP,
+//   loadOTP,
+//   verifyOTP,
   loadShop,
   productDetailed,
   //---------- profile -------------
