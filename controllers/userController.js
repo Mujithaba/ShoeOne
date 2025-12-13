@@ -128,10 +128,10 @@ const insertUser = async (req, res) => {
 
           delete req.session.refCode;
           await user.save();
-          res.render("user/login", { message: "Signup is successfull." });
+          res.redirect("/login");
         }
 
-        res.render("user/login", { message: "Signup is successfull." });
+        res.redirect("/login");
       } else {
         res.render("user/register", {
           message: "You registration has been failed.",
