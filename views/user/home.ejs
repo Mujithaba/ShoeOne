@@ -262,7 +262,7 @@
         </div>
         <div id="mobile-menu-wrap"></div>
         <div class="offcanvas__text">
-            <p>Enjoy your shopping with us...</p>
+            <p>Enjoy your shopping with us...</p> 
         </div>
     </div>
     <!-- Offcanvas Menu End -->
@@ -274,7 +274,13 @@
                 <div class="row">
                     <div class="col-lg-6 col-md-7">
                         <div class="header__top__left">
-                            <p>Enjoy your each shopping with us...</p>
+                          
+                              <% if (typeof userData == 'undefined' ) { %>
+                                <p>*** If you are not logged in, please click the Profile button ***</p>   
+                            
+                                <% } else {%>
+                    <p>Enjoy your each shopping with us... </p> 
+                                    <% } %>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-5">
