@@ -13,6 +13,7 @@ const nocache = require("nocache");
 const PORT = process.env.PORT;
 app.use(nocache());
 
+app.set('trust proxy', 1);
 // Set up MongoDB connection first
 mongoose.connect(process.env.MONGO_DB, {
     dbName: 'shoeone' // Explicitly specify database name
